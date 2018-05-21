@@ -610,22 +610,6 @@ def createPath(lines):
                     break
     return path
 
-'''
-def two_lines_intersection(line1, line2):
-    b1 = line1.bbox()
-    b2 = line2.bbox()
-    if line1_is_overlap_with_line2(line1, line2):
-        start = Coordinate(max(b1[0], b2[0]), max(b1[2], b2[2]))
-        end = Coordinate(min(b1[1], b2[1]), min(b1[3], b2[3]))
-        if start != end:
-            intersection = MicroLine(start, end)
-            return intersection, None
-        else:
-            return None, None
-    else:
-        return None, None
-'''
-
 def two_lines_intersection(line1, line2):
     b1 = line1.bbox()
     b2 = line2.bbox()
