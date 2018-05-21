@@ -1,0 +1,58 @@
+Mon May 21 10:28:28 2018
+
+Begin the convertion
+
+
+Create a directory structure to: tmp.
+Create a directory structure to: pdf.
+Create a directory structure to: svg.
+Create a directory structure to: obj.
+Create a directory structure to: resultsvg.
+
+Normalize name of the pdfs.
+
+Create a directory structure to: svg/.DS_Store.
+Create a directory structure to: obj/.DS_Store.
+Create a directory structure to: resultsvg/.DS_Store.
+Create a directory structure to: svg/171130-IDELayout-final.
+Create a directory structure to: obj/171130-IDELayout-final.
+Create a directory structure to: resultsvg/171130-IDELayout-final.
+Create a directory structure to: svg/171130-MicroHeaterLayout-final.
+Create a directory structure to: obj/171130-MicroHeaterLayout-final.
+Create a directory structure to: resultsvg/171130-MicroHeaterLayout-final.
+Create a directory structure to: pdf/LAYER1.
+Create a directory structure to: svg/LAYER1.
+Create a directory structure to: obj/LAYER1.
+Create a directory structure to: resultsvg/LAYER1.
+Create a directory structure to: pdf/LAYER2.
+Create a directory structure to: svg/LAYER2.
+Create a directory structure to: obj/LAYER2.
+Create a directory structure to: resultsvg/LAYER2.
+Create a directory structure to: pdf/LAYER3.
+Create a directory structure to: svg/LAYER3.
+Create a directory structure to: obj/LAYER3.
+Create a directory structure to: resultsvg/LAYER3.
+
+Cut the pdf files of tmp/ to pdf/.
+
+Performs the separate pdf pages on pdf/LAYER1.
+Performs the separate pdf pages on pdf/LAYER2.
+Performs the separate pdf pages on pdf/LAYER3.
+
+
+Converting each pdf page of /Users/my/Desktop/MasterThesis/code/pdf/LAYER1 to svg
+Converting each pdf page of /Users/my/Desktop/MasterThesis/code/pdf/LAYER2 to svg
+Converting each pdf page of /Users/my/Desktop/MasterThesis/code/pdf/LAYER3 to svg
+
+
+Cut each svg page of /Users/my/Desktop/MasterThesis/code/svg/171130-IDELayout-final for print
+Cut each svg page of /Users/my/Desktop/MasterThesis/code/svg/171130-MicroHeaterLayout-final for print
+Cut each svg page of /Users/my/Desktop/MasterThesis/code/svg/LAYER1 for print
+Cut each svg page of /Users/my/Desktop/MasterThesis/code/svg/LAYER2 for print
+Cut each svg page of /Users/my/Desktop/MasterThesis/code/svg/LAYER3 for print
+Extracting objects from svg /Users/my/Desktop/MasterThesis/code/resultsvg/171130-IDELayout-final to obj
+Extracting objects from svg /Users/my/Desktop/MasterThesis/code/resultsvg/171130-MicroHeaterLayout-final to obj
+Extracting objects from svg /Users/my/Desktop/MasterThesis/code/resultsvg/LAYER1 to obj
+Extracting objects from svg /Users/my/Desktop/MasterThesis/code/resultsvg/LAYER2 to obj
+Extracting objects from svg /Users/my/Desktop/MasterThesis/code/resultsvg/LAYER3 to obj
+Finish conversions.

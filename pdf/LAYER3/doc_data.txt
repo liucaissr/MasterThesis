@@ -1,0 +1,23 @@
+InfoBegin
+InfoKey: ModDate
+InfoValue: D:20170810151642+02'00'
+InfoBegin
+InfoKey: PTEX.Fullbanner
+InfoValue: This is MiKTeX-pdfTeX 2.9.5670 (1.40.16)
+InfoBegin
+InfoKey: CreationDate
+InfoValue: D:20170810151642+02'00'
+InfoBegin
+InfoKey: Creator
+InfoValue: TeX
+InfoBegin
+InfoKey: Producer
+InfoValue: MiKTeX pdfTeX-1.40.16
+PdfID0: 2165b07de5fddf8dbb5a3200294a2405
+PdfID1: 2165b07de5fddf8dbb5a3200294a2405
+NumberOfPages: 1
+PageMediaBegin
+PageMediaNumber: 1
+PageMediaRotation: 0
+PageMediaRect: 0 0 68.74 68.74
+PageMediaDimensions: 68.74 68.74
