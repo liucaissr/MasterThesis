@@ -17,7 +17,14 @@ L2 = cur+sep+'LAYER2'
 L3 = cur+sep+'LAYER3'
 tempdir = cur + sep + 'tmp'
 
-files = ['171130-IDELayout-final', '171130-MicroHeaterLayout-final', 'LAYER1', 'LAYER2', 'LAYER3']
+
+files = []
+
+files.append('171130-IDELayout-final')
+files.append('171130-MicroHeaterLayout-final')
+files.append('LAYER1')
+files.append('LAYER2')
+files.append('LAYER3')
 dirs = []
 #dirs.append(IDE)
 #dirs.append(Heater)
@@ -100,6 +107,4 @@ for file in files:
                     distance_test[str[0]][str[1]] = str[2]
     print file
     print no_merge_real == no_merge_test and no_absorb_real == no_absorb_test and distance_real == distance_test
-
-
 

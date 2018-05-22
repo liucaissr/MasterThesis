@@ -47,15 +47,16 @@ class PointNavigation(object):
         return '{} {} {}'.format(self.point, self.hline, self.vline)
 
     def __cmp__(self, other):
+        e = 0.0000001
         if hasattr(other, 'point'):
-            if(self.point.imag > other.point.imag):
+            if(self.point.imag - other.point.imag > e):
                 return 1
-            elif(self.point.imag < other.point.imag):
+            elif(self.point.imag - other.point.imag < -e ):
                 return -1
             else:
-                if (self.point.real > other.point.real ):
+                if (self.point.real - other.point.real > e ):
                     return 1
-                elif (self.point.real  < other.point.real):
+                elif (self.point.real  - other.point.real < -e):
                     return -1
                 else:
                     return 0
@@ -64,15 +65,16 @@ class PointNavigation(object):
 class Coordinate(complex):
 
     def __lt__(self, other):
+        e = 0.0000001
         if hasattr(other, 'imag') and hasattr(other, 'real'):
-            if (self.real > other.real):
+            if (self.real - other.real > e):
                 return 0
-            elif (self.real < other.real):
+            elif (self.real - other.real < -e):
                 return 1
             else:
-                if (self.imag > other.imag):
+                if (self.imag - other.imag > e):
                     return 0
-                elif (self.imag < other.imag):
+                elif (self.imag - other.imag < -e):
                     return 1
                 else:
                     return 0
@@ -80,15 +82,16 @@ class Coordinate(complex):
             return NotImplemented
 
     def __gt__(self, other):
+        e = 0.0000001
         if hasattr(other, 'imag') and hasattr(other, 'real'):
-            if (self.real > other.real):
+            if (self.real - other.real > e):
                 return 1
-            elif (self.real < other.real):
+            elif (self.real - other.real < -e):
                 return 0
             else:
-                if (self.imag > other.imag):
+                if (self.imag - other.imag > e):
                     return 1
-                elif (self.imag < other.imag):
+                elif (self.imag - other.imag < -e):
                     return 0
                 else:
                     return 0
@@ -97,14 +100,14 @@ class Coordinate(complex):
 
     def __le__(self, other):
         if hasattr(other, 'imag') and hasattr(other, 'real'):
-            if (self.real > other.real):
+            if (self.real - other.real > e):
                 return 0
-            elif (self.real < other.real):
+            elif (self.real - other.real < -e):
                 return 1
             else:
-                if (self.imag > other.imag):
+                if (self.imag - other.imag > e):
                     return 0
-                elif (self.imag < other.imag):
+                elif (self.imag - other.imag < -e):
                     return 1
                 else:
                     return 1
@@ -112,20 +115,31 @@ class Coordinate(complex):
             return NotImplemented
 
     def __ge__(self, other):
+        e = 0.0000001
         if hasattr(other, 'imag') and hasattr(other, 'real'):
-            if (self.real > other.real):
+            if (self.real - other.real > e):
                 return 1
-            elif (self.real < other.real):
+            elif (self.real - other.real < -e):
                 return 0
             else:
-                if (self.imag > other.imag):
+                if (self.imag - other.imag > e):
                     return 1
-                elif (self.imag < other.imag):
+                elif (self.imag - other.imag < -e):
                     return 0
                 else:
                     return 1
         else:
             return NotImplemented
+    def __eq__(self, other):
+        e = 0.0000001
+        if hasattr(other, 'imag') and hasattr(other, 'real'):
+            if (abs(self.real - other.real) < e) and (abs(self.imag - other.imag) < e):
+                return 1
+            else:
+                return 0
+        else:
+            return NotImplemented
+
 
 
 class MicroLine(Line):
@@ -350,7 +364,7 @@ def line1_intersect_with_line2(line1, line2):
 
 
 def combineLines(microlines):
-    # todo: assert parallel
+    # todo: assert parallel lines
     result = []
     lines = []
     length = len(microlines)
@@ -411,9 +425,10 @@ def point_on_line(point, line):
 
 # todo test this method
 def combineLinesWithPoints(allLines, cutPoints):
+    result = []
     sortedhlines = sorted(allLines)
     sortedPoints = sorted(cutPoints)
-    result = []
+    processedLine = []
     # todo one line is missing
     remainLines = sortedhlines
     processedLineQueue = []
@@ -946,3 +961,5 @@ def no_absorption_conflict(path1, path2, factor):
                     (ratio2 < factor and lengthratio2 < factor_sqrt) and lengthratio1 > selflengthfactor):
                 return True, None
     return False, interl
+
+

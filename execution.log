@@ -1,4 +1,4 @@
-Mon May 21 10:28:28 2018
+Tue May 22 21:35:17 2018
 
 Begin the convertion
 
@@ -40,19 +40,19 @@ Performs the separate pdf pages on pdf/LAYER2.
 Performs the separate pdf pages on pdf/LAYER3.
 
 
-Converting each pdf page of /Users/my/Desktop/MasterThesis/code/pdf/LAYER1 to svg
-Converting each pdf page of /Users/my/Desktop/MasterThesis/code/pdf/LAYER2 to svg
-Converting each pdf page of /Users/my/Desktop/MasterThesis/code/pdf/LAYER3 to svg
+Converting each pdf page of /Users/my/Desktop/MasterThesis/source/pdf/LAYER1 to svg
+Converting each pdf page of /Users/my/Desktop/MasterThesis/source/pdf/LAYER2 to svg
+Converting each pdf page of /Users/my/Desktop/MasterThesis/source/pdf/LAYER3 to svg
 
 
-Cut each svg page of /Users/my/Desktop/MasterThesis/code/svg/171130-IDELayout-final for print
-Cut each svg page of /Users/my/Desktop/MasterThesis/code/svg/171130-MicroHeaterLayout-final for print
-Cut each svg page of /Users/my/Desktop/MasterThesis/code/svg/LAYER1 for print
-Cut each svg page of /Users/my/Desktop/MasterThesis/code/svg/LAYER2 for print
-Cut each svg page of /Users/my/Desktop/MasterThesis/code/svg/LAYER3 for print
-Extracting objects from svg /Users/my/Desktop/MasterThesis/code/resultsvg/171130-IDELayout-final to obj
-Extracting objects from svg /Users/my/Desktop/MasterThesis/code/resultsvg/171130-MicroHeaterLayout-final to obj
-Extracting objects from svg /Users/my/Desktop/MasterThesis/code/resultsvg/LAYER1 to obj
-Extracting objects from svg /Users/my/Desktop/MasterThesis/code/resultsvg/LAYER2 to obj
-Extracting objects from svg /Users/my/Desktop/MasterThesis/code/resultsvg/LAYER3 to obj
+Cut each svg page of /Users/my/Desktop/MasterThesis/source/svg/171130-IDELayout-final for print
+Cut each svg page of /Users/my/Desktop/MasterThesis/source/svg/171130-MicroHeaterLayout-final for print
+Cut each svg page of /Users/my/Desktop/MasterThesis/source/svg/LAYER1 for print
+Cut each svg page of /Users/my/Desktop/MasterThesis/source/svg/LAYER2 for print
+Cut each svg page of /Users/my/Desktop/MasterThesis/source/svg/LAYER3 for print
+Extracting objects from svg /Users/my/Desktop/MasterThesis/source/resultsvg/171130-IDELayout-final to obj
+Extracting objects from svg /Users/my/Desktop/MasterThesis/source/resultsvg/171130-MicroHeaterLayout-final to obj
+Extracting objects from svg /Users/my/Desktop/MasterThesis/source/resultsvg/LAYER1 to obj
+Extracting objects from svg /Users/my/Desktop/MasterThesis/source/resultsvg/LAYER2 to obj
+Extracting objects from svg /Users/my/Desktop/MasterThesis/source/resultsvg/LAYER3 to obj
 Finish conversions.

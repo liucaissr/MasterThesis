@@ -1,8 +1,188 @@
 #!/usr/bin/python
-from svgpathtools import *
-from tools.cut import LineNavigation, PointNavigation, MicroLine, Coordinate
-import re
+from os import getcwd, listdir, sep, remove, error, path
+from tools.directories import Build
+from tools.pdf import Explode, ConvertToSVG
+import time
+import numpy
 import math
+import re
+
+from svgpathtools import *
+import math
+
+class LineNavigation(object):
+    def __init__(self, position, start, end, line):
+        self.position = position
+        self.start = start
+        self.end = end
+        self.line = line
+
+    def __repr__(self):
+        #return 'Path{} Line{} (start={}, end={}) \n' % (self.pathno, self.lineno, self.start, self.end)
+        return '{} {} {}'.format(self.position, self.start, self.end)
+
+    def __cmp__(self, other):
+        if hasattr(other, 'position') and hasattr(other, 'start'):
+            if(self.position > other.position):
+                return 1
+            elif(self.position < other.position):
+                return -1
+            else:
+                if (self.start > other.start):
+                    return 1
+                elif (self.end < other.end):
+                    return -1
+                else:
+                    return 0
+
+# something like key define exist
+class PointNavigation(object):
+    def __init__(self, point, hline, vline):
+        self.point = point
+        self.hline = hline
+        self.vline = vline
+
+    def __repr__(self):
+        #return 'Path{} Line{} (start={}, end={}) \n' % (self.pathno, self.lineno, self.start, self.end)
+        return '{} {} {}'.format(self.point, self.hline, self.vline)
+
+    def __cmp__(self, other):
+        if hasattr(other, 'point'):
+            if(self.point.imag > other.point.imag):
+                return 1
+            elif(self.point.imag < other.point.imag):
+                return -1
+            else:
+                if (self.point.real > other.point.real ):
+                    return 1
+                elif (self.point.real  < other.point.real):
+                    return -1
+                else:
+                    return 0
+
+
+class Coordinate(complex):
+
+    def __lt__(self, other):
+        if hasattr(other, 'imag') and hasattr(other, 'real'):
+            if (self.real > other.real):
+                return 0
+            elif (self.real < other.real):
+                return 1
+            else:
+                if (self.imag > other.imag):
+                    return 0
+                elif (self.imag < other.imag):
+                    return 1
+                else:
+                    return 0
+        else:
+            return NotImplemented
+
+    def __gt__(self, other):
+        if hasattr(other, 'imag') and hasattr(other, 'real'):
+            if (self.real > other.real):
+                return 1
+            elif (self.real < other.real):
+                return 0
+            else:
+                if (self.imag > other.imag):
+                    return 1
+                elif (self.imag < other.imag):
+                    return 0
+                else:
+                    return 0
+        else:
+            return NotImplemented
+
+    def __le__(self, other):
+        if hasattr(other, 'imag') and hasattr(other, 'real'):
+            if (self.real > other.real):
+                return 0
+            elif (self.real < other.real):
+                return 1
+            else:
+                if (self.imag > other.imag):
+                    return 0
+                elif (self.imag < other.imag):
+                    return 1
+                else:
+                    return 1
+        else:
+            return NotImplemented
+
+    def __ge__(self, other):
+        if hasattr(other, 'imag') and hasattr(other, 'real'):
+            if (self.real > other.real):
+                return 1
+            elif (self.real < other.real):
+                return 0
+            else:
+                if (self.imag > other.imag):
+                    return 1
+                elif (self.imag < other.imag):
+                    return 0
+                else:
+                    return 1
+        else:
+            return NotImplemented
+
+
+class MicroLine(Line):
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            if super(MicroLine, self).__eq__(other):
+                return True
+            elif self.end == other.start and self.start == other.end:
+                return True
+            else:
+                return False
+        else:
+            return NotImplemented
+
+    def direction(self):
+        if self.start.imag == self.end.imag:
+            return 'h'
+        elif self.start.real == self.end.real:
+            return 'v'
+        else:
+            return NotImplemented
+
+    def __cmp__(self, other):
+        if hasattr(other, 'start') and hasattr(other, 'end'):
+            self = self.order()
+            other = other.order()
+            # assert if not parallel
+            if self.direction() == 'h' and other.direction() == 'h':
+                if (self.start.imag > other.start.imag):
+                    return 1
+                elif (self.start.imag < other.start.imag):
+                    return -1
+                else:
+                    if (self.start.real > other.start.real):
+                        return 1
+                    elif (self.end.real < other.end.real):
+                        return -1
+                    else:
+                        return 0
+            elif self.direction() == 'v' and other.direction() == 'v':
+                if (self.start.real > other.start.real):
+                    return 1
+                elif (self.start.real < other.start.real):
+                    return -1
+                else:
+                    if (self.start.imag > other.start.imag):
+                        return 1
+                    elif (self.end.imag < other.end.imag):
+                        return -1
+                    else:
+                        return 0
+            else:
+                return 0
+
+    def order(self):
+        orderedLine = MicroLine(min(self.start, self.end), max(self.start, self.end))
+        return orderedLine
 
 
 def preconfig(paths):
@@ -20,22 +200,23 @@ def preconfig(paths):
                 offsety = line.end.imag
 
     if offsety >= 0:
-        offsety = 0
+        offsety = -10
     else:
-        offsety -= 1
+        offsety -= 10
     if offsetx >= 0:
-        offsetx = 0
+        offsetx = -10
     else:
-        offsetx -= 1
+        offsetx -= 10
 
     return offsetx, offsety
 
 
 # process based on attributes
-def svgpreprocess(paths, attributes):
+def svgpreprocess(paths, attributes, offsetx, offsety):
     length = len(attributes)
     scale = [1] * length
     newPathList = []
+    result = []
     for i in range(0, length):
         if attributes[i].has_key(u'transform'):
             str = attributes[0].get(u'transform').encode('utf-8')
@@ -49,7 +230,15 @@ def svgpreprocess(paths, attributes):
         for line in paths[i]:
             newPath.append(Line(line.start * scale[i], line.end * scale[i]))
         newPathList.append(newPath)
-    return newPathList
+    for path in newPathList:
+        newPath = Path()
+        for line in path:
+            start = Coordinate(round(line.start.real - offsetx, 3), round(line.start.imag - offsety, 3))
+            end = Coordinate(round(line.end.real - offsetx, 3), round(line.end.imag - offsety, 3))
+            newline = MicroLine(start, end)
+            newPath.append(newline)
+        result.append(newPath)
+    return result
 
 
 def pathpreprocess(rawpath, offsetx, offsety):
@@ -61,49 +250,43 @@ def pathpreprocess(rawpath, offsetx, offsety):
     path = []
 
     for line in rawpath:
-        start = complex(round(line.start.real - offsetx, 3), round(line.start.imag - offsety, 3))
-        end = complex(round(line.end.real - offsetx, 3), round(line.end.imag - offsety, 3))
-        newline = Line(start, end)
+        start = Coordinate(round(line.start.real - offsetx, 3), round(line.start.imag - offsety, 3))
+        end = Coordinate(round(line.end.real - offsetx, 3), round(line.end.imag - offsety, 3))
+        newline = MicroLine(start, end)
         path.append(newline)
 
     for line in path:
         if line.start != line.end:
-            b = line.bbox()
-            if line.start.imag == line.end.imag:
-                nline = Line(complex(b[0], b[2]), complex(b[1], b[2]))
-                hlines.append(LineNavigation(b[2], b[0], b[1], nline))
-            if line.start.real == line.end.real:
-                nline = Line(complex(b[0], b[2]), complex(b[0], b[3]))
-                vlines.append(LineNavigation(b[0], b[2], b[3], nline))
+            if line.direction() == 'h':
+                hlines.append(line)
+            if line.direction() == 'v':
+                vlines.append(line)
 
     sortedhlines = combineLines(hlines)
     sortedvlines = combineLines(vlines)
     filteredVlines = []
     filteredHlines = []
+
     for vline in sortedvlines:
         intersectpoints = []
         for hline in sortedhlines:
-            x = line1_intersect_with_line2(vline.line, hline.line)
+            x = line1_intersect_with_line2(vline, hline)
             if len(x) != 0:
                 intersectpoints.append(x[0][0])
         if len(intersectpoints) >= 2:
-            # points = sorted(intersectpoints)
-            newvline = Line(vline.line.point(min(intersectpoints)), vline.line.point(max(intersectpoints)))
-            b = newvline.bbox()
-            newvlineobj = LineNavigation(b[0], b[2], b[3], newvline)
-            filteredVlines.append(newvlineobj)
+            newvline = MicroLine(Coordinate(vline.point(min(intersectpoints))),
+                                 Coordinate(vline.point(max(intersectpoints))))
+            filteredVlines.append(newvline)
     for hline in sortedhlines:
         intersectpoints = []
         for vline in sortedvlines:
-            x = x = line1_intersect_with_line2(hline.line, vline.line)
+            x = line1_intersect_with_line2(hline, vline)
             if len(x) != 0:
                 intersectpoints.append(x[0][0])
         if len(intersectpoints) >= 2:
-            # points = sorted(intersectpoints)
-            newhline = Line(hline.line.point(min(intersectpoints)), hline.line.point(max(intersectpoints)))
-            b = newhline.bbox()
-            newhlineobj = LineNavigation(b[2], b[0], b[1], newhline)
-            filteredHlines.append(newhlineobj)
+            newhline = MicroLine(Coordinate(hline.point(min(intersectpoints))),
+                                 Coordinate(hline.point(max(intersectpoints))))
+            filteredHlines.append(newhline)
 
     # todo filteredPath not closed
     for line in path:
@@ -111,55 +294,42 @@ def pathpreprocess(rawpath, offsetx, offsety):
             filteredPath.append(line)
 
     for line in filteredHlines:
-        if line.line.start not in filteredPoints:
-            filteredPoints.append(line.line.start)
-            startPoint = PointNavigation(line.line.start, None, None)
+        if line.start not in filteredPoints:
+            filteredPoints.append(line.start)
+            startPoint = PointNavigation(line.start, None, None)
             filteredPointsObj.append(startPoint)
-        if line.line.end not in filteredPoints:
-            filteredPoints.append(line.line.end)
-            endPoint = PointNavigation(line.line.end, None, None)
+        if line.end not in filteredPoints:
+            filteredPoints.append(line.end)
+            endPoint = PointNavigation(line.end, None, None)
             filteredPointsObj.append(endPoint)
         for pointobj in filteredPointsObj:
-            if pointobj.point == line.line.start:
-                pointobj.hline = line.line
-            if pointobj.point == line.line.end:
-                pointobj.hline = line.line
+            if pointobj.point == line.start:
+                pointobj.hline = line
+            if pointobj.point == line.end:
+                pointobj.hline = line
 
     for line in filteredVlines:
-        if line.line.start not in filteredPoints:
-            filteredPoints.append(line.line.start)
-            startPoint = PointNavigation(line.line.start, None, None)
+        if line.start not in filteredPoints:
+            filteredPoints.append(line.start)
+            startPoint = PointNavigation(line.start, None, None)
             filteredPointsObj.append(startPoint)
-        if line.line.end not in filteredPoints:
-            filteredPoints.append(line.line.end)
-            endPoint = PointNavigation(line.line.end, None, None)
+        if line.end not in filteredPoints:
+            filteredPoints.append(line.end)
+            endPoint = PointNavigation(line.end, None, None)
             filteredPointsObj.append(endPoint)
         for pointobj in filteredPointsObj:
-            if pointobj.point == line.line.start:
-                pointobj.vline = line.line
-            if pointobj.point == line.line.end:
-                pointobj.vline = line.line
+            if pointobj.point == line.start:
+                pointobj.vline = line
+            if pointobj.point == line.end:
+                pointobj.vline = line
 
     return sortedhlines, sortedvlines, filteredPath, filteredPointsObj
 
 
-# parallel overlap
-def line1_is_overlap_with_line2(line1, line2):
-    b1 = line1.bbox()
-    b2 = line2.bbox()
-    if line1 == line2 or line1 == line2.reversed():
-        return True
-    elif len(line1.intersect(line2)) != 0:
-        return True
-    elif max(b1[0], b2[0]) <= min(b1[1], b2[1]) and b1[2] == b2[2] == b1[3] == b2[3]:
-        return True
-    elif max(b1[2], b2[2]) <= min(b1[3], b2[3]) and b1[0] == b2[0] == b1[1] == b2[1]:
-        return True
-    else:
-        return False
-
-
 def line1_intersect_with_line2(line1, line2):
+    x = None
+    if line1 != line2:
+        x = line1.intersect(line2)
     if line1.start == line2.start:
         return [(0.0, 0.0)]
     elif line1.start == line2.end:
@@ -168,52 +338,19 @@ def line1_intersect_with_line2(line1, line2):
         return [(1.0, 0.0)]
     elif line1.end == line2.end:
         return [(1.0, 1.0)]
-    elif len(line1.intersect(line2)) != 0:
-        return line1.intersect(line2)
+    elif x is not None:
+        if len(x) != 0:
+            a = round(x[0][0],3)
+            b = round(x[0][1],3)
+            return [(a,b)]
+        else:
+            return []
     else:
         return []
 
 
-# sortedlines(h or v)
-def combineLines(parallellineobjs):
-    # todo: assert parallel
-    result = []
-    lines = []
-    length = len(parallellineobjs)
-    sortedlines = sorted(parallellineobjs)
-    k = 0
-    for i in range(0, length):
-        if i < k:
-            continue
-        start = sortedlines[i].line.start
-        end = sortedlines[i].line.end
-        newL = sortedlines[i].line
-        for j in range(i + 1, length):
-            bj = sortedlines[j].line.bbox()
-            bi = newL.bbox()
-            if sortedlines[j].position == sortedlines[i].position and line1_is_overlap_with_line2(newL, sortedlines[
-                j].line) is True:
-                end = complex(max(bi[1], bj[1]), max(bi[3], bj[3]))
-                newL = Line(start, end)
-            else:
-                break
-        if sortedlines[i].line.end != end:
-            # todo: bu neng tiao bu
-            k = j
-        newLine = Line(start, end)
-        if newLine not in lines:
-            lines.append(newLine)
-    for newLine in lines:
-        b = newLine.bbox()
-        if b[0] == b[1]:
-            result.append(LineNavigation(b[0], b[2], b[3], newLine))
-        elif b[2] == b[3]:
-            result.append(LineNavigation(b[2], b[0], b[1], newLine))
-    return result
-
-
-def combineLinesx(microlines):
-    # todo: assert parallel
+def combineLines(microlines):
+    # todo: assert parallel lines
     result = []
     lines = []
     length = len(microlines)
@@ -232,7 +369,7 @@ def combineLinesx(microlines):
         for j in range(i + 1, length):
             bj = sortedlines[j].bbox()
             bi = newL.bbox()
-            if line1_is_overlap_with_line2x(newL, sortedlines[j]) is True:
+            if line1_is_overlap_with_line2(newL, sortedlines[j]) is True:
                 end = Coordinate(max(bi[1], bj[1]), max(bi[3], bj[3]))
                 newL = MicroLine(start, end)
             else:
@@ -245,7 +382,7 @@ def combineLinesx(microlines):
         newLine = MicroLine(start, end)
         if newLine not in lines:
             lines.append(newLine)
-    last, interpoint = two_lines_intersection(sortedlines[-1], lines[-1])
+    last,p = two_lines_intersection(sortedlines[-1], lines[-1])
     if last is not None and last == sortedlines[-1]:
         pass
     elif last is not None and last != sortedlines[-1]:
@@ -259,9 +396,15 @@ def combineLinesx(microlines):
     return result
 
 
-def point_on_hline(point, hline):
-    if hline.start <= point.real <= hline.end and hline.position == point.imag:
-        return True
+# todo changed hlineobj into hline
+def point_on_line(point, line):
+    l0 = line.order()
+    if l0.start.imag == point.imag:
+        if l0.start.real <= point.real <= l0.end.real:
+            return True
+    elif l0.start.real == point.real:
+        if l0.start.imag <= point.imag <= l0.end.imag:
+            return True
     else:
         return False
 
@@ -270,36 +413,36 @@ def point_on_hline(point, hline):
 def combineLinesWithPoints(allLines, cutPoints):
     sortedhlines = sorted(allLines)
     sortedPoints = sorted(cutPoints)
-    upcuthlines = []
     result = []
     # todo one line is missing
     remainLines = sortedhlines
     processedLineQueue = []
     for pointobj in sortedPoints:
-        for lineobj in remainLines:
-            if point_on_hline(pointobj.point, lineobj):
-                start = lineobj.line.start
+        for line in remainLines:
+            if point_on_line(pointobj.point, line):
+                start = line.start
                 end = pointobj.point
                 if start != end:
-                    leftLine = Line(start, end)
-                    processedLineQueue.append(LineNavigation(start.imag, start.real, end.real, leftLine))
-                indexofline = remainLines.index(lineobj)
+                    leftLine = MicroLine(start, end)
+                    processedLineQueue.append(leftLine)
+                indexofline = remainLines.index(line)
                 length = len(remainLines)
                 tempLines = []
                 for i in range(indexofline, length):
-                    if point_on_hline(pointobj.point, remainLines[i]):
+                    if point_on_line(pointobj.point, remainLines[i]):
                         start = pointobj.point
-                        end = remainLines[i].line.end
+                        end = remainLines[i].end
                         if start != end:
-                            newLine = Line(start, end)
-                            tempLines.append(LineNavigation(start.imag, start.real, end.real, newLine))
+                            newLine = MicroLine(start, end)
+                            tempLines.append(newLine)
                     else:
                         tempLines.append(remainLines[i])
                 remainLines = tempLines
                 break
             else:
-                processedLineQueue.append(lineobj)
-        processedLine = combineLines(processedLineQueue)
+                processedLineQueue.append(line)
+        if len(processedLineQueue) != 0:
+            processedLine = combineLines(processedLineQueue)
         processedLineQueue = []
         for line in processedLine:
             if line not in result:
@@ -313,6 +456,21 @@ def combineLinesWithPoints(allLines, cutPoints):
     # todo collect curProcessedLine
 
     return result
+
+
+def path1_is_contained_in_path2x(path1, path2):
+    assert path2.isclosed()  # This question isn't well-defined otherwise
+    # find a point that's definitely outside path2
+    xmin, xmax, ymin, ymax = path2.bbox()
+    B = (xmin + 1) + 1j * (ymax + 1)
+
+    A = (path1.start + path1.end) / 2  # pick an arbitrary point in path1
+    AB_line = Path(Line(A, B))
+    number_of_intersections = len(AB_line.intersect(path2))
+    if number_of_intersections % 2:  # if number of intersections is odd
+        return True
+    else:
+        return False
 
 
 def path1_is_contained_in_path2(path1, path2):
@@ -343,7 +501,7 @@ def path1_is_contained_in_path2(path1, path2):
         return False
 
 
-def line1_is_overlap_with_line2x(line1, line2):
+def line1_is_overlap_with_line2(line1, line2):
     b1 = line1.bbox()
     b2 = line2.bbox()
     if max(b1[0], b2[0]) <= min(b1[1], b2[1]) and b1[2] == b2[2] == b1[3] == b2[3]:
@@ -358,7 +516,7 @@ def line_on_path(line, path):
     for pathline in path:
         if line == pathline:
             return path.index(pathline)
-        elif line1_is_overlap_with_line2x(line, pathline):
+        elif line1_is_overlap_with_line2(line, pathline):
             return path.index(pathline)
     return None
 
@@ -367,14 +525,14 @@ def combinePaths(path1, path2, intersectline):
     # assert intersectline not one
     keepLines = []
     for line1 in path1:
-        if line1_is_overlap_with_line2x(line1, intersectline[0]) == False:
+        if line1_is_overlap_with_line2(line1, intersectline[0]) == False:
             keepLines.append(line1)
         else:
             newLines = cutline(line1, intersectline[0])
             for line in newLines:
                 keepLines.append(line)
     for line1 in path2:
-        if line1_is_overlap_with_line2x(line1, intersectline[0]) == False:
+        if line1_is_overlap_with_line2(line1, intersectline[0]) == False:
             keepLines.append(line1)
         else:
             newLines = cutline(line1, intersectline[0])
@@ -412,13 +570,11 @@ def createPath(lines):
     for line in roundLines:
         b = line.bbox()
         if line.start.real == line.end.real:
-            # vlines.append(LineNavigation(b[0], b[2], b[3], line))
             vlines.append(line)
         if line.start.imag == line.end.imag:
-            # hlines.append(LineNavigation(b[2], b[0], b[1], line))
             hlines.append(line)
-    combinevlines = combineLinesx(vlines)
-    combinehlines = combineLinesx(hlines)
+    combinevlines = combineLines(vlines)
+    combinehlines = combineLines(hlines)
     for line in combinevlines:
         refinedLines.append(line)
     for line in combinehlines:
@@ -454,21 +610,41 @@ def createPath(lines):
                     break
     return path
 
-
 def two_lines_intersection(line1, line2):
     b1 = line1.bbox()
     b2 = line2.bbox()
+    x = line1_intersect_with_line2(line1,line2)
+    intersection = None
+    intersectp = None
     if line1_is_overlap_with_line2(line1, line2):
         start = Coordinate(max(b1[0], b2[0]), max(b1[2], b2[2]))
         end = Coordinate(min(b1[1], b2[1]), min(b1[3], b2[3]))
         if start != end:
             intersection = MicroLine(start, end)
-            return intersection, None
         else:
-            intersection = Coordinate(start)
-            return None, intersection
-    else:
-        return None, None
+            intersectp = Coordinate(start)
+    elif len(x) != 0:
+        intersectp = line1.point(x[0][0])
+    return intersection, intersectp
+
+# for silly intersect method
+# why wrong method is being called
+def two_paths_intersectionx(path1, path2):
+    intersect = []
+    for line1 in path1:
+        for line2 in path2:
+            line1 = MicroLine(Coordinate(line1.start), Coordinate(line1.end))
+            line2 = MicroLine(Coordinate(line2.start), Coordinate(line2.end))
+            if line1 == line2:
+                if line1 not in intersect:
+                    intersect.append(line1)
+            elif line1_is_overlap_with_line2(line1, line2):
+                line,p = two_lines_intersection(line1, line2)
+                if line is not None:
+                    newline = MicroLine(Coordinate(line.start), Coordinate(line.end))
+                    if newline not in intersect:
+                        intersect.append(newline)
+    return intersect, None
 
 # for silly intersect method
 def two_paths_intersection(path1, path2):
@@ -529,7 +705,6 @@ def two_paths_intersection(path1, path2):
     intersectpath = Path(l1, l2, l3, l4)
     return intersect, intersectpath
 
-
 def two_lines_distance(line1, line2):
     if line1.direction() == line2.direction() == 'h':
         dis = line1.start.imag - line2.start.imag
@@ -540,6 +715,7 @@ def two_lines_distance(line1, line2):
     return dis
 
 
+# intersectlines in lines for line
 def line_intersectlines(line, lines):
     direct = line.direction()
     l1 = line.order()
@@ -570,13 +746,18 @@ def getDev(path, line):
     return dev
 
 
-def changePath(path, index, dev, factor):
+def changePath(path, index, dev, factor, narrowratio):
     newPath = Path()
     l0 = path[index]
-    if l0.direction() == 'h':
-        deviation = Coordinate(0, -(dev * factor))
+    #might has problem when narrowration larger than dev.
+    if abs(dev * factor) < narrowratio:
+        devx = dev * 0.7
     else:
-        deviation = Coordinate(-(dev * factor), 0)
+        devx = dev * factor
+    if l0.direction() == 'h':
+        deviation = Coordinate(0, -devx)
+    else:
+        deviation = Coordinate(-devx, 0)
     for line in path:
         if line != l0:
             point = line1_intersect_with_line2(line, l0)
@@ -596,12 +777,15 @@ def changePath(path, index, dev, factor):
 
     return newPath
 
+
 def two_paths_distancex(path1, path2):
     dis = 0
     points1 = []
     points2 = []
     lines1 = []
     lines2 = []
+    points1.append(path1.start)
+    points2.append(path2.start)
     inter = path1.intersect(path2)
     if len(inter) != 0:
         return dis
@@ -613,26 +797,16 @@ def two_paths_distancex(path1, path2):
         points2.append(l2.end)
         l = l2.order()
         lines2.append(l)
-    dis = 0
-    pp1 = None
-    ll1 = None
-    pp2 = None
-    ll2 = None
     for p1 in points1:
         for l2 in lines2:
             if l2.direction() == 'h' and l2.start.real < p1.real < l2.end.real:
                 tmpdis = abs(l2.start.imag - p1.imag)
-
             elif l2.direction() == 'v' and l2.start.imag < p1.imag < l2.end.imag:
                 tmpdis = abs(l2.start.real - p1.real)
-
             else:
                 tmpdis = min(math.sqrt((l2.start.real-p1.real) ** 2 + (l2.start.imag-p1.imag) ** 2), math.sqrt((l2.end.real-p1.real) ** 2 + (l2.end.imag-p1.imag) ** 2))
-
             if tmpdis < dis or dis == 0:
                 dis = tmpdis
-                pp1 = p1
-                ll2 = l2
     for p2 in points2:
         for l1 in lines1:
             if l1.direction() == 'h' and l1.start.real < p2.real < l1.end.real:
@@ -643,14 +817,6 @@ def two_paths_distancex(path1, path2):
                 tmpdis = min(math.sqrt((l1.start.real-p2.real) ** 2 + (l1.start.imag-p2.imag) ** 2), math.sqrt((l1.end.real-p2.real) ** 2 + (l1.end.imag-p2.imag) ** 2))
             if tmpdis < dis or dis == 0:
                 dis = tmpdis
-                pp1 = None
-                ll2 = None
-                pp2 = p2
-                ll1 = l1
-    print pp1
-    print pp2
-    print ll1
-    print ll2
     return dis
 
 
@@ -687,13 +853,13 @@ def two_paths_distance(path1, path2):
         dev = b1[2] - b2[3]
     return dev # -1 means max
 
-
-def no_merge_conflict(path1, path2, factor):
-    if two_paths_distance(path1, path2) < factor:
-        return True
+def no_merge_conflict(path1, path2, factor, dis = None):
+    if dis is None:
+        dis = two_paths_distance(path1, path2)
+    if 0 < dis < factor:
+        return True,dis
     else:
-        return False
-
+        return False,dis
 
 def no_absorption_conflict(path1, path2, factor):
     x, p = two_paths_intersection(path1, path2)
@@ -731,8 +897,6 @@ def no_absorption_conflict(path1, path2, factor):
             return True, interl
     elif p is not None:
         lengths = {}
-        area1 = 0
-        area2 = 0
         for l in p:
             lens = float(l.length())
             if lens not in lengths.keys():
@@ -782,6 +946,7 @@ def no_absorption_conflict(path1, path2, factor):
                     (ratio2 < factor and lengthratio2 < factor_sqrt) and lengthratio1 > selflengthfactor):
                 return True, None
     return False, interl
+
 
 
 p3 = Path(MicroLine(Coordinate(1 + 0j), Coordinate(2 + 0j)),
@@ -836,7 +1001,16 @@ c = Coordinate(1.25, 0)
 d = Coordinate(1.75, 0)
 
 l3 = MicroLine(Coordinate(1, 0), Coordinate(2, 0))
-l4 = MicroLine(Coordinate(1, 1), Coordinate(2, 1))
+l4 = MicroLine(Coordinate(2, 1), Coordinate(3, 1))
+l1 = MicroLine(Coordinate(1, 2), Coordinate(3, 2))
+p1 = PointNavigation(Coordinate(1.5, 0),None,None)
+p2 = PointNavigation(Coordinate(1.5, 2),None,None)
+p3 = PointNavigation(Coordinate(2, 2),None,None)
+
+ls = [l3,l4,l1]
+ps = [p1,p2,p3]
+print combineLinesWithPoints(ls,ps)
+
 
 lines = []
 lines.append(l1)
@@ -847,18 +1021,6 @@ lines.append(l4)
 l1 = MicroLine(Coordinate(31.607, 8.277), Coordinate(31.607, 10.063))
 l2 = MicroLine(Coordinate(31.607, 10.063), Coordinate(31.607, 35.83))
 l3 = l1.reversed()
-
-#line, point = two_lines_intersection(l1, l3)
-
-Path(Line(start=(6.46303 + 0j), end=(6.46303 + 4.67717j)),
-     Line(start=(6.46303 + 4.67717j), end=(33.16568 + 4.67717j)),
-     Line(start=(33.16568 + 4.67717j), end=(33.16568 + 35.68848j)),
-     Line(start=(33.16568 + 35.68848j), end=(32.31526 + 35.68848j)),
-     Line(start=(32.31526 + 35.68848j), end=(32.31526 + 6.46303j)),
-     Line(start=(32.31526 + 6.46303j), end=(4.67717 + 6.46303j)),
-     Line(start=(4.67717 + 6.46303j), end=(4.67717 + 0j)),
-     Line(start=(4.67717 + 0j), end=(6.46303 + 0j)),
-     Line(start=(6.46303 + 0j), end=(6.46303 + 0j)))
 
 # print len(rawpaths)
 # wsvg(p, filename='output.svg', openinbrowser=True)
@@ -902,15 +1064,3 @@ curMicdistinctpaths = []
 # wsvg(distincthpaths, filename='unitoutput.svg', openinbrowser=True)
 
 rawpaths, attributes = svg2paths('/Users/my/Desktop/MasterThesis/mt1git/ImageToTextDescriptor/testcase/171130-MicroHeaterLayout-final.svg')
-
-p1 = Path()
-p2 = Path()
-for l in rawpaths[16]:
-    ls = MicroLine(Coordinate(l.start), Coordinate(l.end))
-    p1.append(ls)
-for l in rawpaths[1]:
-    ls = MicroLine(Coordinate(l.start), Coordinate(l.end))
-    p2.append(ls)
-
-print p1.intersect(p2)
-print two_paths_distance(p1, p2)

@@ -100,6 +100,7 @@ class cutPolygon:
                     cuthlines = []
                     cutvpointobjs = []
                     allhlines = []
+                    combinedcuthlines = []
                     distincthpaths = []
                     curdistincthlinesobjs = []
                     curdistincthlines = []
@@ -111,6 +112,7 @@ class cutPolygon:
                     orginalsPaths = []
                     narrow_factor = 0.04
                     narrowratio = narrow_factor * abs(offsetframe[0].length())
+                    test = []
                     # todo: collect h lines
                     for path in paths:
                         sortedhlines, sortedvlines, filteredPath, filteredPoints = pathpreprocess(path, offsetx, offsety)
@@ -194,6 +196,34 @@ class cutPolygon:
                                 allcurcutlines.append(curcutline)
                                 if curcutline.length() >= narrowratio:
                                     removecutline.append(curcutline)
+
+                        cline_num = len(allcurcutlines)
+                        cutcutlines = []
+                        cutlinevpointobjs = []
+                        for i in range(0, cline_num):
+                            for j in range(i+1, cline_num):
+                                x = line1_intersect_with_line2(allcurcutlines[i], allcurcutlines[j])
+                                if len(x) != 0:
+                                    if x != [(0.0, 0.0)] and x != [(0.0, 1.0)] and x != [(1.0, 0.0)] and x != [(1.0, 1.0)]:
+                                        if allcurcutlines[i].direction() == 'h':
+                                            hcline = allcurcutlines[i]
+                                            vcline = allcurcutlines[j]
+                                        else:
+                                            hcline = allcurcutlines[j]
+                                            vcline = allcurcutlines[i]
+                                        intersectp = Coordinate(vcline.start.real, hcline.start.imag)
+                                        newvpoint = PointNavigation(intersectp, None, None)
+                                        cutvpointobjs.append(newvpoint)
+                                        cutlinevpointobjs.append(newvpoint)
+                                        for replacehline in [allcurcutlines[i], allcurcutlines[j]]:
+                                            cutcutlines.append(replacehline)
+                                    else:
+                                        continue
+                        replacehlines = []
+                        for h in allhlines:
+                            replacehlines.append(h)
+                        if len(cutlinevpointobjs):
+                            replacehlines = combineLinesWithPoints(allhlines, cutlinevpointobjs)
                         # todo remove after testing
                         for line in sortedhlines:
                             allhlines.append(line)
@@ -202,9 +232,11 @@ class cutPolygon:
                             # todo delete obj
                             curdistincthlines.append(line)
                         # todo add cuthline to cur
-                        for line in cuthlines:
-                            if line not in curdistincthlinesobjs:
-                                curdistincthlines.append(line)
+                        for line in cutcutlines:
+                            if line in cuthlines:
+                                cuthlines.remove(line)
+                        for line in replacehlines:
+                            curdistincthlines.append(line)
                         # todo: create rect with last hline, in order to redraw the pic
                         curdistincthlines = sorted(curdistincthlines)
                         length = len(curdistincthlines)
@@ -214,11 +246,12 @@ class cutPolygon:
                             # todo add intersect
                             if used[i] == 0:
                                 intersectlines = []
-                                for x in curdistincthlines:
-                                    if curdistincthlines.index(x) > i:
-                                        if x.start.real == curdistincthlines[i].start.real and curdistincthlines[
-                                            i].end.real == x.end.real:
-                                            intersectlines.append(x)
+                                intersectlines_ind = []
+                                for k in range(i+1,length):
+                                    if curdistincthlines[k].start.real == curdistincthlines[i].start.real and curdistincthlines[
+                                        i].end.real == curdistincthlines[k].end.real:
+                                        intersectlines.append(curdistincthlines[k])
+                                        intersectlines_ind.append(k)
                                 intersectlinesy = map(attrgetter('start.imag'), intersectlines)
                                 nextstart = bisect(intersectlinesy, curdistincthlinesy[i])
                                 lens = len(intersectlines)
@@ -228,7 +261,7 @@ class cutPolygon:
                                 if nextend > lens:
                                     continue
                                 for j in range(nextstart, nextend):
-                                    if used[curdistincthlines.index(intersectlines[j])] == 0:
+                                    if used[intersectlines_ind[j]] == 0 and used[i] == 0:
                                         if curdistincthlines[i].start.real == intersectlines[j].start.real and \
                                                 curdistincthlines[
                                                     i].end.real == \
@@ -238,8 +271,12 @@ class cutPolygon:
                                             newPath = Path(UperLine, Line(UperLine.end, Lowerline.end),
                                                            Line(Lowerline.end, Lowerline.start),
                                                            Line(Lowerline.start, UperLine.start))
-                                            used[curdistincthlines.index(intersectlines[j])] = 1
+                                            used[intersectlines_ind[j]] = 1
+                                            used[i] = 1
                                             curdistinctpaths.append(newPath)
+                        #wsvg(curdistinctpaths, filename='testoutput.svg', openinbrowser=True)
+                        for pp in curdistinctpaths:
+                            test.append(pp)
                         # todo: inside a path.
                         curcombinedPaths = []
                         curMicdistinctpaths = []
@@ -446,7 +483,9 @@ class cutPolygon:
                         allcurcutlines = []
                         removecutline = []
                     distance = {}
-                    no_merge_threshold = two_paths_distance(distincthpaths[0], distincthpaths[1])
+                    no_merge_threshold = 0
+                    if len(distincthpaths) >= 2:
+                        no_merge_threshold = two_paths_distance(distincthpaths[0], distincthpaths[1])
                     length = len(distincthpaths)
                     for p in distincthpaths:
                         distance[p] = {}
@@ -492,6 +531,7 @@ class cutPolygon:
                     for p in distincthpaths:
                         if no_mergex[p] == []:
                             del no_mergex[p]
+                    wsvg(distincthpaths, filename='l.svg', openinbrowser=False)
                     for i in range(0, length):
                         for j in range(i+1, length):
                             if distincthpaths[i] in no_absorption.keys():
@@ -509,6 +549,7 @@ class cutPolygon:
                                     no_absorption[distincthpaths[j]].append(distincthpaths[i])
                     distincthpaths.insert(0, offsetframe)
                     wsvg(distincthpaths, filename=thefile, openinbrowser=False)
+                    #wsvg(test, filename='testoutput.svg', openinbrowser=True)
                     conflictfile.write('no merge conflict:\n')
                     for k, v in no_mergex.items():
                         index = distincthpaths.index(k)
