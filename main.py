@@ -7,7 +7,6 @@ from tools.printobj import PrintObj
 import time
 from svgpathtools import svg2paths, wsvg
 
-
 execfile('reset.py')
 # Directories names
 currentpath = getcwd()
@@ -93,7 +92,7 @@ for currentdir in listdir(pdfdir):
 # Convert each pdf page to svg file
 action = cutPolygon()
 resultdir = currentpath + sep + resultdir
-no_merge_factor = 2
+no_merge_factor = 0.1
 no_absorption_factor = 0.2
 logthis('\n')
 for currentdir in listdir(svgdir):

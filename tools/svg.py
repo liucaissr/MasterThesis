@@ -293,7 +293,8 @@ class cutPolygon:
                             cur_no_merge[path1] = []
                             for path2 in curMicdistinctpaths:
                                 if path1 != path2:
-                                    conflict, dis = no_merge_conflict(path1, path2, narrowratio * 0.25)
+                                    #conflict, dis = no_merge_conflict(path1, path2, narrowratio * 0.25)
+                                    conflict, dis = no_merge_conflict(path1, path2, narrowratio * 0.25,no_merge_factor)
                                     if conflict:
                                         cur_no_merge[path1].append(path2)
                         cur_no_absorption = {}
@@ -512,6 +513,10 @@ class cutPolygon:
                     no_mergex = {}
                     for p in distincthpaths:
                         no_mergex[p] = []
+                    print 'nomergethr:'
+                    print no_merge_threshold*3
+                    print narrowratio*0.25
+                    print narrowratio == no_merge_threshold
                     for i in range(0,length):
                         for j in range(i+1, length):
                             dis = 0
@@ -524,7 +529,8 @@ class cutPolygon:
                                     dis = distance[distincthpaths[j]][distincthpaths[i]]
                             # conflict, dis = no_merge_conflict(distincthpaths[i], distincthpaths[j], narrowratio * 0.25)
                             if dis != 0:
-                                conflict, disss = no_merge_conflict(distincthpaths[i], distincthpaths[j], no_merge_threshold * 1.5, dis)
+                                #conflict, disss = no_merge_conflict(distincthpaths[i], distincthpaths[j], no_merge_threshold * 3, dis)
+                                conflict, disss = no_merge_conflict(distincthpaths[i], distincthpaths[j], no_merge_threshold * 3, no_merge_factor, dis)
                             if conflict:
                                 no_mergex[distincthpaths[i]].append(distincthpaths[j])
                                 no_mergex[distincthpaths[j]].append(distincthpaths[i])

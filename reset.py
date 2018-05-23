@@ -23,11 +23,13 @@ for dir in dirs:
 srcdir = '/Users/my/Desktop/MasterThesis/mt1git/OriginalInput'
 
 input = []
-input.append('Layer3.pdf')
-input.append('Layer2.pdf')
-input.append('Layer1.pdf')
-input.append('171130-MicroHeaterLayout-final.svg')
-input.append('171130-IDELayout-final.svg')
+#input.append('Layer3.pdf')
+#input.append('Layer2.pdf')
+#input.append('Layer1.pdf')
+#input.append('171130-MicroHeaterLayout-final.svg')
+#input.append('171130-IDELayout-final.svg')
+input.append('180523-IDE-pitch-70-merged.pdf')
+
 
 
 
