@@ -6,16 +6,15 @@ from operator import attrgetter
 
 class ExtractObj:
 #todo change format
-    def extractObjects(self, svgdir, objdir):
-        svgpath = svgdir + sep
-        objpath = objdir + sep
-        svgs = listdir(svgpath)
+    def extractObjects(self, resultdir):
+        resultpath = resultdir + sep
+        svgs = listdir(resultpath)
         pathno = 0
         for svg in svgs:
             if '.svg' in svg:
                 objfile = 'objects.txt'
-                thefile = open(svgpath + objfile, 'w')
-                paths, attributes = svg2paths(svgpath + svg)
+                thefile = open(resultpath + objfile, 'w')
+                paths, attributes = svg2paths(resultpath + svg)
                 for path in paths:
                     s = abs(path.area())
                     if pathno == 0:
@@ -100,9 +99,7 @@ class cutPolygon:
                     cuthlines = []
                     cutvpointobjs = []
                     allhlines = []
-                    combinedcuthlines = []
                     distincthpaths = []
-                    curdistincthlinesobjs = []
                     curdistincthlines = []
                     curdistinctpaths = []
                     removecutline = []
@@ -116,8 +113,6 @@ class cutPolygon:
                     # todo: collect h lines
                     for path in paths:
                         sortedhlines, sortedvlines, filteredPath, filteredPoints = pathpreprocess(path, offsetx, offsety)
-                        #ran = max(abs(sortedhlines[-1].start.imag - sortedhlines[0].start.imag),abs(sortedvlines[-1].start.real - sortedvlines[0].start.real))
-                        #narrowratio = narrow_factor * ran
                         # todo pick one shorter line
                         # todo if vline
                         # todo if hline
@@ -527,9 +522,7 @@ class cutPolygon:
                             if distincthpaths[j] in distance.keys():
                                 if distincthpaths[i] in distance[distincthpaths[j]].keys():
                                     dis = distance[distincthpaths[j]][distincthpaths[i]]
-                            # conflict, dis = no_merge_conflict(distincthpaths[i], distincthpaths[j], narrowratio * 0.25)
                             if dis != 0:
-                                #conflict, disss = no_merge_conflict(distincthpaths[i], distincthpaths[j], no_merge_threshold * 3, dis)
                                 conflict, disss = no_merge_conflict(distincthpaths[i], distincthpaths[j], no_merge_threshold * 3, no_merge_factor, dis)
                             if conflict:
                                 no_mergex[distincthpaths[i]].append(distincthpaths[j])

@@ -3,20 +3,46 @@ from os import getcwd, listdir, sep, remove, error, path
 from tools.directories import Build
 from tools.pdf import Explode, ConvertToSVG
 from tools.svg import ExtractObj, cutPolygon
-from tools.printobj import PrintObj
 import time
-from svgpathtools import svg2paths, wsvg
+import sys
+from shutil import *
+import shutil
 
-execfile('reset.py')
+# arg1 = files folder
+# arg2 = no_merge_threshold
+
+no_merge_factor = 0
+no_absorption_factor = 0.2
+
+#execfile('reset.py')
+
+for i in range(0,len(sys.argv)):
+    if i == 1:
+        filesfolder = sys.argv[i]
+    if i == 2:
+        no_merge_factor = sys.argv[i]
+
 # Directories names
 currentpath = getcwd()
 tmpdir = 'tmp'
 pdfdir = 'pdf'
 svgdir = 'svg'
-objdir = 'obj'
-printdir = 'print'
-resultdir = 'resultsvg'
+resultdir = 'output'+ sep +time.strftime("%Y%m%d%I%M")
 logfile = 'execution.log'
+
+dirs = [pdfdir, svgdir]
+
+for dir in dirs:
+    dirpath = currentpath + sep + dir
+    for fdir in listdir(dirpath):
+        if fdir != ".DS_Store":
+            shutil.rmtree(dirpath+sep+fdir)
+
+inputpath = currentpath + sep + filesfolder
+for f in listdir(inputpath):
+    src = inputpath + sep+ f
+    temp = currentpath+sep+'tmp'+sep + f
+    copyfile(src, temp)
 
 try:
     if path.isfile(logfile):
@@ -25,8 +51,6 @@ try:
         out.close()
 except error, value:
     print value[1]
-
-dirs = [tmpdir, pdfdir, svgdir, objdir, resultdir]
 
 
 def logthis(newtext):
@@ -41,6 +65,8 @@ def logthis(newtext):
 logthis(time.ctime())
 logthis('\nBegin the convertion\n\n')
 
+dirs.append(tmpdir)
+dirs.append(resultdir)
 # Creates a directory structure.
 now = Build()
 for newdir in dirs:
@@ -61,8 +87,6 @@ for filenamedir in listdir(tmpdir):
         filenamedir = filenamedir.replace('.svg', '')
     logthis('Create a directory structure to: %s.' % (svgdir + sep + filenamedir))
     now.createDirStructure(svgdir + sep + filenamedir)
-    logthis('Create a directory structure to: %s.' % (objdir + sep + filenamedir))
-    now.createDirStructure(objdir + sep + filenamedir)
     logthis('Create a directory structure to: %s.' % (resultdir + sep + filenamedir))
     now.createDirStructure(resultdir + sep + filenamedir)
 
@@ -92,8 +116,7 @@ for currentdir in listdir(pdfdir):
 # Convert each pdf page to svg file
 action = cutPolygon()
 resultdir = currentpath + sep + resultdir
-no_merge_factor = 0.1
-no_absorption_factor = 0.2
+
 logthis('\n')
 for currentdir in listdir(svgdir):
     if currentdir != ".DS_Store":
@@ -102,10 +125,9 @@ for currentdir in listdir(svgdir):
 
 # Extract objects from svg
 action = ExtractObj()
-objdir = currentpath + sep + objdir
 for currentdir in listdir(resultdir):
     if currentdir != ".DS_Store":
         logthis('Extracting objects from svg %s to obj' % (resultdir + sep + currentdir))
-        action.extractObjects(resultdir + sep + currentdir, objdir + sep + currentdir)
+        action.extractObjects(resultdir + sep + currentdir)
 
 logthis('Finish conversions.')
