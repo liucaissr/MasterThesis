@@ -1,5 +1,6 @@
 from os import sep, listdir, mkdir, makedirs, error, rename, remove
 from shutil import copyfile
+import logging
 
 class Build:
 	
@@ -44,10 +45,14 @@ class Build:
             if '.pdf' in file:
                 copyfile(oldlocation + file, newlocation1 + file)
                 remove(oldlocation + file)
+                logger = logging.getLogger('__main__')
+                logger.info('pdf file %s are copied to %s.' % (file, newlocation1))
+
             if '.svg' in file:
                 copyfile(oldlocation + file, newlocation2 + file)
                 remove(oldlocation + file)
-
+                logger = logging.getLogger('__main__')
+                logger.info('svg file %s are copied to %s.' % (file, newlocation2))
 
     def createDirStructure(self, dirstructure):
         try:

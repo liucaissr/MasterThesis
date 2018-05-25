@@ -3,6 +3,7 @@ from svgpathtools import svg2paths, wsvg
 from tools.cut import *
 from bisect import *
 from operator import attrgetter
+import logging
 
 class ExtractObj:
 #todo change format
@@ -27,6 +28,9 @@ class ExtractObj:
                         lineno += 1
                         thefile.write('line%s: %.3f+%.3fi,%.3f+%.3fi\n' % (lineno, line.start.real, line.start.imag, line.end.real, line.end.imag))
                 thefile.close()
+                logger = logging.getLogger('__main__')
+                #logger.error('svg file %s finished conversion.' % (svg))
+                logger.info('svg file %s finished conversion.' % (svg))
 
 class cutPolygon:
     def cutSVG(self, svgdir, resultdir, no_merge_factor, no_absorption_factor):
@@ -530,7 +534,6 @@ class cutPolygon:
                     for p in distincthpaths:
                         if no_mergex[p] == []:
                             del no_mergex[p]
-                    wsvg(distincthpaths, filename='l.svg', openinbrowser=False)
                     for i in range(0, length):
                         for j in range(i+1, length):
                             if distincthpaths[i] in no_absorption.keys():
