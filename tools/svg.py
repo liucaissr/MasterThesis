@@ -43,9 +43,7 @@ class cutPolygon:
                     confile = 'conflict.txt'
                     thefile = resultpath + objfile
                     conflictfile = open(resultpath + confile, 'w')
-                    print (svgpath+svg)
                     rawpaths, attributes = svg2paths(svgpath + svg)
-                    kk = 5
                     offsetx, offsety = preconfig(rawpaths)
                     paths = svgpreprocess(rawpaths, attributes, offsetx, offsety)
                     frame = Path()
@@ -54,7 +52,7 @@ class cutPolygon:
                     xmax = fb[1]
                     ymin = fb[2]
                     ymax = fb[3]
-                    # todo find frame
+                    # create the frame of the layout
                     for path1 in paths:
                         b1 = path1.bbox()
                         if len(path1) != 4:
@@ -99,6 +97,12 @@ class cutPolygon:
                         end = Coordinate(line.end.real - offsetx, line.end.imag - offsety)
                         newline = MicroLine(start, end)
                         offsetframe.append(newline)
+
+                    large_factor = 0.04
+                    small_factor = 0.01
+                    large_ratio = large_factor * abs(offsetframe[0].length())
+                    small_ratio = small_factor * abs(offsetframe[0].length())
+
                     cuthlines = []
                     cutvpointobjs = []
                     allhlines = []
@@ -110,8 +114,8 @@ class cutPolygon:
                     no_absorption = {}
                     allcurcutlines = []
                     orginalsPaths = []
-                    narrow_factor = 0.04
-                    narrowratio = narrow_factor * abs(offsetframe[0].length())
+
+
                     test = []
                     # todo: collect h lines
                     for path in paths:
@@ -192,7 +196,7 @@ class cutPolygon:
                                 allhlines.append(curcutline)
                             if curcutline is not None:
                                 allcurcutlines.append(curcutline)
-                                if curcutline.length() >= narrowratio:
+                                if curcutline.length() >= large_ratio:
                                     removecutline.append(curcutline)
 
                         cline_num = len(allcurcutlines)
@@ -291,8 +295,8 @@ class cutPolygon:
                             cur_no_merge[path1] = []
                             for path2 in curMicdistinctpaths:
                                 if path1 != path2:
-                                    #conflict, dis = no_merge_conflict(path1, path2, narrowratio * 0.25)
-                                    conflict, dis = no_merge_conflict(path1, path2, narrowratio * 0.25,no_merge_factor)
+                                    #conflict, dis = no_merge_conflict(path1, path2, small_ratio)
+                                    conflict, dis = no_merge_conflict(path1, path2, small_ratio,no_merge_factor)
                                     if conflict:
                                         cur_no_merge[path1].append(path2)
                         cur_no_absorption = {}
@@ -399,7 +403,7 @@ class cutPolygon:
                                         if len(inter) != 0:
                                             if inter[0] in path1:
                                                 dev = getDev(path2, inter[0])
-                                                newPath = changePath(path1, path1.index(inter[0]), dev, 0.2, narrowratio)
+                                                newPath = changePath(path1, path1.index(inter[0]), dev, 0.2, large_ratio)
                                                 curdevPaths.remove(path1)
                                                 curdevPaths.append(newPath)
                                                 cur_no_merge[newPath] = []
@@ -429,7 +433,7 @@ class cutPolygon:
                                                 flag = 1
                                             if inter[0] in path2:
                                                 dev = getDev(path1, inter[0])
-                                                newPath = changePath(path2, path2.index(inter[0]), dev, 0.2, narrowratio)
+                                                newPath = changePath(path2, path2.index(inter[0]), dev, 0.2, large_ratio)
                                                 curdevPaths.remove(path2)
                                                 curdevPaths.append(newPath)
                                                 cur_no_merge[newPath] = []
@@ -475,7 +479,6 @@ class cutPolygon:
                         # todo conflict1 near cannot be combined (refresh removecutline)
                         # todo at the end detect no_merge_conflict again
                         curdistincthlines = []
-                        curdistincthlinesobjs = []
                         allhlines = []
                         cuthlines = []
                         curdistinctpaths = []
@@ -505,16 +508,16 @@ class cutPolygon:
                             del distance[k]
                     no_merge_threshold = max(0, no_merge_threshold)
                     if no_merge_threshold != 0:
-                        no_merge_threshold = min(no_merge_threshold, narrowratio*0.25)
+                        no_merge_threshold = min(no_merge_threshold, small_ratio)
                     else:
-                        no_merge_threshold = narrowratio*0.25
+                        no_merge_threshold = small_ratio
                     no_mergex = {}
                     for p in distincthpaths:
                         no_mergex[p] = []
                     print 'nomergethr:'
                     print no_merge_threshold*3
-                    print narrowratio*0.25
-                    print narrowratio == no_merge_threshold
+                    print small_ratio
+                    print large_ratio == no_merge_threshold
                     for i in range(0,length):
                         for j in range(i+1, length):
                             dis = 0
@@ -550,7 +553,7 @@ class cutPolygon:
                                     no_absorption[distincthpaths[j]].append(distincthpaths[i])
                     distincthpaths.insert(0, offsetframe)
                     wsvg(distincthpaths, filename=thefile, openinbrowser=False)
-                    #wsvg(test, filename='testoutput.svg', openinbrowser=True)
+
                     conflictfile.write('no merge conflict:\n')
                     for k, v in no_mergex.items():
                         index = distincthpaths.index(k)
