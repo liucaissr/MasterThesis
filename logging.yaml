@@ -4,8 +4,10 @@ disable_existing_loggers: False
 formatters:
     simple:
         format: "%(asctime)s - %(levelname)s - %(message)s"
+        datefmt: "%Y-%m-%d %H:%M:%S"
     debug:
         format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        datefmt: "%Y-%m-%d %H:%M:%S"
 
 handlers:
     console:
@@ -40,5 +42,5 @@ loggers:
 
 root:
     level: INFO
-    handlers: [console, error_file_handler]
+    handlers: [console, error_file_handler, info_file_handler]
 ...

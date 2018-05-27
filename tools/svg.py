@@ -29,7 +29,6 @@ class ExtractObj:
                         thefile.write('line%s: %.3f+%.3fi,%.3f+%.3fi\n' % (lineno, line.start.real, line.start.imag, line.end.real, line.end.imag))
                 thefile.close()
                 logger = logging.getLogger('__main__')
-                #logger.error('svg file %s finished conversion.' % (svg))
                 logger.info('svg file %s finished conversion.' % (svg))
 
 class cutPolygon:
