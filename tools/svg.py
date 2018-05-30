@@ -591,3 +591,5 @@ class cutPolygon:
                                 conflictfile.write('o%s o%s %f\n' % (index, indexl, d))
                     conflictfile.write('FIN\n')
                     conflictfile.close()
+
+

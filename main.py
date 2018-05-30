@@ -117,5 +117,6 @@ for currentdir in listdir(resultdir):
 logger.info('Output is saved in folder %s' % (resultdir))
 
 
-#todo log.debug (try cast)
+#todo log.debug (try cast) or assert
 #todo multithreading
+#todo muldularity

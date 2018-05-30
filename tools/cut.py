@@ -1,12 +1,5 @@
 #!/usr/bin/python
-from os import getcwd, listdir, sep, remove, error, path
-from tools.directories import Build
-from tools.pdf import Explode, ConvertToSVG
-import time
-import numpy
-import math
 import re
-
 from svgpathtools import *
 import math
 
@@ -34,7 +27,6 @@ class LineNavigation(object):
                     return -1
                 else:
                     return 0
-
 # something like key define exist
 class PointNavigation(object):
     def __init__(self, point, hline, vline):
@@ -60,7 +52,6 @@ class PointNavigation(object):
                     return -1
                 else:
                     return 0
-
 
 class Coordinate(complex):
 
@@ -140,8 +131,6 @@ class Coordinate(complex):
         else:
             return NotImplemented
 
-
-
 class MicroLine(Line):
     def __eq__(self, other):
         if isinstance(other, self.__class__):
@@ -197,7 +186,6 @@ class MicroLine(Line):
     def order(self):
         orderedLine = MicroLine(min(self.start, self.end), max(self.start, self.end))
         return orderedLine
-
 
 def preconfig(paths):
     offsetx = paths[0][0].start.real
@@ -661,7 +649,8 @@ def two_paths_intersectionx(path1, path2):
                         intersect.append(newline)
     return intersect, None
 
-# for silly intersect method
+# intersect = intersect lines on the paths
+# intersectpath = intersect path if exists
 def two_paths_intersection(path1, path2):
     intersect = []
     intersectpath = Path()
@@ -712,7 +701,6 @@ def two_paths_intersection(path1, path2):
     y.sort()
     if len(x) != 2 or len(y) != 2:
         return intersect, None
-    # assert len(x,y) == 2
     l1 = MicroLine(Coordinate(x[0], y[0]), Coordinate(x[1], y[0]))
     l2 = MicroLine(Coordinate(x[1], y[0]), Coordinate(x[1], y[1]))
     l3 = MicroLine(Coordinate(x[1], y[1]), Coordinate(x[0], y[1]))
@@ -761,11 +749,10 @@ def getDev(path, line):
     return dev
 
 
-def changePath(path, index, dev, factor, narrowratio):
+def changePath(path, index, dev, factor, large_ratio):
     newPath = Path()
     l0 = path[index]
-    #might has problem when narrowration larger than dev.
-    if abs(dev * factor) < narrowratio:
+    if abs(dev * factor) < large_ratio:
         devx = dev * 0.7
     else:
         devx = dev * factor
@@ -792,7 +779,7 @@ def changePath(path, index, dev, factor, narrowratio):
 
     return newPath
 
-
+# Calculate distance when path length is larger than 4
 def two_paths_distancex(path1, path2):
     dis = 0
     points1 = []
@@ -834,10 +821,7 @@ def two_paths_distancex(path1, path2):
                 dis = tmpdis
     return dis
 
-
 def two_paths_distance(path1, path2):
-    #todo: it is not serious to calculate it in this way.
-    #assert two paths have no interaction
     dev = 0
     if len(path1) > 4 or len(path2) > 4:
         return two_paths_distancex(path1, path2)
@@ -866,7 +850,7 @@ def two_paths_distance(path1, path2):
         dev = b1[0] - b2[1]
     elif b2[3] < b1[2]:
         dev = b1[2] - b2[3]
-    return dev # -1 means max
+    return dev
 
 def no_merge_conflict(path1, path2, factor, user_factor = 0, dis = None):
     if user_factor != 0:
@@ -878,14 +862,16 @@ def no_merge_conflict(path1, path2, factor, user_factor = 0, dis = None):
     else:
         return False,dis
 
+
+
 def no_absorption_conflict(path1, path2, factor):
+    assert path1.isclosed() and path2.isclosed(), '%s is not closed' % (path1 if path1.isclosed() is False else path2)
     x, p = two_paths_intersection(path1, path2)
     factor_sqrt = math.sqrt(factor)
     selflengthfactor = 0.8
     interl = None
     if len(x) == 0 and p is None:
         return False,interl
-    # assert closed()
     # assert len(x) == 1
     elif len(x) != 0 and p is None:
         length = float(x[0].length())
@@ -964,4 +950,4 @@ def no_absorption_conflict(path1, path2, factor):
                 return True, None
     return False, interl
 
-
+#test git ssh

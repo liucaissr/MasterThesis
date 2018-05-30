@@ -9,6 +9,8 @@ import re
 
 from svgpathtools import *
 import math
+import logging
+import setuplog
 
 class LineNavigation(object):
     def __init__(self, position, start, end, line):
@@ -1009,7 +1011,6 @@ p3 = PointNavigation(Coordinate(2, 2),None,None)
 
 ls = [l3,l4,l1]
 ps = [p1,p2,p3]
-print combineLinesWithPoints(ls,ps)
 
 
 lines = []
@@ -1063,4 +1064,11 @@ curMicdistinctpaths = []
 # inter = combinePaths(p1,p2,two_paths_intersection(p1,p2))
 # wsvg(distincthpaths, filename='unitoutput.svg', openinbrowser=True)
 
-rawpaths, attributes = svg2paths('/Users/my/Desktop/MasterThesis/mt1git/ImageToTextDescriptor/testcase/171130-MicroHeaterLayout-final.svg')
+#rawpaths, attributes = svg2paths('/Users/my/Desktop/MasterThesis/mt1git/ImageToTextDescriptor/testcase/171130-MicroHeaterLayout-final.svg')
+
+setuplog.setup_logging()
+logger = logging.getLogger('__main__')
+
+a = 10
+assert a != 10, 'yoyoyoyo'
+logger.info('yoyo', exc_info = True)
