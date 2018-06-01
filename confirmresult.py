@@ -7,8 +7,6 @@ from operator import attrgetter
 from os import getcwd, listdir, sep, remove, error, path
 from string import *
 
-
-
 cur = '/Users/my/Desktop/MasterThesis/mt1git/zxj'
 IDE = cur+sep+'171130-IDELayout-final'
 Heater = cur+sep+'171130-MicroHeaterLayout-final'
@@ -25,14 +23,15 @@ files.append('171130-MicroHeaterLayout-final')
 files.append('LAYER1')
 files.append('LAYER2')
 files.append('LAYER3')
+files.append('180523IDEPITCH70MERGED')
 dirs = []
-#dirs.append(IDE)
+dirs.append(IDE)
 #dirs.append(Heater)
 dirs.append(L1)
 #dirs.append(L2)
 #dirs.append(L3)
 curproject = getcwd()
-resultsvg = curproject + '/resultsvg'
+resultsvg = curproject + '/output/201806011530'
 
 no_merge_real = {}
 no_absorb_real = {}
@@ -108,3 +107,6 @@ for file in files:
     print file
     print no_merge_real == no_merge_test and no_absorb_real == no_absorb_test and distance_real == distance_test
 
+
+
+#todo: layer 1 2 3 false???

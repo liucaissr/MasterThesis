@@ -90,6 +90,7 @@ class Coordinate(complex):
             return NotImplemented
 
     def __le__(self, other):
+        e = 0.0000001
         if hasattr(other, 'imag') and hasattr(other, 'real'):
             if (self.real - other.real > e):
                 return 0
@@ -143,6 +144,7 @@ class MicroLine(Line):
         else:
             return NotImplemented
 
+    @property
     def direction(self):
         if self.start.imag == self.end.imag:
             return 'h'
@@ -156,7 +158,7 @@ class MicroLine(Line):
             self = self.order()
             other = other.order()
             # assert if not parallel
-            if self.direction() == 'h' and other.direction() == 'h':
+            if self.direction == 'h' and other.direction == 'h':
                 if (self.start.imag > other.start.imag):
                     return 1
                 elif (self.start.imag < other.start.imag):
@@ -168,7 +170,7 @@ class MicroLine(Line):
                         return -1
                     else:
                         return 0
-            elif self.direction() == 'v' and other.direction() == 'v':
+            elif self.direction == 'v' and other.direction == 'v':
                 if (self.start.real > other.start.real):
                     return 1
                 elif (self.start.real < other.start.real):
@@ -259,9 +261,9 @@ def pathpreprocess(rawpath, offsetx, offsety):
 
     for line in path:
         if line.start != line.end:
-            if line.direction() == 'h':
+            if line.direction == 'h':
                 hlines.append(line)
-            if line.direction() == 'v':
+            if line.direction == 'v':
                 vlines.append(line)
 
     sortedhlines = combineLines(hlines)
@@ -709,9 +711,9 @@ def two_paths_intersection(path1, path2):
     return intersect, intersectpath
 
 def two_lines_distance(line1, line2):
-    if line1.direction() == line2.direction() == 'h':
+    if line1.direction == line2.direction == 'h':
         dis = line1.start.imag - line2.start.imag
-    elif line1.direction() == line2.direction() == 'v':
+    elif line1.direction == line2.direction == 'v':
         dis = line1.start.real - line2.start.real
     else:
         return NotImplemented
@@ -720,16 +722,16 @@ def two_lines_distance(line1, line2):
 
 # intersectlines in lines for line
 def line_intersectlines(line, lines):
-    direct = line.direction()
+    direct = line.direction
     l1 = line.order()
     intersectlines = []
     for l in lines:
         l2 = l.order()
         if l1 != l2:
-            if l2.direction() == direct == 'h':
+            if l2.direction == direct == 'h':
                 if l1.start.real <= l2.end.real and l1.end.real >= l2.start.real:
                     intersectlines.append(l2)
-            if l2.direction() == direct == 'v':
+            if l2.direction == direct == 'v':
                 if l1.start.imag <= l2.end.imag and l1.end.imag >= l2.start.imag:
                     intersectlines.append(l2)
     return intersectlines
@@ -756,7 +758,7 @@ def changePath(path, index, dev, factor, large_ratio):
         devx = dev * 0.7
     else:
         devx = dev * factor
-    if l0.direction() == 'h':
+    if l0.direction == 'h':
         deviation = Coordinate(0, -devx)
     else:
         deviation = Coordinate(-devx, 0)
@@ -801,9 +803,9 @@ def two_paths_distancex(path1, path2):
         lines2.append(l)
     for p1 in points1:
         for l2 in lines2:
-            if l2.direction() == 'h' and l2.start.real < p1.real < l2.end.real:
+            if l2.direction == 'h' and l2.start.real < p1.real < l2.end.real:
                 tmpdis = abs(l2.start.imag - p1.imag)
-            elif l2.direction() == 'v' and l2.start.imag < p1.imag < l2.end.imag:
+            elif l2.direction == 'v' and l2.start.imag < p1.imag < l2.end.imag:
                 tmpdis = abs(l2.start.real - p1.real)
             else:
                 tmpdis = min(math.sqrt((l2.start.real-p1.real) ** 2 + (l2.start.imag-p1.imag) ** 2), math.sqrt((l2.end.real-p1.real) ** 2 + (l2.end.imag-p1.imag) ** 2))
@@ -811,9 +813,9 @@ def two_paths_distancex(path1, path2):
                 dis = tmpdis
     for p2 in points2:
         for l1 in lines1:
-            if l1.direction() == 'h' and l1.start.real < p2.real < l1.end.real:
+            if l1.direction == 'h' and l1.start.real < p2.real < l1.end.real:
                 tmpdis = abs(l1.start.imag - p2.imag)
-            elif l1.direction() == 'v' and l1.start.imag < p2.imag < l1.end.imag:
+            elif l1.direction == 'v' and l1.start.imag < p2.imag < l1.end.imag:
                 tmpdis = abs(l1.start.real - p2.real)
             else:
                 tmpdis = min(math.sqrt((l1.start.real-p2.real) ** 2 + (l1.start.imag-p2.imag) ** 2), math.sqrt((l1.end.real-p2.real) ** 2 + (l1.end.imag-p2.imag) ** 2))
@@ -910,10 +912,10 @@ def no_absorption_conflict(path1, path2, factor):
                     wholelength = float(line.length())
                     lengths[lens][0] = wholelength
             if lengths[lens][0] == 0:
-                d = l.direction()
+                d = l.direction
                 dist = 0
                 for ll in path1:
-                    dd = ll.direction()
+                    dd = ll.direction
                     if d == dd:
                         temp = abs(two_lines_distance(l, ll))
                         if temp < dist or dist == 0:
@@ -925,10 +927,10 @@ def no_absorption_conflict(path1, path2, factor):
                     wholelength = float(line.length())
                     lengths[lens][1] = wholelength
             if lengths[lens][1] == 0:
-                d = l.direction()
+                d = l.direction
                 dist = 0
                 for ll in path2:
-                    dd = ll.direction()
+                    dd = ll.direction
                     if d == dd:
                         temp = abs(two_lines_distance(l, ll))
                         if temp < dist or dist == 0:
