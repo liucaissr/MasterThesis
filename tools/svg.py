@@ -100,8 +100,14 @@ class cutPolygon:
 
                     large_factor = 0.04
                     small_factor = 0.01
+                    # determine the small and large dimension of the design
                     large_ratio = large_factor * abs(offsetframe[0].length())
                     small_ratio = small_factor * abs(offsetframe[0].length())
+
+                    if no_merge_factor != 0:
+                        merging_threshold = no_merge_factor
+                    else:
+                        merging_threshold = small_ratio
 
                     cuthlines = []
                     cutvpointobjs = []
@@ -296,7 +302,7 @@ class cutPolygon:
                             for path2 in curMicdistinctpaths:
                                 if path1 != path2:
                                     #conflict, dis = no_merge_conflict(path1, path2, small_ratio)
-                                    conflict, dis = no_merge_conflict(path1, path2, small_ratio,no_merge_factor)
+                                    conflict, dis = no_merge_conflict(path1, path2, merging_threshold)
                                     if conflict:
                                         cur_no_merge[path1].append(path2)
                         cur_no_absorption = {}
@@ -485,39 +491,37 @@ class cutPolygon:
                         allcurcutlines = []
                         removecutline = []
                     distance = {}
-                    no_merge_threshold = 0
-                    if len(distincthpaths) >= 2:
-                        no_merge_threshold = two_paths_distance(distincthpaths[0], distincthpaths[1])
-                    length = len(distincthpaths)
-                    for p in distincthpaths:
-                        distance[p] = {}
-                    for i in range(0,length):
-                        for j in range(i+1,length):
-                            dis = two_paths_distance(distincthpaths[i], distincthpaths[j])
-                            if dis > 0 and (dis < no_merge_threshold or no_merge_threshold <= 0):
-                                no_merge_threshold = dis
-                            if dis != 0:
-                                s1 = abs(distincthpaths[i].area())
-                                s2 = abs(distincthpaths[j].area())
-                                if s1 <= s2:
-                                    distance[distincthpaths[i]][distincthpaths[j]] = dis
-                                else:
-                                    distance[distincthpaths[j]][distincthpaths[i]] = dis
-                    for k,v in distance.items():
-                        if v == {}:
-                            del distance[k]
-                    no_merge_threshold = max(0, no_merge_threshold)
-                    if no_merge_threshold != 0:
-                        no_merge_threshold = min(no_merge_threshold, small_ratio)
-                    else:
-                        no_merge_threshold = small_ratio
+                    if no_merge_factor == 0:
+                        no_merge_threshold = 0
+                        if len(distincthpaths) >= 2:
+                            no_merge_threshold = two_paths_distance(distincthpaths[0], distincthpaths[1])
+                        length = len(distincthpaths)
+                        for p in distincthpaths:
+                            distance[p] = {}
+                        for i in range(0,length):
+                            for j in range(i+1,length):
+                                dis = two_paths_distance(distincthpaths[i], distincthpaths[j])
+                                if dis > 0 and (dis < no_merge_threshold or no_merge_threshold <= 0):
+                                    no_merge_threshold = dis
+                                if dis != 0:
+                                    s1 = abs(distincthpaths[i].area())
+                                    s2 = abs(distincthpaths[j].area())
+                                    if s1 <= s2:
+                                        distance[distincthpaths[i]][distincthpaths[j]] = dis
+                                    else:
+                                        distance[distincthpaths[j]][distincthpaths[i]] = dis
+                        for k,v in distance.items():
+                            if v == {}:
+                                del distance[k]
+                        no_merge_threshold = max(0, no_merge_threshold)
+                        if no_merge_threshold != 0:
+                            no_merge_threshold = min(no_merge_threshold, small_ratio)
+                        else:
+                            no_merge_threshold = small_ratio
+                        merging_threshold = no_merge_threshold * 3
                     no_mergex = {}
                     for p in distincthpaths:
                         no_mergex[p] = []
-                    print 'nomergethr:'
-                    print no_merge_threshold*3
-                    print small_ratio
-                    print large_ratio == no_merge_threshold
                     for i in range(0,length):
                         for j in range(i+1, length):
                             dis = 0
@@ -529,7 +533,7 @@ class cutPolygon:
                                 if distincthpaths[i] in distance[distincthpaths[j]].keys():
                                     dis = distance[distincthpaths[j]][distincthpaths[i]]
                             if dis != 0:
-                                conflict, disss = no_merge_conflict(distincthpaths[i], distincthpaths[j], no_merge_threshold * 3, no_merge_factor, dis)
+                                conflict, disss = no_merge_conflict(distincthpaths[i], distincthpaths[j], merging_threshold, dis)
                             if conflict:
                                 no_mergex[distincthpaths[i]].append(distincthpaths[j])
                                 no_mergex[distincthpaths[j]].append(distincthpaths[i])
@@ -553,6 +557,11 @@ class cutPolygon:
                                     no_absorption[distincthpaths[j]].append(distincthpaths[i])
                     distincthpaths.insert(0, offsetframe)
                     wsvg(distincthpaths, filename=thefile, openinbrowser=False)
+
+                    logger = logging.getLogger('__main__')
+                    logger.info('svg file %s finished partition.' % (svg))
+                    logger.info('merging threshold = %s' % (merging_threshold))
+                    logger.info('absorption threshold = %s' % (no_absorption_factor))
 
                     conflictfile.write('no merge conflict:\n')
                     for k, v in no_mergex.items():

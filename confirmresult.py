@@ -15,7 +15,6 @@ L2 = cur+sep+'LAYER2'
 L3 = cur+sep+'LAYER3'
 tempdir = cur + sep + 'tmp'
 
-
 files = []
 
 files.append('171130-IDELayout-final')

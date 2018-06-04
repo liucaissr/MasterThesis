@@ -854,9 +854,7 @@ def two_paths_distance(path1, path2):
         dev = b1[2] - b2[3]
     return dev
 
-def no_merge_conflict(path1, path2, factor, user_factor = 0, dis = None):
-    if user_factor != 0:
-        factor = user_factor
+def no_merge_conflict(path1, path2, factor, dis = None):
     if dis is None:
         dis = two_paths_distance(path1, path2)
     if 0 < dis < factor:
