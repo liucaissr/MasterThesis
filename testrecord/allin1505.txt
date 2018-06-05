@@ -1,26 +1,15 @@
 171130-IDELayout-final
+threshold = 15.0
 True
+
 171130-MicroHeaterLayout-final
-False
-o15 + o33 
-o13 + o21 
-o12 + o19 
-o10 + o32 
-o33 + o15 
-o32 + o10 
-o35 + o18 
-o34 + o19 
-o19 + o12 o34 
-o18 + o5 o35 
-o7 + o20 
-o5 + o18 
-o20 + o7 o37 
-o21 + o13 o36 
-o37 + o20 
-o36 + o21 
-0 error = 0.540540540541
+True
+threshold = 77.5023975
+
 180523IDEPITCH70MERGED
 True
+threshold = 0.036
+
 LAYER1
 False
 o17 + o3 
@@ -29,6 +18,8 @@ o7 + o3
 o4 + o9 
 o3 + o7 o17 
 0 error = 0.333333333333
+threshold = 0.468
+
 LAYER2
 False
 o12 + o2 
@@ -36,6 +27,8 @@ o10 + o1
 o2 + o12 
 o1 + o10 
 0 error = 0.333333333333
+threshold = 0.468
+
 LAYER3
 False
 o15 + o3 
@@ -44,3 +37,4 @@ o11 + o2
 o3 + o15 o13 
 o2 + o11 
 0 error = 0.375
+threshold = 0.468

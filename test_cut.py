@@ -12,5 +12,6 @@ class Test_cut(unittest.TestCase):
     def test_svg(self):
         pass
 
-    def test_conflict(self):
+    def test_no_merge_conflict(self):
+
 

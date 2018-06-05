@@ -1,5 +1,5 @@
 # !/usr/bin/python
-from os import getcwd, listdir, sep, remove, error, path
+from os import getcwd, listdir, sep
 import os.path
 from tools.directories import Build
 from tools.pdf import Explode, ConvertToSVG
@@ -10,6 +10,8 @@ from shutil import *
 import shutil
 import logging
 import setuplog
+
+#todo check good threshold
 
 # arg1 = files folder
 # arg2 = no_merge_threshold
@@ -25,7 +27,7 @@ for i in range(0,len(sys.argv)):
     if i == 1:
         filesfolder = sys.argv[i]
     if i == 2:
-        test_ratio = sys.argv[i]
+        test_ratio = float(sys.argv[i])
 
 # Directories names
 currentpath = getcwd()
