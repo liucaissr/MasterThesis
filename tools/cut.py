@@ -945,9 +945,15 @@ def no_absorption_conflict(path1, path2, factor):
                 ratio2 = k / area2
             lengthratio1 = k / lengths[k][0]
             lengthratio2 = k / lengths[k][1]
-            if ((ratio1 < factor and lengthratio1 < factor_sqrt) and lengthratio2 > selflengthfactor) or (
-                    (ratio2 < factor and lengthratio2 < factor_sqrt) and lengthratio1 > selflengthfactor):
+            const12_1 = ratio1 < factor and lengthratio1 < factor_sqrt
+            const12_2 = ratio2 < factor and lengthratio2 < factor_sqrt
+            #turn off const3
+            #const3_1 = lengthratio2 > selflengthfactor
+            const3_1 = True
+            #const3_2 = lengthratio1 > selflengthfactor
+            const3_2 = True
+            #if ((ratio1 < factor and lengthratio1 < factor_sqrt) and lengthratio2 > selflengthfactor) or ((ratio2 < factor and lengthratio2 < factor_sqrt) and lengthratio1 > selflengthfactor):
+            if (const12_1 and const3_1) or (const12_2 and const3_2):
                 return True, None
     return False, interl
 
-#test git ssh

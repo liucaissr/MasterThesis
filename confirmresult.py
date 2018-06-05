@@ -139,6 +139,4 @@ for file in inputs:
 
 
 
-
-
 #todo: layer 1 2 3 false???

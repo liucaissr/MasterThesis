@@ -32,7 +32,7 @@ class ExtractObj:
                 logger.info('svg file %s finished conversion.' % (svg))
 
 class cutPolygon:
-    def cutSVG(self, svgdir, resultdir, no_merge_factor, no_absorption_factor, test_ratio = 1):
+    def cutSVG(self, svgdir, resultdir, no_merge_factor, no_absorption_factor, test_ratio = 1.0):
         svgpath = svgdir + sep
         resultpath = resultdir + sep
         svgs = listdir(svgpath)

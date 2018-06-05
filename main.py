@@ -24,7 +24,7 @@ for i in range(0,len(sys.argv)):
     if i == 1:
         filesfolder = sys.argv[i]
     if i == 2:
-        no_merge_factor = sys.argv[i]
+        no_merge_factor = float(sys.argv[i])
 
 # Directories names
 currentpath = getcwd()
