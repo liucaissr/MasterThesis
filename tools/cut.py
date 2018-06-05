@@ -760,7 +760,7 @@ def getDev(path, line):
             dev = dis
     return dev
 
-
+#todo: when intersect not the whole line???
 def changePath(path, index, dev, factor, narrowratio):
     newPath = Path()
     l0 = path[index]

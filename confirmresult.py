@@ -1,13 +1,11 @@
-#to confirm the resultsvg
+#to confirm the resultpath
 from os import system, listdir, sep
 from svgpathtools import svg2paths, wsvg
 from tools.cut import *
 from bisect import *
 from operator import attrgetter
 from os import getcwd, listdir, sep, remove, error, path
-from string import *
-
-
+import os.path
 
 cur = '/Users/my/Desktop/MasterThesis/mt1git/zxj'
 IDE = cur+sep+'171130-IDELayout-final'
@@ -17,22 +15,17 @@ L2 = cur+sep+'LAYER2'
 L3 = cur+sep+'LAYER3'
 tempdir = cur + sep + 'tmp'
 
-
-files = []
-
-files.append('171130-IDELayout-final')
-files.append('171130-MicroHeaterLayout-final')
-files.append('LAYER1')
-files.append('LAYER2')
-files.append('LAYER3')
-dirs = []
-#dirs.append(IDE)
-#dirs.append(Heater)
-dirs.append(L1)
-#dirs.append(L2)
-#dirs.append(L3)
 curproject = getcwd()
-resultsvg = curproject + '/resultsvg'
+outputpath = '/Users/my/Desktop/MasterThesis/source/output/'
+resultpath = outputpath + max(listdir(outputpath))
+testpath = '/Users/my/Desktop/MasterThesis/source/testrecord/'
+testfile = testpath + max(listdir(outputpath)) + '.txt'
+record = open(testfile, 'w')
+
+inputs = []
+for f in listdir(resultpath):
+    if not f.startswith('.'):
+        inputs.append(f)
 
 no_merge_real = {}
 no_absorb_real = {}
@@ -40,11 +33,17 @@ distance_real = {}
 no_merge_test = {}
 no_absorb_test = {}
 distance_test = {}
-for file in files:
+
+for file in inputs:
     realdir = cur+sep+file+sep
-    testdir = resultsvg+sep+file+sep
+    testdir = resultpath+sep+file
     conflict_real = realdir+'conflict.txt'
-    test = testdir + 'conflict.txt'
+    test = testdir +sep + 'conflict.txt'
+    for ff in listdir(testdir):
+        if '.svg' in ff:
+            rawpaths, attributes = svg2paths(testdir + sep +ff)
+            n = len(rawpaths) - 1
+            break
     curcur = 'nomerge'
     flag = 0
     finno = 0
@@ -105,6 +104,41 @@ for file in files:
                     if str[0] not in distance_test.keys():
                         distance_test[str[0]] = {}
                     distance_test[str[0]][str[1]] = str[2]
-    print file
-    print no_merge_real == no_merge_test and no_absorb_real == no_absorb_test and distance_real == distance_test
 
+    record.write('%s\n'% file)
+    tf =  no_merge_real == no_merge_test and no_absorb_real == no_absorb_test and distance_real == distance_test
+    record.write('%s\n'% tf)
+    print file
+    print tf
+    no_merge = [no_merge_real, no_merge_test]
+    no_absorb = [no_absorb_real, no_absorb_test]
+    distance = [distance_real, distance_test]
+    d = [no_merge, no_absorb, distance]
+    # i[0] = real / i[1] = test
+    for i in d:
+        num_er = 0
+        for k1 in i[1].keys():
+            for k2 in i[0].keys():
+                if k1 == k2:
+                    if set(i[1][k1]) != set(i[0][k2]):
+                        record.write('%s '%(k1))
+                        s = set(i[1][k1]) - set(i[0][k2])
+                        if len(s) == 0:
+                            s = set(i[0][k1]) - set(i[1][k2])
+                            num_er -= len(s)
+                            record.write('- ')
+                        else:
+                            num_er += len(s)
+                            record.write('+ ')
+                        for obj in s:
+                            record.write('%s ' % (obj))
+                        record.write('\n')
+        error = float(num_er) / n
+        if error != 0:
+            record.write('%s error = %s\n' % (d.index(i), error))
+
+
+
+
+
+#todo: layer 1 2 3 false???
