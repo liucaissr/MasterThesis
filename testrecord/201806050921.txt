@@ -1,0 +1,66 @@
+180523IDEPITCH70MERGED
+False
+o17 + o16 o15 o14 o12 o11 o10 o22 o23 o19 o18 o4 o20 o9 o8 o5 o21 o3 o2 
+o16 + o17 o15 o14 o12 o11 o10 o24 o22 o23 o19 o18 o21 o20 o9 o8 o7 o4 o3 o2 
+o15 + o17 o16 o14 o12 o11 o10 o24 o22 o23 o19 o18 o20 o9 o8 o7 o6 o21 o3 o2 
+o14 + o17 o16 o15 o12 o11 o10 o24 o22 o23 o19 o18 o20 o9 o8 o7 o6 o5 o21 o2 
+o13 + o12 o11 o10 o9 o8 o7 o6 o5 o4 
+o12 + o17 o16 o15 o14 o13 o24 o22 o23 o19 o18 o20 o21 o1 
+o11 + o17 o16 o15 o14 o13 o10 o24 o23 o19 o18 o20 o9 o8 o7 o6 o5 o3 o2 o1 
+o10 + o17 o16 o15 o14 o13 o11 o24 o22 o23 o19 o18 o9 o8 o7 o6 o5 o3 o2 o1 
+o19 + o17 o16 o15 o14 o12 o11 o10 o22 o23 o20 o18 o4 o7 o6 o5 o21 o3 o2 
+o18 + o17 o16 o15 o14 o12 o11 o10 o22 o23 o19 o21 o20 o9 o6 o5 o4 o3 o2 
+o9 + o17 o16 o15 o14 o13 o11 o10 o24 o22 o23 o18 o8 o7 o6 o5 o21 o3 o2 o1 
+o8 + o17 o16 o15 o14 o13 o11 o10 o24 o22 o23 o20 o21 o9 o7 o6 o5 o3 o2 o1 
+o7 + o16 o15 o14 o13 o11 o10 o24 o22 o23 o19 o21 o20 o9 o8 o6 o5 o3 o2 o1 
+o6 + o15 o14 o13 o11 o10 o24 o22 o23 o19 o18 o20 o9 o8 o7 o5 o21 o3 o2 o1 
+o5 + o17 o14 o13 o11 o10 o24 o22 o23 o19 o18 o20 o9 o8 o7 o6 o21 o3 o2 o1 
+o4 + o17 o16 o13 o24 o22 o23 o19 o18 o20 o21 
+o3 + o17 o16 o15 o11 o10 o24 o22 o23 o19 o18 o20 o9 o8 o7 o6 o5 o21 o2 o1 
+o2 + o17 o16 o15 o14 o11 o10 o24 o22 o23 o19 o18 o20 o9 o8 o7 o6 o5 o21 o3 o1 
+o1 + o12 o11 o10 o24 o23 o9 o8 o7 o6 o5 o3 o2 
+o22 + o17 o16 o15 o14 o12 o10 o24 o23 o19 o18 o21 o20 o9 o8 o7 o6 o5 o4 o3 o2 
+o20 + o17 o16 o15 o14 o12 o11 o22 o23 o19 o18 o4 o8 o7 o6 o5 o21 o3 o2 
+o21 + o17 o16 o15 o14 o12 o24 o22 o23 o19 o18 o20 o9 o8 o7 o6 o5 o4 o3 o2 
+0 error = 16.0
+o17 + o13 
+o16 + o13 
+o15 + o13 
+o14 + o13 
+o11 + o4 
+o10 + o4 
+o22 + o13 
+o20 + o13 
+o21 + o13 
+o19 + o13 
+o9 + o4 
+o8 + o4 
+o7 + o4 
+o6 + o4 
+o5 + o4 
+o18 + o13 
+o3 + o4 
+o2 + o4 
+1 error = 0.75
+o17 + o16 o14 o4 o11 o10 o23 o20 o18 o9 o8 o5 o21 o2 
+o16 + o2 o10 o24 o23 o20 o18 o9 o8 o5 o4 o21 
+o15 + o14 o12 o11 o10 o24 o23 o21 o3 
+o14 + o24 o23 
+o13 - o17 o16 o15 o22 o20 o18 o19 o9 o8 o7 o6 o5 o2 
+o12 + o17 o16 o14 o13 o11 o10 o24 o23 o20 o21 o9 o8 o7 o6 o5 o18 o2 
+o11 + o24 o14 o23 o1 o21 
+o10 + o24 o1 
+o19 + o14 o12 o11 o10 o23 o21 o3 
+o18 + o10 o23 o20 o21 o9 o5 o4 o2 
+o9 + o24 o13 o1 
+o8 + o24 o13 o1 
+o7 + o24 o13 o1 o8 
+o6 + o13 o10 o24 o9 o8 o1 
+o5 + o24 o13 o1 o10 
+o4 + o24 
+o3 + o24 o14 o23 o1 o21 
+o2 + o24 o13 o1 o10 
+o22 + o14 o12 o11 o10 o24 o23 o20 o21 o3 
+o20 + o21 o23 o10 
+o21 + o24 o23 
+2 error = 4.33333333333

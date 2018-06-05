@@ -1,0 +1,92 @@
+171130-MicroHeaterLayout-final
+False
+o16 + o39 o15 o32 o24 
+o15 + o38 o33 o21 o16 
+o14 + o6 o19 o36 
+o13 + o4 o12 o28 
+o12 + o26 o13 o29 
+o11 + o27 
+o31 + o38 o32 o21 
+o30 + o19 o20 o37 o36 
+o33 + o15 o32 o34 o9 
+o32 + o7 o16 o31 o33 
+o35 + o3 o19 o29 
+o34 + o39 o24 o33 o8 
+o19 + o30 o14 o35 
+o36 + o30 o14 o4 o18 
+o10 + o25 
+o9 + o33 
+o8 + o34 
+o7 + o32 o20 
+o6 + o38 o14 
+o5 + o37 o18 
+o4 + o13 o36 
+o3 + o27 o35 
+o2 + o28 
+o1 + o26 
+o28 + o27 o13 o2 
+o29 + o35 o12 o18 
+o26 + o27 o12 o1 
+o27 + o26 o3 o11 o28 
+o24 + o16 o34 
+o25 + o23 o10 
+o23 + o25 
+o20 + o7 o30 o38 
+o21 + o31 o15 o37 
+o37 + o30 o5 o21 
+o18 + o5 o29 o36 
+0 error = 2.35897435897
+o15 + o32 
+o14 + o30 o37 
+o13 + o35 o29 
+o12 + o27 o28 
+o11 + o26 
+o10 - o23 
+o19 + o36 
+o21 + o38 
+o20 + o37 
+o9 + o39 o34 
+o8 + o33 o32 
+o7 + o31 o38 
+o5 + o30 o36 
+o18 + o35 
+o3 + o28 o29 
+o2 + o26 o27 
+o1 + o25 o23 
+1 error = 0.641025641026
+o15 + o39 o30 o38 o10 
+o14 + o39 o38 o29 o28 o10 
+o13 + o39 o38 o27 o10 o36 
+o12 + o39 o38 o26 o34 o10 
+o11 + o39 o38 o24 o10 
+o31 + o28 o10 o22 o32 o35 o29 o37 o30 
+o30 + o35 o10 
+o33 + o17 o38 o32 o10 
+o32 + o10 
+o35 + o10 
+o34 + o28 o29 o27 o24 o10 o35 o37 o30 o22 
+o19 + o39 o38 o35 
+o36 + o38 o32 o28 o29 o31 o27 o33 o25 o22 o34 o37 o35 o26 o10 o30 o24 
+o10 - o16 o15 o14 o13 o12 o11 o31 o30 o33 o32 o35 o34 o37 o36 o6 o4 o3 o28 o29 o26 o27 o24 o25 
+o9 + o31 o38 o33 
+o8 + o39 o30 o29 o38 
+o7 + o39 o28 o37 
+o6 + o24 o22 o10 
+o5 + o39 o38 o35 o27 
+o4 + o24 o22 o10 
+o3 + o39 o38 o25 o26 o10 
+o2 + o39 o38 o24 o23 
+o1 + o39 o38 o32 o22 
+o28 + o30 o35 o22 o37 o10 
+o29 + o30 o35 o22 o37 o10 
+o26 + o28 o10 o31 o35 o24 o32 o22 o29 o37 o30 
+o27 + o28 o10 o35 o24 o29 o22 o37 o30 
+o24 + o22 o10 
+o25 + o28 o10 o31 o35 o24 o32 o22 o29 o37 o30 
+o22 - o16 o28 o29 o31 o27 o24 o25 o34 o36 o26 o6 o23 o4 
+o23 + o39 o38 o35 o33 o32 o22 o37 o30 
+o20 + o39 o38 o36 
+o21 + o39 o37 
+o37 + o10 
+o18 + o39 o38 o34 
+2 error = 3.10256410256

@@ -106,7 +106,7 @@ class cutPolygon:
                     small_ratio = small_factor * abs(offsetframe[0].length())
 
                     if no_merge_factor != 0:
-                        merging_threshold = float(no_merge_factor) / 3.0
+                        merging_threshold = no_merge_factor
                     else:
                         merging_threshold = small_ratio
 
@@ -298,8 +298,6 @@ class cutPolygon:
                             curcombinedPaths.append(p)
                             curMicdistinctpaths.append(p)
                         cur_no_merge = {}
-                        print 'nomerge:'
-                        print merging_threshold
                         for path1 in curMicdistinctpaths:
                             cur_no_merge[path1] = []
                             for path2 in curMicdistinctpaths:
@@ -310,8 +308,6 @@ class cutPolygon:
                                         cur_no_merge[path1].append(path2)
                         cur_no_absorption = {}
                         keepcutlines = []
-                        print 'noabo:'
-                        print no_absorption_factor
                         for path1 in curMicdistinctpaths:
                             cur_no_absorption[path1] = []
                             for path2 in curMicdistinctpaths:
@@ -496,36 +492,35 @@ class cutPolygon:
                         allcurcutlines = []
                         removecutline = []
                     distance = {}
-                    no_merge_threshold = 0
-                    if len(distincthpaths) >= 2:
-                        no_merge_threshold = two_paths_distance(distincthpaths[0], distincthpaths[1])
-                    length = len(distincthpaths)
-                    for p in distincthpaths:
-                        distance[p] = {}
-                    for i in range(0,length):
-                        for j in range(i+1,length):
-                            dis = two_paths_distance(distincthpaths[i], distincthpaths[j])
-                            if dis > 0 and (dis < no_merge_threshold or no_merge_threshold <= 0):
-                                no_merge_threshold = dis
-                            if dis != 0:
-                                s1 = abs(distincthpaths[i].area())
-                                s2 = abs(distincthpaths[j].area())
-                                if s1 <= s2:
-                                    distance[distincthpaths[i]][distincthpaths[j]] = dis
-                                else:
-                                    distance[distincthpaths[j]][distincthpaths[i]] = dis
-                    for k,v in distance.items():
-                        if v == {}:
-                            del distance[k]
-                    no_merge_threshold = max(0, no_merge_threshold)
-                    if no_merge_threshold != 0:
-                        no_merge_threshold = min(no_merge_threshold, small_ratio)
-                    else:
-                        no_merge_threshold = small_ratio
-                        tf = True
-                    merging_threshold = no_merge_threshold * 3
-                    if no_merge_factor != 0:
-                        merging_threshold = no_merge_factor
+                    if no_merge_factor == 0:
+                        no_merge_threshold = 0
+                        if len(distincthpaths) >= 2:
+                            no_merge_threshold = two_paths_distance(distincthpaths[0], distincthpaths[1])
+                        length = len(distincthpaths)
+                        for p in distincthpaths:
+                            distance[p] = {}
+                        for i in range(0,length):
+                            for j in range(i+1,length):
+                                dis = two_paths_distance(distincthpaths[i], distincthpaths[j])
+                                if dis > 0 and (dis < no_merge_threshold or no_merge_threshold <= 0):
+                                    no_merge_threshold = dis
+                                if dis != 0:
+                                    s1 = abs(distincthpaths[i].area())
+                                    s2 = abs(distincthpaths[j].area())
+                                    if s1 <= s2:
+                                        distance[distincthpaths[i]][distincthpaths[j]] = dis
+                                    else:
+                                        distance[distincthpaths[j]][distincthpaths[i]] = dis
+                        for k,v in distance.items():
+                            if v == {}:
+                                del distance[k]
+                        no_merge_threshold = max(0, no_merge_threshold)
+                        if no_merge_threshold != 0:
+                            no_merge_threshold = min(no_merge_threshold, small_ratio)
+                        else:
+                            no_merge_threshold = small_ratio
+                            tf = True
+                        merging_threshold = no_merge_threshold * 3
                     no_mergex = {}
                     for p in distincthpaths:
                         no_mergex[p] = []
@@ -568,15 +563,8 @@ class cutPolygon:
                     tf = merging_threshold == small_factor
                     logger = logging.getLogger('__main__')
                     logger.info('svg file %s finished partition.' % (svg))
-                    logger.info('merging threshold = %s, it %s equals to small_factor' % (merging_threshold, tf))
+                    logger.info('merging threshold = %s, it %s equals to small_factor' % (merging_threshold, ))
                     logger.info('absorption threshold = %s' % (no_absorption_factor))
-
-                    print 'after:'
-                    print 'merging'
-                    print merging_threshold
-                    print no_absorption_factor
-                    print 'end'
-
 
                     conflictfile.write('no merge conflict:\n')
                     for k, v in no_mergex.items():

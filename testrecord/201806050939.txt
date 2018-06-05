@@ -1,0 +1,40 @@
+171130-MicroHeaterLayout-final
+False
+o17 + o16 o14 o13 o12 o11 o10 o30 o32 o35 o34 o19 o18 o9 o8 o7 o6 o5 o4 o3 o2 o1 o28 o29 o26 o27 o24 o25 o22 o23 o20 o21 o37 o36 
+o16 + o17 o15 o14 o13 o12 o11 o31 o30 o33 o35 o34 o19 o18 o9 o8 o7 o6 o5 o4 o3 o2 o1 o28 o29 o26 o27 o24 o25 o23 o20 o21 o37 o36 
+o15 + o16 o13 o12 o11 o10 o33 o32 o35 o34 o19 o18 o9 o8 o7 o6 o5 o4 o3 o2 o1 o28 o26 o27 o24 o25 o22 o23 o20 o21 o37 o36 
+o14 + o17 o16 o13 o12 o11 o10 o31 o33 o32 o35 o34 o19 o18 o9 o8 o7 o6 o5 o4 o3 o2 o1 o26 o27 o24 o25 o22 o23 o20 o36 
+o13 + o17 o16 o15 o14 o12 o11 o10 o31 o30 o33 o32 o34 o37 o18 o9 o8 o7 o5 o4 o3 o2 o1 o28 o29 o26 o24 o25 o22 o23 o20 o21 
+o12 + o17 o16 o15 o14 o13 o10 o31 o30 o33 o32 o35 o19 o18 o9 o8 o7 o6 o5 o3 o2 o1 o28 o29 o27 o24 o22 o23 o20 o21 o37 o36 
+o11 + o17 o16 o15 o14 o13 o31 o30 o33 o32 o35 o34 o19 o18 o9 o8 o7 o6 o5 o4 o3 o2 o1 o28 o29 o27 o22 o20 o21 o37 o36 
+o10 + o17 o15 o14 o13 o12 o31 o30 o33 o32 o35 o34 o19 o18 o9 o8 o7 o6 o5 o4 o3 o2 o1 o28 o29 o26 o27 o25 o20 o21 o37 o36 
+o31 + o16 o14 o13 o12 o11 o10 o32 o35 o34 o19 o18 o7 o6 o5 o4 o3 o2 o1 o28 o29 o26 o27 o24 o25 o22 o23 o20 o21 o37 o36 
+o30 + o17 o16 o13 o12 o11 o10 o33 o32 o35 o34 o19 o18 o7 o6 o5 o4 o3 o2 o1 o28 o26 o27 o24 o25 o22 o23 o20 o21 o37 o36 
+o33 + o16 o15 o14 o13 o12 o11 o10 o30 o32 o35 o34 o19 o18 o8 o7 o6 o5 o4 o3 o2 o1 o28 o29 o26 o27 o24 o25 o22 o23 o20 o21 o37 o36 
+o32 + o17 o15 o14 o13 o12 o11 o10 o31 o30 o33 o35 o34 o19 o18 o9 o8 o7 o6 o5 o4 o3 o2 o28 o29 o26 o27 o24 o25 o23 o20 o21 o37 o36 
+o35 + o17 o16 o15 o14 o12 o11 o10 o31 o30 o33 o32 o34 o37 o18 o9 o8 o7 o6 o3 o2 o1 o28 o29 o26 o24 o25 o22 o23 o20 o21 o36 
+o34 + o17 o16 o15 o14 o13 o11 o10 o31 o30 o33 o32 o35 o19 o36 o9 o8 o7 o6 o5 o2 o1 o28 o29 o27 o24 o25 o22 o23 o20 o21 o37 
+o19 + o17 o16 o15 o14 o12 o11 o10 o31 o30 o33 o32 o34 o37 o18 o9 o8 o7 o6 o5 o3 o2 o1 o28 o29 o26 o24 o25 o22 o23 o20 o21 o36 
+o18 + o17 o16 o15 o14 o13 o12 o11 o10 o31 o30 o33 o32 o35 o19 o36 o9 o8 o7 o6 o5 o2 o1 o28 o29 o27 o24 o25 o22 o23 o20 o21 o37 
+o9 + o17 o16 o15 o14 o13 o12 o11 o10 o32 o35 o34 o19 o18 o7 o6 o5 o4 o3 o2 o1 o28 o29 o26 o27 o24 o25 o22 o23 o20 o21 o37 o36 
+o8 + o17 o16 o15 o14 o13 o12 o11 o10 o33 o32 o35 o34 o19 o18 o6 o5 o4 o3 o2 o1 o26 o27 o24 o25 o22 o23 o20 o21 o37 o36 
+o7 + o17 o16 o15 o14 o13 o12 o11 o10 o31 o30 o33 o32 o35 o34 o19 o18 o9 o5 o4 o3 o2 o1 o26 o27 o24 o25 o22 o23 o20 o21 o36 
+o6 + o17 o16 o15 o14 o12 o11 o10 o31 o30 o33 o32 o35 o34 o19 o18 o9 o8 o5 o4 o3 o2 o1 o28 o29 o26 o27 o24 o25 o22 o23 
+o5 + o17 o16 o15 o14 o13 o12 o11 o10 o31 o30 o33 o32 o34 o19 o18 o9 o8 o7 o6 o3 o2 o1 o28 o29 o26 o24 o25 o22 o23 o21 o37 
+o4 + o17 o16 o15 o14 o13 o11 o10 o31 o30 o33 o32 o37 o36 o9 o8 o7 o6 o3 o2 o1 o28 o29 o26 o27 o24 o25 o22 o23 o20 o21 
+o3 + o17 o16 o15 o14 o13 o12 o11 o10 o31 o30 o33 o32 o35 o19 o36 o9 o8 o7 o6 o5 o4 o1 o28 o29 o27 o22 o23 o20 o21 o37 
+o2 + o17 o16 o15 o14 o13 o12 o11 o10 o31 o30 o33 o32 o35 o34 o19 o18 o9 o8 o7 o6 o5 o4 o28 o29 o26 o27 o20 o21 o37 o36 
+o1 + o17 o16 o15 o14 o13 o12 o11 o10 o31 o30 o33 o35 o34 o19 o18 o9 o8 o7 o6 o5 o4 o3 o28 o29 o26 o27 o24 o25 o20 o21 o37 o36 
+o28 + o17 o16 o15 o13 o12 o11 o10 o31 o30 o33 o32 o35 o34 o19 o18 o9 o6 o5 o4 o3 o2 o1 o26 o27 o24 o25 o22 o23 o20 o36 
+o29 + o17 o16 o13 o12 o11 o10 o31 o33 o32 o35 o34 o19 o18 o9 o6 o5 o4 o3 o2 o1 o26 o27 o24 o25 o22 o23 o20 o21 o37 o36 
+o26 + o17 o16 o15 o14 o13 o10 o31 o30 o33 o32 o35 o19 o36 o9 o8 o7 o6 o5 o4 o2 o1 o28 o29 o27 o24 o22 o23 o20 o21 o37 
+o27 + o17 o16 o15 o14 o12 o11 o10 o31 o30 o33 o32 o34 o37 o18 o9 o8 o7 o6 o4 o3 o2 o1 o28 o29 o26 o24 o25 o22 o23 o21 
+o24 + o17 o16 o15 o14 o13 o12 o31 o30 o33 o32 o35 o34 o19 o18 o9 o8 o7 o6 o5 o4 o1 o28 o29 o26 o27 o22 o20 o21 o37 o36 
+o25 + o17 o16 o15 o14 o13 o10 o31 o30 o33 o32 o35 o34 o19 o18 o9 o8 o7 o6 o5 o4 o1 o28 o29 o27 o22 o23 o20 o21 o37 o36 
+o22 + o17 o15 o14 o13 o12 o11 o31 o30 o33 o35 o34 o19 o18 o9 o8 o7 o6 o5 o4 o3 o28 o29 o26 o27 o24 o25 o20 o21 o37 o36 
+o23 + o17 o16 o15 o14 o13 o12 o31 o30 o33 o32 o35 o34 o19 o18 o9 o8 o7 o6 o5 o4 o3 o28 o29 o26 o27 o25 o20 o21 o37 o36 
+o20 + o17 o16 o15 o14 o13 o12 o11 o10 o31 o30 o33 o32 o35 o34 o19 o18 o9 o8 o7 o4 o3 o2 o1 o28 o29 o26 o24 o25 o22 o23 o21 o37 
+o21 + o17 o16 o15 o13 o12 o11 o10 o31 o30 o33 o32 o35 o34 o19 o18 o9 o8 o7 o5 o4 o3 o2 o1 o29 o26 o27 o24 o25 o22 o23 o20 o36 
+o37 + o17 o16 o15 o13 o12 o11 o10 o31 o30 o33 o32 o35 o34 o19 o18 o9 o8 o5 o4 o3 o2 o1 o29 o26 o27 o24 o25 o22 o23 o20 o36 
+o36 + o17 o16 o15 o14 o12 o11 o10 o31 o30 o33 o32 o35 o34 o19 o18 o9 o8 o7 o4 o3 o2 o1 o28 o29 o26 o24 o25 o22 o23 o21 o37 
+0 error = 30.9189189189

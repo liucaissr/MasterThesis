@@ -16,6 +16,7 @@ import setuplog
 
 no_merge_factor = 0
 no_absorption_factor = 0.2
+test_ratio = 1.0
 
 setuplog.setup_logging()
 logger = logging.getLogger(__name__)
@@ -24,7 +25,7 @@ for i in range(0,len(sys.argv)):
     if i == 1:
         filesfolder = sys.argv[i]
     if i == 2:
-        no_merge_factor = sys.argv[i]
+        test_ratio = sys.argv[i]
 
 # Directories names
 currentpath = getcwd()
@@ -104,7 +105,7 @@ for currentdir in listdir(svgdir):
     curpath = svgdir + sep + currentdir
     if os.path.isdir(curpath):
         logger.info('Partitioning each svg page of %s' % (svgdir + sep + currentdir))
-        action.cutSVG(svgdir + sep + currentdir, resultdir + sep + currentdir, no_merge_factor, no_absorption_factor)
+        action.cutSVG(svgdir + sep + currentdir, resultdir + sep + currentdir, no_merge_factor, no_absorption_factor, test_ratio)
 
 # Extract objects from svg
 action = ExtractObj()
@@ -124,3 +125,5 @@ logger.info('Output is saved in folder %s' % (resultdir))
 #todo dic with unique key
 
 #todo .DS_Store wtf???
+
+
