@@ -124,3 +124,5 @@ logger.info('Output is saved in folder %s' % (resultdir))
 #todo dic with unique key
 
 #todo .DS_Store wtf???
+
+#todo add a database to save the result

@@ -492,35 +492,42 @@ class cutPolygon:
                         allcurcutlines = []
                         removecutline = []
                     distance = {}
-                    if no_merge_factor == 0:
-                        min_distance = 0
-                        if len(distincthpaths) >= 2:
-                            min_distance = two_paths_distance(distincthpaths[0], distincthpaths[1])
-                        length = len(distincthpaths)
-                        for p in distincthpaths:
-                            distance[p] = {}
-                        for i in range(0,length):
-                            for j in range(i+1,length):
-                                dis = two_paths_distance(distincthpaths[i], distincthpaths[j])
-                                if dis > 0 and (dis < min_distance or min_distance <= 0):
-                                    min_distance = dis
-                                if dis != 0:
-                                    s1 = abs(distincthpaths[i].area())
-                                    s2 = abs(distincthpaths[j].area())
-                                    if s1 <= s2:
+                    min_distance = 0
+                    if len(distincthpaths) >= 2:
+                        min_distance = two_paths_distance(distincthpaths[0], distincthpaths[1])
+                    length = len(distincthpaths)
+                    for p in distincthpaths:
+                        distance[p] = {}
+                    for i in range(0,length):
+                        for j in range(i+1,length):
+                            dis = two_paths_distance(distincthpaths[i], distincthpaths[j])
+                            if dis > 0 and (dis < min_distance or min_distance <= 0):
+                                min_distance = dis
+                            if dis != 0:
+                                s1 = abs(distincthpaths[i].area())
+                                s2 = abs(distincthpaths[j].area())
+                                if s1 <= s2:
+                                    try:
                                         distance[distincthpaths[i]][distincthpaths[j]] = dis
-                                    else:
-                                        distance[distincthpaths[j]][distincthpaths[i]] = dis
-                        for k,v in distance.items():
-                            if v == {}:
-                                del distance[k]
-                        min_distance = max(0, min_distance)
-                        if min_distance != 0:
-                            min_distance = min(min_distance, small_ratio)
-                            merging_threshold = min_distance * 3
-                        else:
-                            merging_threshold = small_ratio
-                            tf = True
+                                    except KeyError:
+                                        print 'key error'
+                                        print len(distincthpaths)
+                                        print j
+                                        print i
+                                else:
+                                    distance[distincthpaths[j]][distincthpaths[i]] = dis
+                    for k,v in distance.items():
+                        if v == {}:
+                            del distance[k]
+                    min_distance = max(0, min_distance)
+                    if min_distance != 0:
+                        min_distance = min(min_distance, small_ratio)
+                        merging_threshold = min_distance * 3
+                    else:
+                        merging_threshold = small_ratio
+                        tf = True
+                    if no_merge_factor != 0:
+                        merging_threshold = no_merge_factor
                     no_mergex = {}
                     for p in distincthpaths:
                         no_mergex[p] = []
