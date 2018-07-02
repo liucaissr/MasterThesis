@@ -98,6 +98,7 @@ class cutPolygon:
                         newline = MicroLine(start, end)
                         offsetframe.append(newline)
 
+                    #todo: multiply perimeter
                     large_factor = 0.04
                     small_factor = 0.01 * float(test_ratio) # default = 1
 
@@ -201,10 +202,13 @@ class cutPolygon:
                                 # todo change cuthlines, allhlines to cuthlines
                                 cuthlines.append(curcutline)
                                 allhlines.append(curcutline)
+
                             if curcutline is not None:
                                 allcurcutlines.append(curcutline)
                                 if curcutline.length() >= large_ratio:
                                     removecutline.append(curcutline)
+
+                        # allcurcutlines: collection of cutlines
 
                         cline_num = len(allcurcutlines)
                         cutcutlines = []
@@ -228,11 +232,19 @@ class cutPolygon:
                                             cutcutlines.append(replacehline)
                                     else:
                                         continue
+
+                        # cutcutlines: all intersected cutlines
+                        # allhlines: all h cutlines
+                        # cutlinevpointobjs: intersected points of cutlines
+
                         replacehlines = []
                         for h in allhlines:
                             replacehlines.append(h)
+                        # if there are intersected cutlines, then combine them
                         if len(cutlinevpointobjs):
                             replacehlines = combineLinesWithPoints(allhlines, cutlinevpointobjs)
+                        # replacehlines: combined h cutlines
+
                         # todo remove after testing
                         for line in sortedhlines:
                             allhlines.append(line)
@@ -246,6 +258,9 @@ class cutPolygon:
                                 cuthlines.remove(line)
                         for line in replacehlines:
                             curdistincthlines.append(line)
+                        # curdistincthlines: combinedhlines +  replacehlines
+                        # cuthlines: all cuthlines - cutcutlines
+
                         # todo: create rect with last hline, in order to redraw the pic
                         curdistincthlines = sorted(curdistincthlines)
                         length = len(curdistincthlines)
@@ -283,6 +298,7 @@ class cutPolygon:
                                             used[intersectlines_ind[j]] = 1
                                             used[i] = 1
                                             curdistinctpaths.append(newPath)
+
                         #wsvg(curdistinctpaths, filename='testoutput.svg', openinbrowser=True)
                         for pp in curdistinctpaths:
                             test.append(pp)
@@ -520,6 +536,13 @@ class cutPolygon:
                         if v == {}:
                             del distance[k]
                     min_distance = max(0, min_distance)
+                    # todo change the logic
+                    '''
+                    if min_distance < small_ratio:
+                        merging_threshold = min_distance * 3
+                    else:
+                        merging_threshold = small_ratio
+                    '''
                     if min_distance != 0:
                         min_distance = min(min_distance, small_ratio)
                         merging_threshold = min_distance * 3
