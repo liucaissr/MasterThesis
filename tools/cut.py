@@ -2,6 +2,8 @@
 import re
 from svgpathtools import *
 import math
+from bisect import *
+from operator import attrgetter
 
 class LineNavigation(object):
     def __init__(self, position, start, end, line):
@@ -862,8 +864,6 @@ def no_merge_conflict(path1, path2, factor, dis = None):
     else:
         return False,dis
 
-
-
 def no_absorption_conflict(path1, path2, factor):
     assert path1.isclosed() and path2.isclosed(), '%s is not closed' % (path1 if path1.isclosed() is False else path2)
     x, p = two_paths_intersection(path1, path2)
@@ -956,4 +956,44 @@ def no_absorption_conflict(path1, path2, factor):
             if (const12_1 and const3_1) or (const12_2 and const3_2):
                 return True, None
     return False, interl
+
+def createrect(curdistincthlines):
+    curdistinctpaths = []
+    curdistincthlines = sorted(curdistincthlines)
+    length = len(curdistincthlines)
+    used = length * [0]
+    curdistincthlinesy = map(attrgetter('start.imag'), curdistincthlines)
+    for i in range(0, length):
+        # todo add intersect
+        if used[i] == 0:
+            intersectlines = []
+            intersectlines_ind = []
+            for k in range(i + 1, length):
+                if curdistincthlines[k].start.real == curdistincthlines[i].start.real and curdistincthlines[
+                    i].end.real == curdistincthlines[k].end.real:
+                    intersectlines.append(curdistincthlines[k])
+                    intersectlines_ind.append(k)
+            intersectlinesy = map(attrgetter('start.imag'), intersectlines)
+            nextstart = bisect(intersectlinesy, curdistincthlinesy[i])
+            lens = len(intersectlines)
+            if nextstart >= lens:
+                continue
+            nextend = bisect(intersectlinesy, intersectlinesy[nextstart])
+            if nextend > lens:
+                continue
+            for j in range(nextstart, nextend):
+                if used[intersectlines_ind[j]] == 0 and used[i] == 0:
+                    if curdistincthlines[i].start.real == intersectlines[j].start.real and \
+                            curdistincthlines[
+                                i].end.real == \
+                            intersectlines[j].end.real:
+                        UperLine = curdistincthlines[i]
+                        Lowerline = intersectlines[j]
+                        newPath = Path(UperLine, Line(UperLine.end, Lowerline.end),
+                                       Line(Lowerline.end, Lowerline.start),
+                                       Line(Lowerline.start, UperLine.start))
+                        used[intersectlines_ind[j]] = 1
+                        used[i] = 1
+                        curdistinctpaths.append(newPath)
+    return curdistinctpaths
 

@@ -260,45 +260,9 @@ class cutPolygon:
                             curdistincthlines.append(line)
                         # curdistincthlines: combinedhlines +  replacehlines
                         # cuthlines: all cuthlines - cutcutlines
-
                         # todo: create rect with last hline, in order to redraw the pic
-                        curdistincthlines = sorted(curdistincthlines)
-                        length = len(curdistincthlines)
-                        used = length * [0]
-                        curdistincthlinesy = map(attrgetter('start.imag'), curdistincthlines)
-                        for i in range(0, length):
-                            # todo add intersect
-                            if used[i] == 0:
-                                intersectlines = []
-                                intersectlines_ind = []
-                                for k in range(i+1,length):
-                                    if curdistincthlines[k].start.real == curdistincthlines[i].start.real and curdistincthlines[
-                                        i].end.real == curdistincthlines[k].end.real:
-                                        intersectlines.append(curdistincthlines[k])
-                                        intersectlines_ind.append(k)
-                                intersectlinesy = map(attrgetter('start.imag'), intersectlines)
-                                nextstart = bisect(intersectlinesy, curdistincthlinesy[i])
-                                lens = len(intersectlines)
-                                if nextstart >= lens:
-                                    continue
-                                nextend = bisect(intersectlinesy, intersectlinesy[nextstart])
-                                if nextend > lens:
-                                    continue
-                                for j in range(nextstart, nextend):
-                                    if used[intersectlines_ind[j]] == 0 and used[i] == 0:
-                                        if curdistincthlines[i].start.real == intersectlines[j].start.real and \
-                                                curdistincthlines[
-                                                    i].end.real == \
-                                                intersectlines[j].end.real:
-                                            UperLine = curdistincthlines[i]
-                                            Lowerline = intersectlines[j]
-                                            newPath = Path(UperLine, Line(UperLine.end, Lowerline.end),
-                                                           Line(Lowerline.end, Lowerline.start),
-                                                           Line(Lowerline.start, UperLine.start))
-                                            used[intersectlines_ind[j]] = 1
-                                            used[i] = 1
-                                            curdistinctpaths.append(newPath)
 
+                        curdistinctpaths = createrect(curdistincthlines)
                         #wsvg(curdistinctpaths, filename='testoutput.svg', openinbrowser=True)
                         for pp in curdistinctpaths:
                             test.append(pp)
