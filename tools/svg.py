@@ -382,7 +382,6 @@ class cutPolygon:
                         curdistincthlines = []
                         allhlines = []
                         cuthlines = []
-                        curdistinctpaths = []
                         allcurcutlines = []
                         removecutline = []
                     distance = {}
