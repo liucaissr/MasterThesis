@@ -998,7 +998,8 @@ def createrect(curdistincthlines):
     return curdistinctpaths
 
 def update_conflict(conflict, oldPath, newPath):
-    conflict[newPath] = []
+    if newPath not in conflict.keys():
+        conflict[newPath] = []
     if oldPath in conflict.keys():
         for conflictpath in conflict[oldPath]:
             if conflictpath not in conflict[newPath]:
