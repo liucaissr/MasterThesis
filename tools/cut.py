@@ -989,11 +989,26 @@ def createrect(curdistincthlines):
                             intersectlines[j].end.real:
                         UperLine = curdistincthlines[i]
                         Lowerline = intersectlines[j]
-                        newPath = Path(UperLine, Line(UperLine.end, Lowerline.end),
-                                       Line(Lowerline.end, Lowerline.start),
-                                       Line(Lowerline.start, UperLine.start))
+                        newPath = Path(UperLine, MicroLine(UperLine.end, Lowerline.end),
+                                       MicroLine(Lowerline.end, Lowerline.start),
+                                       MicroLine(Lowerline.start, UperLine.start))
                         used[intersectlines_ind[j]] = 1
                         used[i] = 1
                         curdistinctpaths.append(newPath)
     return curdistinctpaths
+
+def update_conflict(conflict, oldPath, newPath):
+    conflict[newPath] = []
+    if oldPath in conflict.keys():
+        for conflictpath in conflict[oldPath]:
+            if conflictpath not in conflict[newPath]:
+                # todo any unique list
+                conflict[newPath].append(conflictpath)
+        del conflict[oldPath]
+    for k, v in conflict.items():
+        if oldPath in v:
+            v.remove(oldPath)
+            if newPath not in v:
+                v.append(newPath)
+
 

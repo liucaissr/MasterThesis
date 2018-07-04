@@ -261,22 +261,17 @@ class cutPolygon:
                         # curdistincthlines: combinedhlines +  replacehlines
                         # cuthlines: all cuthlines - cutcutlines
                         # todo: create rect with last hline, in order to redraw the pic
-
                         curdistinctpaths = createrect(curdistincthlines)
+
                         #wsvg(curdistinctpaths, filename='testoutput.svg', openinbrowser=True)
-                        for pp in curdistinctpaths:
-                            test.append(pp)
+                        # curdistinctpaths: redraw of the design before conflict detection and deviation!
                         # todo: inside a path.
                         curcombinedPaths = []
                         curMicdistinctpaths = []
                         # todo: conflict detection
                         for path in curdistinctpaths:
-                            p = Path()
-                            for line in path:
-                                l = MicroLine(Coordinate(line.start), Coordinate(line.end))
-                                p.append(l)
-                            curcombinedPaths.append(p)
-                            curMicdistinctpaths.append(p)
+                            curcombinedPaths.append(path)
+                            curMicdistinctpaths.append(path)
                         cur_no_merge = {}
                         for path1 in curMicdistinctpaths:
                             cur_no_merge[path1] = []
@@ -300,6 +295,7 @@ class cutPolygon:
                             if cutl not in keepcutlines:
                                 if cutl not in removecutline:
                                     removecutline.append(cutl)
+                        # merge objects
                         flag = 1
                         while (flag == 1):
                             curMicdistinctpaths = curcombinedPaths
@@ -320,7 +316,10 @@ class cutPolygon:
                                                     curcombinedPaths.remove(path1)
                                                     curcombinedPaths.remove(path2)
                                                     curcombinedPaths.append(newPath)
+                                                    # start newPath, path1, path2, cur_no_merge
+
                                                     cur_no_merge[newPath] = []
+                                                    #       assign conflictpath
                                                     for conflictpath in cur_no_merge[path1]:
                                                         if conflictpath not in cur_no_merge[newPath] and conflictpath != path2:
                                                             # todo any unique list
@@ -331,6 +330,7 @@ class cutPolygon:
                                                             cur_no_merge[newPath].append(conflictpath)
                                                     del cur_no_merge[path2]
                                                     del cur_no_merge[path1]
+                                                    #       update others
                                                     for k, v in cur_no_merge.items():
                                                         if path1 in v:
                                                             v.remove(path1)
@@ -340,6 +340,7 @@ class cutPolygon:
                                                             v.remove(path2)
                                                             if newPath not in v:
                                                                 v.append(newPath)
+                                                    #       same for cur_no_absoption
                                                     cur_no_absorption[newPath] = []
                                                     for conflictpath in cur_no_absorption[path1]:
                                                         if conflictpath not in cur_no_absorption[
@@ -374,8 +375,6 @@ class cutPolygon:
                                 if len(x) != 0:
                                     del cur_no_merge[con[0]]
                                     break
-                        for p in curcombinedPaths:
-                            orginalsPaths.append(p)
                         flag = 1
                         curdevPaths = []
                         for path in curcombinedPaths:
@@ -393,30 +392,9 @@ class cutPolygon:
                                                 newPath = changePath(path1, path1.index(inter[0]), dev, 0.2, large_ratio)
                                                 curdevPaths.remove(path1)
                                                 curdevPaths.append(newPath)
-                                                cur_no_merge[newPath] = []
-                                                if path1 in cur_no_merge.keys():
-                                                    for conflictpath in cur_no_merge[path1]:
-                                                        if conflictpath not in cur_no_merge[newPath]:
-                                                            # todo any unique list
-                                                            cur_no_merge[newPath].append(conflictpath)
-                                                    del cur_no_merge[path1]
-                                                for k, v in cur_no_merge.items():
-                                                    if path1 in v:
-                                                        v.remove(path1)
-                                                        if newPath not in v:
-                                                            v.append(newPath)
-                                                cur_no_absorption[newPath] = []
-                                                if path1 in cur_no_absorption.keys():
-                                                    for conflictpath in cur_no_absorption[path1]:
-                                                        if conflictpath not in cur_no_absorption[newPath]:
-                                                            # todo any unique list
-                                                            cur_no_absorption[newPath].append(conflictpath)
-                                                    del cur_no_absorption[path1]
-                                                for k, v in cur_no_absorption.items():
-                                                    if path1 in v:
-                                                        v.remove(path1)
-                                                        if newPath not in v:
-                                                            v.append(newPath)
+                                                # start path1, cur_no_merge, newPath
+                                                update_conflict(cur_no_merge, path1, newPath)
+                                                update_conflict(cur_no_absorption, path1, newPath)
                                                 flag = 1
                                             if inter[0] in path2:
                                                 dev = getDev(path1, inter[0])
