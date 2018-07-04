@@ -98,11 +98,13 @@ class cutPolygon:
                         newline = MicroLine(start, end)
                         offsetframe.append(newline)
 
-                    #todo: multiply perimeter
+                    #multiply perimeter
                     large_factor = 0.04
                     small_factor = 0.01 * float(test_ratio) # default = 1
 
                     # determine the small and large dimension of the design
+                    # offsetframe: chip frame
+                    # todo: multiple of area but not one edge?
                     large_ratio = large_factor * abs(offsetframe[0].length())
                     small_ratio = small_factor * abs(offsetframe[0].length())
 
