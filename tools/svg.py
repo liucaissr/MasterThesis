@@ -363,7 +363,6 @@ class cutPolygon:
                                                 curdevPaths.append(newPath)
                                                 update_conflict(cur_no_merge, path2, newPath)
                                                 update_conflict(cur_no_absorption, path2, newPath)
-
                                                 flag = 1
                                             if flag == 1:
                                                 break
@@ -427,7 +426,6 @@ class cutPolygon:
                         merging_threshold = min_distance * 3
                     else:
                         merging_threshold = small_ratio
-                        tf = True
                     if no_merge_factor != 0:
                         merging_threshold = no_merge_factor
                     no_mergex = {}
