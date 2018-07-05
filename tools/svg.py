@@ -121,27 +121,16 @@ class cutPolygon:
                         merging_threshold = no_merge_factor
                     else:
                         merging_threshold = small_ratio
-
-                    cuthlines = []
-                    cutvpointobjs = []
-                    allhlines = []
                     distincthpaths = []
-                    curdistincthlines = []
-                    curdistinctpaths = []
-                    removecutline = []
                     no_merge = {}
                     no_absorption = {}
-                    allcurcutlines = []
-                    orginalsPaths = []
-                    test = []
                     # todo: collect h lines
                     for path in paths:
-                        curdistincthlines, allcurcutlines, removecutline = rectangular_partition(path, offsetx, offsety, large_ratio)
                         #wsvg(curdistinctpaths, filename='testoutput.svg', openinbrowser=True)
-                        # curdistinctpaths: redraw of the design before conflict detection and deviation!
-                        # todo: inside a path.
-                        # todo: create rect with last hline, in order to redraw the pic
-                        curdistinctpaths = createrect(curdistincthlines)
+                        # curdistinctpaths: redraw of the design before conflict detection and deviation!h.
+                        # create rect with last hline, in order to redraw the pic
+                        curdistinctpaths, allcurcutlines, removecutline = rectangular_partition(path, offsetx, offsety,
+                                                                                                large_ratio)
                         curcombinedPaths = []
                         curMicdistinctpaths = []
                         # todo: conflict detection
@@ -167,13 +156,11 @@ class cutPolygon:
                                     if conflict:
                                         keepcutlines.append(line)
                                         cur_no_absorption[path1].append(path2)
+                        #todo + - list
                         for cutl in allcurcutlines:
                             if cutl not in keepcutlines:
                                 if cutl not in removecutline:
                                     removecutline.append(cutl)
-
-                        k = []
-
                         # merge objects
                         flag = 1
                         while (flag == 1):
@@ -258,11 +245,6 @@ class cutPolygon:
                         # todo conflict2 connected conflict: compare area(ratio of cut areas)
                         # todo conflict1 near cannot be combined (refresh removecutline)
                         # todo at the end detect no_merge_conflict again
-                        curdistincthlines = []
-                        allhlines = []
-                        cuthlines = []
-                        allcurcutlines = []
-                        removecutline = []
                     distance = {}
                     min_distance = 0
                     if len(distincthpaths) >= 2:

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import re
 from svgpathtools import *
-import math
+from math import *
 from bisect import *
 from operator import attrgetter
 import numpy as np
@@ -812,7 +812,7 @@ def two_paths_distancex(path1, path2):
             elif l2.direction == 'v' and l2.start.imag < p1.imag < l2.end.imag:
                 tmpdis = abs(l2.start.real - p1.real)
             else:
-                tmpdis = min(math.sqrt((l2.start.real-p1.real) ** 2 + (l2.start.imag-p1.imag) ** 2), math.sqrt((l2.end.real-p1.real) ** 2 + (l2.end.imag-p1.imag) ** 2))
+                tmpdis = min(sqrt((l2.start.real-p1.real) ** 2 + (l2.start.imag-p1.imag) ** 2), sqrt((l2.end.real-p1.real) ** 2 + (l2.end.imag-p1.imag) ** 2))
             if tmpdis < dis or dis == 0:
                 dis = tmpdis
     for p2 in points2:
@@ -822,7 +822,7 @@ def two_paths_distancex(path1, path2):
             elif l1.direction == 'v' and l1.start.imag < p2.imag < l1.end.imag:
                 tmpdis = abs(l1.start.real - p2.real)
             else:
-                tmpdis = min(math.sqrt((l1.start.real-p2.real) ** 2 + (l1.start.imag-p2.imag) ** 2), math.sqrt((l1.end.real-p2.real) ** 2 + (l1.end.imag-p2.imag) ** 2))
+                tmpdis = min(sqrt((l1.start.real-p2.real) ** 2 + (l1.start.imag-p2.imag) ** 2), sqrt((l1.end.real-p2.real) ** 2 + (l1.end.imag-p2.imag) ** 2))
             if tmpdis < dis or dis == 0:
                 dis = tmpdis
     return dis
@@ -837,17 +837,17 @@ def two_paths_distance(path1, path2):
     if len(ls) != 0 or path is not None:
         return 0
     if b1[1] < b2[0] and b1[2] > b2[2]:
-        dev = math.sqrt((b2[0] - b1[1]) ** 2 + (b2[2] - b1[3]) ** 2)
+        dev = sqrt((b2[0] - b1[1]) ** 2 + (b2[2] - b1[3]) ** 2)
     elif b2[1] < b1[0] and b2[3] < b1[2]:
-        dev = math.sqrt((b2[1] - b1[0]) ** 2 + (b2[3] - b1[2]) ** 2)
+        dev = sqrt((b2[1] - b1[0]) ** 2 + (b2[3] - b1[2]) ** 2)
     if b1[1]<b2[0] and b1[3]<b2[2]:
-        dev = math.sqrt((b2[0]-b1[1])**2+(b2[2]-b1[3])**2)
+        dev = sqrt((b2[0]-b1[1])**2+(b2[2]-b1[3])**2)
     elif b1[1]<b2[0] and b1[2]>b2[3]:
-        dev = math.sqrt((b2[0]-b1[1])**2+(b1[2]-b2[3])**2)
+        dev = sqrt((b2[0]-b1[1])**2+(b1[2]-b2[3])**2)
     elif b1[0]>b2[1] and b1[3]<b2[2]:
-        dev = math.sqrt((b1[0]-b2[1])**2+(b2[2]-b1[3])**2)
+        dev = sqrt((b1[0]-b2[1])**2+(b2[2]-b1[3])**2)
     elif b1[0]>b2[1] and b1[2]>b2[3]:
-        dev = math.sqrt((b1[0]-b2[1])**2+(b1[2]-b2[3])**2)
+        dev = sqrt((b1[0]-b2[1])**2+(b1[2]-b2[3])**2)
     elif b1[1] < b2[0]:
         dev = b2[0] - b1[1]
     elif b1[3] < b2[2]:
@@ -869,7 +869,7 @@ def no_merge_conflict(path1, path2, factor, dis = None):
 def no_absorption_conflict(path1, path2, factor):
     assert path1.isclosed() and path2.isclosed(), '%s is not closed' % (path1 if path1.isclosed() is False else path2)
     x, p = two_paths_intersection(path1, path2)
-    factor_sqrt = math.sqrt(factor)
+    factor_sqrt = sqrt(factor)
     selflengthfactor = 0.8
     interl = None
     if len(x) == 0 and p is None:
@@ -1020,12 +1020,12 @@ def unitdivision(frame):
     # unitdim: approximate unit edge size
     # unitrectedge: unit edge size
     dimension = frame[0].length() * frame[1].length()
-    unitdim = math.sqrt(np.true_divide(dimension, 10000) * 1.1)
+    unitdim = sqrt(np.true_divide(dimension, 10000) * 1.1)
     n = num_digit(unitdim)
     unitrectedge = round(unitdim, n+2)
     return unitrectedge
 
-def rectangular_partition(path, offsetx, offsety, large_ratio):
+def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
     cutvpointobjs = []
     cuthlines = []
     allhlines = []
@@ -1108,10 +1108,12 @@ def rectangular_partition(path, offsetx, offsety, large_ratio):
             cuthlines.append(curcutline)
             allhlines.append(curcutline)
 
+
         if curcutline is not None:
             allcurcutlines.append(curcutline)
-            if curcutline.length() >= large_ratio:
-                removecutline.append(curcutline)
+            if large_ratio != 0:
+                if curcutline.length() >= large_ratio:
+                    removecutline.append(curcutline)
     # allcurcutlines: collection of cutlines
     cline_num = len(allcurcutlines)
     cutcutlines = []
@@ -1145,7 +1147,6 @@ def rectangular_partition(path, offsetx, offsety, large_ratio):
     if len(cutlinevpointobjs):
         replacehlines = combineLinesWithPoints(allhlines, cutlinevpointobjs)
     # replacehlines: combined h cutlines
-
     # todo remove after testing
     for line in sortedhlines:
         allhlines.append(line)
@@ -1161,4 +1162,32 @@ def rectangular_partition(path, offsetx, offsety, large_ratio):
         curdistincthlines.append(line)
     # curdistincthlines: combinedhlines +  replacehlines
     # cuthlines: all cuthlines - cutcutlines
-    return curdistincthlines, allcurcutlines, removecutline
+    curdistinctpaths = createrect(curdistincthlines)
+    return curdistinctpaths, allcurcutlines, removecutline
+
+
+#todo move to path properties
+#todo assert path close
+def subunit(path, unitrect):
+    num_line = len(path)
+    unit_points = []
+    if num_line == 4:
+        b = path.bbox()
+        x0 = int(ceil(b[0]/unitrect + 0.5))
+        x1 = int(ceil(b[1]/unitrect + 0.5))
+        y0 = int(ceil(b[2]/unitrect + 0.5))
+        y1 = int(ceil(b[3]/unitrect + 0.5))
+        for x in range(x0,x1):
+            for y in range(y0,y1):
+                point = (x,y)
+                unit_points.append(point)
+        return unit_points
+    elif num_line > 4:
+        rectpaths = rectangular_partition(path)[0]
+        for p in rectpaths:
+            unit_points += subunit(p, unitrect)
+        unit_points = list(set(unit_points))
+        return unit_points
+    else:
+        NotImplemented
+
