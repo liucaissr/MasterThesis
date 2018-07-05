@@ -6,6 +6,11 @@ from os import getcwd, listdir, sep, remove, error, path
 
 class Test_cut(unittest.TestCase):
     def setUp(self):
+        self.frame = Path(MicroLine(Coordinate(0, 0), Coordinate(20000, 0)),
+                       MicroLine(Coordinate(20000, 0), Coordinate(20000, 20000)),
+                       MicroLine(Coordinate(20000, 20000), Coordinate(0, 20000)),
+                       MicroLine(Coordinate(0, 20000), Coordinate(0, 0)))
+        
         self.p1 = Path(MicroLine(Coordinate(0, 0), Coordinate(10000, 0)),
           MicroLine(Coordinate(10000, 0), Coordinate(10000, 10000)),
           MicroLine(Coordinate(10000, 10000), Coordinate(0, 10000)),
@@ -33,7 +38,7 @@ class Test_cut(unittest.TestCase):
         self.assertEqual(edge, round(sqrt(11000), 2))
 
     def test_subunit(self):
-        self.assertEqual(set(subunit(self.p1, 5000)), set(self.p1ps))
-        self.assertEqual(set(subunit(self.p2, 5000)), set(self.p2ps))
-        self.assertEqual(set(subunit(self.p3, 5000)), set(self.p3ps))
+        self.assertEqual(set(subunit(self.p1, 5000, self.frame)), set(self.p1ps))
+        self.assertEqual(set(subunit(self.p2, 5000, self.frame)), set(self.p2ps))
+        self.assertEqual(set(subunit(self.p3, 5000, self.frame)), set(self.p3ps))
 

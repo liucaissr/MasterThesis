@@ -1168,15 +1168,15 @@ def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
 
 #todo move to path properties
 #todo assert path close
-def subunit(path, unitrect):
+def subunit(path, unitrect, offsetframe):
     num_line = len(path)
     unit_points = []
     if num_line == 4:
         b = path.bbox()
-        x0 = int(ceil(b[0]/unitrect + 0.5))
-        x1 = int(ceil(b[1]/unitrect + 0.5))
-        y0 = int(ceil(b[2]/unitrect + 0.5))
-        y1 = int(ceil(b[3]/unitrect + 0.5))
+        x0 = int(ceil((b[0] - offsetframe.start.real)/unitrect + 0.5))
+        x1 = int(ceil((b[1] - offsetframe.start.real)/unitrect + 0.5))
+        y0 = int(ceil((b[2] - offsetframe.start.imag)/unitrect + 0.5))
+        y1 = int(ceil((b[3] - offsetframe.start.imag)/unitrect + 0.5))
         for x in range(x0,x1):
             for y in range(y0,y1):
                 point = (x,y)
@@ -1185,9 +1185,28 @@ def subunit(path, unitrect):
     elif num_line > 4:
         rectpaths = rectangular_partition(path)[0]
         for p in rectpaths:
-            unit_points += subunit(p, unitrect)
+            unit_points += subunit(p, unitrect, offsetframe)
         unit_points = list(set(unit_points))
         return unit_points
     else:
         NotImplemented
 
+def output_unit(folder, filename, context, unitrect, offsetframe):
+    file = open(folder + filename, 'w')
+    num_x = ceil(offsetframe[0].length() / unitrect)
+    num_y = ceil(offsetframe[1].length() / unitrect)
+    file.write('%d %d %f\n' % (num_x, num_y, unitrect))
+    outputfile(file, context)
+    file.close()
+
+
+def outputfile(file, context):
+    for k, v in context.items():
+        index = k
+        if len(v) != 0:
+            l = len(v)
+            file.write('o%s %d' % (index, l))
+            for li in v:
+                file.write(' (%d,%d)' % (li[0], li[1]))
+            file.write('\n')
+    file.write('FIN\n')

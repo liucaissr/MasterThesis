@@ -116,7 +116,6 @@ class cutPolygon:
                     # todo: add coordinate
                     # unitrect: edge of unit rect
                     unitrect = unitdivision(offsetframe)
-
                     if no_merge_factor != 0:
                         merging_threshold = no_merge_factor
                     else:
@@ -275,12 +274,6 @@ class cutPolygon:
                             del distance[k]
                     min_distance = max(0, min_distance)
                     # todo change the logic
-                    '''
-                    if min_distance < small_ratio:
-                        merging_threshold = min_distance * 3
-                    else:
-                        merging_threshold = small_ratio
-                    '''
                     if min_distance != 0:
                         min_distance = min(min_distance, small_ratio)
                         merging_threshold = min_distance * 3
@@ -324,8 +317,15 @@ class cutPolygon:
                                     no_absorption[distincthpaths[j]] = []
                                 if distincthpaths[i] not in no_absorption[distincthpaths[j]]:
                                     no_absorption[distincthpaths[j]].append(distincthpaths[i])
+                    subunits = {}
+                    for i in range(0, length):
+                        subunits[i+1] = []
+                        subunits[i+1] = subunit(distincthpaths[i], unitrect, offsetframe)
+
                     distincthpaths.insert(0, offsetframe)
                     wsvg(distincthpaths, filename=thefile, openinbrowser=False)
+
+                    output_unit(resultpath, 'unit.txt', subunits, unitrect, offsetframe)
 
                     tf = merging_threshold == small_factor
                     logger = logging.getLogger('__main__')
