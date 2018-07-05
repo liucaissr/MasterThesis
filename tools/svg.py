@@ -4,6 +4,8 @@ from tools.cut import *
 from bisect import *
 from operator import attrgetter
 import logging
+import math
+import numpy as np
 
 class ExtractObj:
 #todo change format
@@ -104,9 +106,16 @@ class cutPolygon:
 
                     # determine the small and large dimension of the design
                     # offsetframe: chip frame
+                    # dimension: chip area
+                    dimension = offsetframe[0].length() * offsetframe[1].length()
+
                     # todo: multiple of area but not one edge?
                     large_ratio = large_factor * abs(offsetframe[0].length())
                     small_ratio = small_factor * abs(offsetframe[0].length())
+
+                    # todo: add coordinate
+                    # unitrect: edge of unit rect
+                    unitrect = unitdivision(offsetframe)
 
                     if no_merge_factor != 0:
                         merging_threshold = no_merge_factor
@@ -124,150 +133,15 @@ class cutPolygon:
                     no_absorption = {}
                     allcurcutlines = []
                     orginalsPaths = []
-
-
                     test = []
                     # todo: collect h lines
                     for path in paths:
-                        sortedhlines, sortedvlines, filteredPath, filteredPoints = pathpreprocess(path, offsetx, offsety)
-                        # todo pick one shorter line
-                        # todo if vline
-                        # todo if hline
-                        for pointobj in filteredPoints:
-                            # todo point to two cutlines
-                            cuthline = None
-                            cutvline = None
-                            intersecthlines = [x for x in sortedhlines if
-                                               x.start.real <= pointobj.point.real <= x.end.real]
-                            intersectvlines = [x for x in sortedvlines if
-                                               x.start.imag <= pointobj.point.imag <= x.end.imag]
-                            intersecthlinesy = map(attrgetter('start.imag'), intersecthlines)
-                            intersectvlinesx = map(attrgetter('start.real'), intersectvlines)
-                            if pointobj.point == pointobj.hline.start:
-                                # todo left extend
-                                end = pointobj.point
-                                leftvlineno = bisect_left(intersectvlinesx, end.real) - 1
-                                if len(intersectvlines) > leftvlineno >= 0:
-                                    start = Coordinate(intersectvlines[leftvlineno].start.real, end.imag)
-                                    leftcuthline = MicroLine(start, end)
-                                    if path1_is_contained_in_path2(leftcuthline, filteredPath):
-                                        # todo add to cutlines hou bu
-                                        cuthline = leftcuthline
-                            else:
-                                # todo right extend
-                                start = pointobj.point
-                                rightvlineno = bisect_right(intersectvlinesx, start.real)
-                                if 0 < rightvlineno < len(intersectvlines):
-                                    end = Coordinate(intersectvlines[rightvlineno].start.real, start.imag)
-                                    rightcuthline = MicroLine(start, end)
-                                    if path1_is_contained_in_path2(rightcuthline, filteredPath):
-                                        # todo add to cutlines hou bu
-                                        cuthline = rightcuthline
-
-                            if pointobj.point == pointobj.vline.start:
-                                # todo up extend
-                                end = pointobj.point
-                                uphlineno = bisect_left(intersecthlinesy, end.imag) - 1
-                                if len(intersecthlines) > uphlineno >= 0:
-                                    start = Coordinate(end.real, intersecthlines[uphlineno].start.imag)
-                                    upcutvline = MicroLine(start, end)
-                                    if path1_is_contained_in_path2(upcutvline, filteredPath):
-                                        # todo add to cutlines hou bu
-                                        cutvline = upcutvline
-                                        cutvpoint = PointNavigation(start, intersecthlines[uphlineno], None)
-                            else:
-                                # todo down extend
-                                start = pointobj.point
-                                downhlineno = bisect_right(intersecthlinesy, start.imag)
-                                if 0 < downhlineno < len(intersecthlines):
-                                    end = Coordinate(start.real, intersecthlines[downhlineno].start.imag)
-                                    downcutvline = MicroLine(start, end)
-                                    if path1_is_contained_in_path2(downcutvline, filteredPath):
-                                        # todo add to cutlines hou bu
-                                        cutvline = downcutvline
-                                        cutvpoint = PointNavigation(end, intersecthlines[downhlineno], None)
-
-                            # todo compare two line:
-                            cutvlinelength = 0
-                            cuthlinelength = 0
-                            curcutline = None
-                            if cutvline is not None:
-                                cutvlinelength = cutvline.length()
-                            if cuthline is not None:
-                                cuthlinelength = cuthline.length()
-                            if cutvlinelength != 0 and (cuthlinelength > cutvlinelength or cuthlinelength == 0):
-                                curcutline = cutvline
-                                cutvpointobjs.append(cutvpoint)
-                                # todo add above hline
-                            elif cuthlinelength != 0 and (cutvlinelength >= cuthlinelength or cutvlinelength == 0):
-                                curcutline = cuthline
-                                # todo change cuthlines, allhlines to cuthlines
-                                cuthlines.append(curcutline)
-                                allhlines.append(curcutline)
-
-                            if curcutline is not None:
-                                allcurcutlines.append(curcutline)
-                                if curcutline.length() >= large_ratio:
-                                    removecutline.append(curcutline)
-
-                        # allcurcutlines: collection of cutlines
-
-                        cline_num = len(allcurcutlines)
-                        cutcutlines = []
-                        cutlinevpointobjs = []
-                        for i in range(0, cline_num):
-                            for j in range(i+1, cline_num):
-                                x = line1_intersect_with_line2(allcurcutlines[i], allcurcutlines[j])
-                                if len(x) != 0:
-                                    if x != [(0.0, 0.0)] and x != [(0.0, 1.0)] and x != [(1.0, 0.0)] and x != [(1.0, 1.0)]:
-                                        if allcurcutlines[i].direction() == 'h':
-                                            hcline = allcurcutlines[i]
-                                            vcline = allcurcutlines[j]
-                                        else:
-                                            hcline = allcurcutlines[j]
-                                            vcline = allcurcutlines[i]
-                                        intersectp = Coordinate(vcline.start.real, hcline.start.imag)
-                                        newvpoint = PointNavigation(intersectp, None, None)
-                                        cutvpointobjs.append(newvpoint)
-                                        cutlinevpointobjs.append(newvpoint)
-                                        for replacehline in [allcurcutlines[i], allcurcutlines[j]]:
-                                            cutcutlines.append(replacehline)
-                                    else:
-                                        continue
-
-                        # cutcutlines: all intersected cutlines
-                        # allhlines: all h cutlines
-                        # cutlinevpointobjs: intersected points of cutlines
-
-                        replacehlines = []
-                        for h in allhlines:
-                            replacehlines.append(h)
-                        # if there are intersected cutlines, then combine them
-                        if len(cutlinevpointobjs):
-                            replacehlines = combineLinesWithPoints(allhlines, cutlinevpointobjs)
-                        # replacehlines: combined h cutlines
-
-                        # todo remove after testing
-                        for line in sortedhlines:
-                            allhlines.append(line)
-                        combinedhlines = combineLinesWithPoints(allhlines, cutvpointobjs)
-                        for line in combinedhlines:
-                            # todo delete obj
-                            curdistincthlines.append(line)
-                        # todo add cuthline to cur
-                        for line in cutcutlines:
-                            if line in cuthlines:
-                                cuthlines.remove(line)
-                        for line in replacehlines:
-                            curdistincthlines.append(line)
-                        # curdistincthlines: combinedhlines +  replacehlines
-                        # cuthlines: all cuthlines - cutcutlines
-                        # todo: create rect with last hline, in order to redraw the pic
-                        curdistinctpaths = createrect(curdistincthlines)
-
+                        curdistincthlines, allcurcutlines, removecutline = rectangular_partition(path, offsetx, offsety, large_ratio)
                         #wsvg(curdistinctpaths, filename='testoutput.svg', openinbrowser=True)
                         # curdistinctpaths: redraw of the design before conflict detection and deviation!
                         # todo: inside a path.
+                        # todo: create rect with last hline, in order to redraw the pic
+                        curdistinctpaths = createrect(curdistincthlines)
                         curcombinedPaths = []
                         curMicdistinctpaths = []
                         # todo: conflict detection
@@ -297,6 +171,9 @@ class cutPolygon:
                             if cutl not in keepcutlines:
                                 if cutl not in removecutline:
                                     removecutline.append(cutl)
+
+                        k = []
+
                         # merge objects
                         flag = 1
                         while (flag == 1):

@@ -1,17 +1,20 @@
 import unittest
+from tools.cut import *
 from os import getcwd, listdir, sep, remove, error, path
 
 
 class Test_cut(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        outputpath = '/Users/my/Desktop/MasterThesis/source/output/'
-        resultpath = outputpath + max(listdir(outputpath)) + sep
-        realpath = '/Users/my/Desktop/MasterThesis/mt1git/zxj/'
+    def setUp(self):
+        self.p1 = Path(MicroLine(Coordinate(0, 0), Coordinate(10000, 0)),
+          MicroLine(Coordinate(10000, 0), Coordinate(10000, 10000)),
+          MicroLine(Coordinate(10000, 10000), Coordinate(0, 10000)),
+          MicroLine(Coordinate(0, 10000), Coordinate(0, 0)))
 
-    def test_svg(self):
-        pass
+    def test_unitdivision(self):
+        edge = unitdivision(self.p1)
+        AssertionError(edge, round(math.sqrt(1.1), 2))
 
-    def test_no_merge_conflict(self):
+
+
 
 
