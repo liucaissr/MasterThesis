@@ -17,6 +17,8 @@ class Test_cut(unittest.TestCase):
           MicroLine(Coordinate(0, 10000), Coordinate(0, 0)))
         self.p1ps = [(1,1),(1,2),(2,1),(2,2)]
 
+
+
         self.p2 = Path(MicroLine(Coordinate(0, 0), Coordinate(10000, 0)),
                        MicroLine(Coordinate(10000, 0), Coordinate(10000, 15000)),
                        MicroLine(Coordinate(10000, 15000), Coordinate(5000, 15000)),
@@ -33,6 +35,21 @@ class Test_cut(unittest.TestCase):
                        MicroLine(Coordinate(0, 11000), Coordinate(0, 0)))
         self.p3ps = [(1, 1), (1, 2), (2, 1), (2, 2), (2, 3)]
 
+        self.p4 = Path(MicroLine(Coordinate(0, 0), Coordinate(1, 0)),
+                       MicroLine(Coordinate(1, 0), Coordinate(1, 1)),
+                       MicroLine(Coordinate(1, 1), Coordinate(0, 1)),
+                       MicroLine(Coordinate(0, 1), Coordinate(0, 0)))
+
+        self.p5 = Path(MicroLine(Coordinate(2, 2), Coordinate(3, 2)),
+                       MicroLine(Coordinate(3, 2), Coordinate(3, 3)),
+                       MicroLine(Coordinate(3, 3), Coordinate(2, 3)),
+                       MicroLine(Coordinate(2, 3), Coordinate(2, 2)))
+
+        self.p6 = Path(MicroLine(Coordinate(2, 0), Coordinate(3, 0)),
+                       MicroLine(Coordinate(3, 0), Coordinate(3, 3)),
+                       MicroLine(Coordinate(3, 3), Coordinate(2, 3)),
+                       MicroLine(Coordinate(2, 3), Coordinate(2, 0)))
+    '''
     def test_unitdivision(self):
         edge = unitdivision(self.p1)
         self.assertEqual(edge, round(sqrt(11000), 2))
@@ -41,4 +58,8 @@ class Test_cut(unittest.TestCase):
         self.assertEqual(set(subunit(self.p1, 5000, self.frame)), set(self.p1ps))
         self.assertEqual(set(subunit(self.p2, 5000, self.frame)), set(self.p2ps))
         self.assertEqual(set(subunit(self.p3, 5000, self.frame)), set(self.p3ps))
-
+        
+    '''
+    def test_two_paths_distance(self):
+        self.assertEqual(two_paths_distance(self.p4, self.p5), sqrt(2))
+        self.assertEqual(two_paths_distance(self.p4, self.p6), 1)

@@ -23,6 +23,6 @@ class ConvertToSVG:
             for page in pages:
                 if '.pdf' in page and '_' in page:
                     svgfile = page.replace('.pdf', '.svg')
-                    preparecommand = '/Applications/Inkscape.app/Contents/Resources/bin/inkscape %s --export-plain-svg=%s' %(pdfpath + page, svgpath + svgfile)
+                    preparecommand = 'inkscape %s --export-plain-svg=%s' %(pdfpath + page, svgpath + svgfile)
                     system(preparecommand)
                     #todo package inkscape cmd

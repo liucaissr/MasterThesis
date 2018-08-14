@@ -101,17 +101,18 @@ class cutPolygon:
                         offsetframe.append(newline)
 
                     #multiply perimeter
-                    large_factor = 0.04
-                    small_factor = 0.01 * float(test_ratio) # default = 1
+                    large_factor = 0.02
+                    small_factor = 0.005 * float(test_ratio) # default = 1
 
                     # determine the small and large dimension of the design
                     # offsetframe: chip frame
                     # dimension: chip area
                     dimension = offsetframe[0].length() * offsetframe[1].length()
+                    halfgirth = abs(offsetframe[0].length() + offsetframe[1].length())
 
                     # todo: multiple of area but not one edge?
-                    large_ratio = large_factor * abs(offsetframe[0].length())
-                    small_ratio = small_factor * abs(offsetframe[0].length())
+                    large_ratio = large_factor * halfgirth
+                    small_ratio = small_factor * halfgirth
 
                     # todo: add coordinate
                     # unitrect: edge of unit rect

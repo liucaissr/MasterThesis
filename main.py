@@ -36,6 +36,13 @@ loglog = 'execution.log'
 
 dirs = [pdfdir, svgdir]
 
+dirs.append(tmpdir)
+dirs.append(resultdir)
+# Creates a directory structure.
+now = Build()
+for newdir in dirs:
+    now.createDirIfNotExist(newdir, currentpath)
+
 for dir in dirs:
     dirpath = currentpath + sep + dir
     for fdir in listdir(dirpath):
@@ -52,12 +59,7 @@ for f in listdir(inputpath):
 
 logger.info('Begin the convertion')
 
-dirs.append(tmpdir)
-dirs.append(resultdir)
-# Creates a directory structure.
-now = Build()
-for newdir in dirs:
-    now.createDirIfNotExist(newdir, currentpath)
+
 
 # Normalize pdf names, cut and paste pdf in respective dir.
 now.normalizeNameOfPdfs(listdir(tmpdir), tmpdir)

@@ -841,13 +841,13 @@ def two_paths_distance(path1, path2):
     elif b2[1] < b1[0] and b2[3] < b1[2]:
         dev = sqrt((b2[1] - b1[0]) ** 2 + (b2[3] - b1[2]) ** 2)
     if b1[1]<b2[0] and b1[3]<b2[2]:
-        dev = sqrt((b2[0]-b1[1])**2+(b2[2]-b1[3])**2)
+        dev = sqrt((b2[0] - b1[1]) ** 2 + (b2[2] - b1[3]) ** 2)
     elif b1[1]<b2[0] and b1[2]>b2[3]:
-        dev = sqrt((b2[0]-b1[1])**2+(b1[2]-b2[3])**2)
+        dev = sqrt((b2[0] - b1[1]) ** 2 + (b1[2] - b2[3]) ** 2)
     elif b1[0]>b2[1] and b1[3]<b2[2]:
-        dev = sqrt((b1[0]-b2[1])**2+(b2[2]-b1[3])**2)
+        dev = sqrt((b1[0] - b2[1]) ** 2 + (b2[2] - b1[3]) ** 2)
     elif b1[0]>b2[1] and b1[2]>b2[3]:
-        dev = sqrt((b1[0]-b2[1])**2+(b1[2]-b2[3])**2)
+        dev = sqrt((b1[0] - b2[1]) ** 2 + (b1[2] - b2[3]) ** 2)
     elif b1[1] < b2[0]:
         dev = b2[0] - b1[1]
     elif b1[3] < b2[2]:

@@ -7,7 +7,10 @@ from operator import attrgetter
 from os import getcwd, listdir, sep, remove, error, path
 import os.path
 
-cur = '/Users/my/Desktop/MasterThesis/mt1git/zxj'
+#todo change relative path
+
+cur = '/Users/my/Desktop/MT/code/MasterThesis/output/0705'
+
 IDE = cur+sep+'171130-IDELayout-final'
 Heater = cur+sep+'171130-MicroHeaterLayout-final'
 L1 = cur+sep+'LAYER1'
@@ -16,9 +19,9 @@ L3 = cur+sep+'LAYER3'
 tempdir = cur + sep + 'tmp'
 
 curproject = getcwd()
-outputpath = '/Users/my/Desktop/MasterThesis/source/output/'
+outputpath = '/Users/my/Desktop/MT/code/MasterThesis/output/'
 resultpath = outputpath + max(listdir(outputpath))
-testpath = '/Users/my/Desktop/MasterThesis/source/testrecord/'
+testpath = '/Users/my/Desktop/MT/code/MasterThesis/testrecord/'
 testfile = testpath + max(listdir(outputpath)) + '.txt'
 record = open(testfile, 'w')
 
