@@ -128,3 +128,4 @@ logger.info('Output is saved in folder %s' % (resultdir))
 #todo .DS_Store wtf???
 
 #todo add a database to save the result
+# todo change no absorption conflict add longer

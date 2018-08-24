@@ -35,3 +35,105 @@
 2018-07-05 14:14:28 - INFO - Extracting objects from svg /Users/my/Desktop/MasterThesis/source/svg/180523IDEPITCH70MERGED
 2018-07-05 14:14:28 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished conversion.
 2018-07-05 14:14:28 - INFO - Output is saved in folder /Users/my/Desktop/MasterThesis/source/output/201807051414
+2018-08-14 19:12:45 - INFO - Begin the convertion
+2018-08-14 19:12:45 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-08-14 19:12:45 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-08-14 19:12:45 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-08-14 19:12:45 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-08-14 19:12:45 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201808141912
+2018-08-14 19:13:16 - INFO - Begin the convertion
+2018-08-14 19:13:16 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-08-14 19:13:17 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-08-14 19:13:17 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-08-14 19:13:38 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished partition.
+2018-08-14 19:13:38 - INFO - merging threshold = 0.036, it False equals to small_factor
+2018-08-14 19:13:38 - INFO - absorption threshold = 0.2
+2018-08-14 19:13:38 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-08-14 19:13:38 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished conversion.
+2018-08-14 19:13:38 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201808141913
+2018-08-14 19:16:08 - INFO - Begin the convertion
+2018-08-14 19:16:08 - INFO - svg file 171130-MicroHeaterLayout-final.svg are copied to svg/171130-MicroHeaterLayout-final/.
+2018-08-14 19:16:08 - INFO - svg file 171130-IDELayout-final.svg are copied to svg/171130-IDELayout-final/.
+2018-08-14 19:16:08 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/171130-MicroHeaterLayout-final
+2018-08-14 19:19:35 - INFO - svg file 171130-MicroHeaterLayout-final.svg finished partition.
+2018-08-14 19:19:35 - INFO - merging threshold = 155.004795, it False equals to small_factor
+2018-08-14 19:19:35 - INFO - absorption threshold = 0.2
+2018-08-14 19:19:36 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/171130-IDELayout-final
+2018-08-14 19:21:32 - INFO - svg file 171130-IDELayout-final.svg finished partition.
+2018-08-14 19:21:32 - INFO - merging threshold = 15.0, it False equals to small_factor
+2018-08-14 19:21:32 - INFO - absorption threshold = 0.2
+2018-08-14 19:21:32 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/171130-MicroHeaterLayout-final
+2018-08-14 19:21:32 - INFO - svg file 171130-MicroHeaterLayout-final.svg finished conversion.
+2018-08-14 19:21:32 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/171130-IDELayout-final
+2018-08-14 19:21:33 - INFO - svg file 171130-IDELayout-final.svg finished conversion.
+2018-08-14 19:21:33 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201808141916
+2018-08-14 19:23:48 - INFO - Begin the convertion
+2018-08-14 19:23:48 - INFO - svg file 171130-MicroHeaterLayout-final.svg are copied to svg/171130-MicroHeaterLayout-final/.
+2018-08-14 19:23:48 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/171130-MicroHeaterLayout-final
+2018-08-14 19:27:43 - INFO - svg file 171130-MicroHeaterLayout-final.svg finished partition.
+2018-08-14 19:27:43 - INFO - merging threshold = 80.0, it False equals to small_factor
+2018-08-14 19:27:43 - INFO - absorption threshold = 0.2
+2018-08-14 19:27:43 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/171130-MicroHeaterLayout-final
+2018-08-14 19:27:43 - INFO - svg file 171130-MicroHeaterLayout-final.svg finished conversion.
+2018-08-14 19:27:43 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201808141923
+2018-08-14 19:28:50 - INFO - Begin the convertion
+2018-08-14 19:28:50 - INFO - svg file 171130-MicroHeaterLayout-final.svg are copied to svg/171130-MicroHeaterLayout-final/.
+2018-08-14 19:28:50 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/171130-MicroHeaterLayout-final
+2018-08-14 19:32:05 - INFO - svg file 171130-MicroHeaterLayout-final.svg finished partition.
+2018-08-14 19:32:05 - INFO - merging threshold = 80.0, it False equals to small_factor
+2018-08-14 19:32:05 - INFO - absorption threshold = 0.2
+2018-08-14 19:32:05 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/171130-MicroHeaterLayout-final
+2018-08-14 19:32:05 - INFO - svg file 171130-MicroHeaterLayout-final.svg finished conversion.
+2018-08-14 19:32:05 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201808141928
+2018-08-14 19:39:19 - INFO - Begin the convertion
+2018-08-14 19:39:19 - INFO - svg file 171130-IDELayout-final.svg are copied to svg/171130-IDELayout-final/.
+2018-08-14 19:39:19 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-08-14 19:39:19 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-08-14 19:39:20 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-08-14 19:39:30 - INFO - Begin the convertion
+2018-08-14 19:39:30 - INFO - svg file 171130-IDELayout-final.svg are copied to svg/171130-IDELayout-final/.
+2018-08-14 19:39:30 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-08-14 19:39:31 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-08-14 19:39:31 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-08-14 19:39:31 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/171130-IDELayout-final
+2018-08-14 19:41:44 - INFO - svg file 171130-IDELayout-final.svg finished partition.
+2018-08-14 19:41:44 - INFO - merging threshold = 15.0, it False equals to small_factor
+2018-08-14 19:41:44 - INFO - absorption threshold = 0.2
+2018-08-14 19:41:44 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-08-14 19:41:44 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/171130-IDELayout-final
+2018-08-14 19:41:44 - INFO - svg file 171130-IDELayout-final.svg finished conversion.
+2018-08-14 19:41:44 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201808141939
+2018-08-14 19:54:22 - INFO - Begin the convertion
+2018-08-14 19:54:22 - INFO - svg file 171130-IDELayout-final.svg are copied to svg/171130-IDELayout-final/.
+2018-08-14 19:54:22 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-08-14 19:54:22 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-08-14 19:54:23 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-08-14 19:54:43 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished partition.
+2018-08-14 19:54:43 - INFO - merging threshold = 0.036, it False equals to small_factor
+2018-08-14 19:54:43 - INFO - absorption threshold = 0.2
+2018-08-14 19:54:43 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/171130-IDELayout-final
+2018-08-14 19:56:27 - INFO - svg file 171130-IDELayout-final.svg finished partition.
+2018-08-14 19:56:27 - INFO - merging threshold = 15.0, it False equals to small_factor
+2018-08-14 19:56:27 - INFO - absorption threshold = 0.2
+2018-08-14 19:56:28 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-08-14 19:56:28 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished conversion.
+2018-08-14 19:56:28 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/171130-IDELayout-final
+2018-08-14 19:56:28 - INFO - svg file 171130-IDELayout-final.svg finished conversion.
+2018-08-14 19:56:28 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201808141954
+2018-08-24 13:28:29 - INFO - Begin the convertion
+2018-08-24 13:28:29 - INFO - svg file 171130-IDELayout-final.svg are copied to svg/171130-IDELayout-final/.
+2018-08-24 13:28:29 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-08-24 13:28:30 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-08-24 13:28:32 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-08-24 13:28:56 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished partition.
+2018-08-24 13:28:56 - INFO - merging threshold = 0.036, it False equals to small_factor
+2018-08-24 13:28:56 - INFO - absorption threshold = 0.2
+2018-08-24 13:28:56 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/171130-IDELayout-final
+2018-08-24 13:30:40 - INFO - svg file 171130-IDELayout-final.svg finished partition.
+2018-08-24 13:30:40 - INFO - merging threshold = 15.0, it False equals to small_factor
+2018-08-24 13:30:40 - INFO - absorption threshold = 0.2
+2018-08-24 13:30:41 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-08-24 13:30:41 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished conversion.
+2018-08-24 13:30:41 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/171130-IDELayout-final
+2018-08-24 13:30:41 - INFO - svg file 171130-IDELayout-final.svg finished conversion.
+2018-08-24 13:30:41 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201808241328

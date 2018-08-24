@@ -875,6 +875,7 @@ def no_absorption_conflict(path1, path2, factor):
     if len(x) == 0 and p is None:
         return False,interl
     # assert len(x) == 1
+    #todo: 0823 add for new situation
     elif len(x) != 0 and p is None:
         length = float(x[0].length())
         interl = x[0]
