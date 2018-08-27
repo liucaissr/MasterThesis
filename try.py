@@ -235,7 +235,7 @@ for fname,df in dfs.items():
             xid = 'x'
             yid = 'y'
         trace = go.Heatmap(z=dt, x=tracex, y=tracey, zmin=mint, zmax=maxt, colorscale='Reds',xaxis=xid,
-    yaxis=yid )
+    yaxis=yid, opacity=0.8 )
         img = dict(
             source=encoded_image,
             xref=xid,
@@ -245,14 +245,13 @@ for fname,df in dfs.items():
             sizex=r,
             sizey=c,
             sizing="stretch",
-            opacity=0.5,
+            opacity=1,
             layer="below")
         imagelist.append(img)
         posyend = 1 - np.maximum(0,round((layer_or-1)*(1.0-0.1*(figrows-1))/figrows+(layer_or-1)*0.1,2))
         posystart = 1-np.minimum(round(layer_or*(1.0-0.1*(figrows-1))/figrows+(layer_or-1)*0.1,2),1.0)
         layoutlist[ayno] = dict(domain=[posystart, posyend], anchor=xid)
         layoutlist[axno] = dict(domain=[0, 0.45], anchor=yid)
-
         traces[int(no)-1] = trace
         #fig.append_trace(trace, layer_or, 1)
     else:
@@ -271,7 +270,7 @@ for fname,df in dfs.items():
             yid = 'y'
 
         trace = go.Heatmap(z=dt, x=tracex, y=tracey, zmin=mint, zmax=maxt, colorscale='Reds',xaxis=xid,
-    yaxis=yid)
+    yaxis=yid, opacity=0.8)
         img = dict(
             source=encoded_image,
             xref=xid,
@@ -281,7 +280,7 @@ for fname,df in dfs.items():
             sizex=r,
             sizey=c,
             sizing="stretch",
-            opacity=0.5,
+            opacity=1,
             layer="below")
         imagelist.append(img)
         layoutlist[axno] = dict(domain=[0.55, 1],anchor = yid)
@@ -290,7 +289,7 @@ for fname,df in dfs.items():
         layoutlist[ayno] = dict(domain=[posystart, posyend], anchor = xid)
         traces[int(no)-1] = trace
         #fig.append_trace(trace, layer_op, 2)
-#layoutlist['images'] = imagelist
+layoutlist['images'] = imagelist
 '''
 fig['layout']['images'].update(source= encoded_image,
                   xref= "x",
@@ -303,9 +302,6 @@ fig['layout']['images'].update(source= encoded_image,
                   opacity= 0.5,
                   layer= "below")
 '''
-print layoutlist
-d = [0]*numplot
-print traces
 '''
 for k,v in traces.items():
     d[int(k)]=v
