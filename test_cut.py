@@ -17,7 +17,11 @@ class Test_cut(unittest.TestCase):
           MicroLine(Coordinate(0, 10000), Coordinate(0, 0)))
         self.p1ps = [(1,1),(1,2),(2,1),(2,2)]
 
-
+        self.p11 = Path(MicroLine(Coordinate(1900, 1900), Coordinate(5900, 1900)),
+                       MicroLine(Coordinate(5900, 1900), Coordinate(5900, 5900)),
+                       MicroLine(Coordinate(5900, 5900), Coordinate(1900, 5900)),
+                       MicroLine(Coordinate(1900, 5900), Coordinate(1900, 1900)))
+        self.p11ps = [(1,1)]
 
         self.p2 = Path(MicroLine(Coordinate(0, 0), Coordinate(10000, 0)),
                        MicroLine(Coordinate(10000, 0), Coordinate(10000, 15000)),
@@ -53,13 +57,15 @@ class Test_cut(unittest.TestCase):
     def test_unitdivision(self):
         edge = unitdivision(self.p1)
         self.assertEqual(edge, round(sqrt(11000), 2))
-
+'''
     def test_subunit(self):
-        self.assertEqual(set(subunit(self.p1, 5000, self.frame)), set(self.p1ps))
-        self.assertEqual(set(subunit(self.p2, 5000, self.frame)), set(self.p2ps))
-        self.assertEqual(set(subunit(self.p3, 5000, self.frame)), set(self.p3ps))
-        
+        #self.assertEqual(set(subunit(self.p1, 5000, self.frame)), set(self.p1ps))
+        #self.assertEqual(set(subunit(self.p2, 5000, self.frame)), set(self.p2ps))
+        #self.assertEqual(set(subunit(self.p3, 5000, self.frame)), set(self.p3ps))
+        self.assertEqual(set(subunit(self.p11, 5000, self.frame)), set(self.p11ps))
+
     '''
     def test_two_paths_distance(self):
         self.assertEqual(two_paths_distance(self.p4, self.p5), sqrt(2))
         self.assertEqual(two_paths_distance(self.p4, self.p6), 1)
+    '''
