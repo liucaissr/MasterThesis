@@ -88,7 +88,7 @@ images= [dict(
                   sizey= 2,
                   sizing= "stretch",
                   opacity= 0.5,
-                  layer= "below")],    '''
+                  layer= "below")],
 
 import plotly.plotly as py
 import plotly.graph_objs as go
@@ -149,7 +149,7 @@ layout = go.Layout(
 )
 fig = go.Figure(data=data, layout=layout)
 py.plot(fig, filename='multiple-subplots')
-
+'''
 from os import getcwd, sep, listdir
 import pandas as pd
 import re
@@ -210,7 +210,8 @@ reg_d = re.compile('\d+')
 tracex = range(1,r)
 tracey = range(1,c)
 imagelist = []
-traces = []
+#traces = {}
+traces = [0]*numplot
 layoutlist = {}
 
 for fname,df in dfs.items():
@@ -222,11 +223,17 @@ for fname,df in dfs.items():
     if re.match('nonopt\d+', pos):
         layer_or = int(reg_d.findall(pos)[0])
         titleo = str(layer_or)+' original'
-        xid = 'x2'+ str(layer_or)
-        yid = 'y2' + str(layer_or)
         no = str((layer_or-1)*2+1)
-        axno = 'xaxis'+ str(no)
-        ayno = 'yaxis'+ str(no)
+        if no != 1:
+            axno = 'xaxis'+ str(no)
+            ayno = 'yaxis'+ str(no)
+            xid = 'x' + str(no)
+            yid = 'y' + str(no)
+        else:
+            axno = 'xaxis'
+            ayno = 'yaxis'
+            xid = 'x'
+            yid = 'y'
         trace = go.Heatmap(z=dt, x=tracex, y=tracey, zmin=mint, zmax=maxt, colorscale='Reds',xaxis=xid,
     yaxis=yid )
         img = dict(
@@ -241,20 +248,28 @@ for fname,df in dfs.items():
             opacity=0.5,
             layer="below")
         imagelist.append(img)
-        posystart = np.maximum(0,round((layer_or-1)*(1.0-0.1*(figrows-1))/figrows+(layer_or-1)*0.1,2))
-        posyend = np.minimum(round(layer_or*(1.0-0.1*(figrows-1))/figrows+(layer_or-1)*0.1,2),1.0)
-        layoutlist[ayno] = dict(domain=[posystart, posyend])
+        posyend = 1 - np.maximum(0,round((layer_or-1)*(1.0-0.1*(figrows-1))/figrows+(layer_or-1)*0.1,2))
+        posystart = 1-np.minimum(round(layer_or*(1.0-0.1*(figrows-1))/figrows+(layer_or-1)*0.1,2),1.0)
+        layoutlist[ayno] = dict(domain=[posystart, posyend], anchor=xid)
         layoutlist[axno] = dict(domain=[0, 0.45], anchor=yid)
-        traces.append(trace)
+
+        traces[int(no)-1] = trace
         #fig.append_trace(trace, layer_or, 1)
     else:
         layer_op = int(reg_d.findall(pos)[0])
         titlep = str(layer_op) + ' optimization'
-        xid = 'x3' + str(layer_op)
-        yid = 'y3' + str(layer_op)
         no = str(layer_op * 2)
-        axno = 'xaxis' + str(no)
-        ayno = 'yaxis' + str(no)
+        if no != 1:
+            axno = 'xaxis'+ str(no)
+            ayno = 'yaxis'+ str(no)
+            xid = 'x' + str(no)
+            yid = 'y' + str(no)
+        else:
+            axno = 'xaxis'
+            ayno = 'yaxis'
+            xid = 'x'
+            yid = 'y'
+
         trace = go.Heatmap(z=dt, x=tracex, y=tracey, zmin=mint, zmax=maxt, colorscale='Reds',xaxis=xid,
     yaxis=yid)
         img = dict(
@@ -269,11 +284,11 @@ for fname,df in dfs.items():
             opacity=0.5,
             layer="below")
         imagelist.append(img)
-        layoutlist[axno] = dict(domain=[0.55, 1])
-        posystart = np.maximum(0, round((layer_op - 1) * (1.0 - 0.1 * (figrows - 1)) / figrows + (layer_op - 1) * 0.1,2))
-        posyend = np.minimum(round(layer_op * (1.0 - 0.1 * (figrows - 1)) / figrows + (layer_op - 1) * 0.1,2), 1.0)
+        layoutlist[axno] = dict(domain=[0.55, 1],anchor = yid)
+        posyend = 1-np.maximum(0, round((layer_op - 1) * (1.0 - 0.1 * (figrows - 1)) / figrows + (layer_op - 1) * 0.1,2))
+        posystart = 1-np.minimum(round(layer_op * (1.0 - 0.1 * (figrows - 1)) / figrows + (layer_op - 1) * 0.1,2), 1.0)
         layoutlist[ayno] = dict(domain=[posystart, posyend], anchor = xid)
-        traces.append(trace)
+        traces[int(no)-1] = trace
         #fig.append_trace(trace, layer_op, 2)
 #layoutlist['images'] = imagelist
 '''
@@ -289,7 +304,30 @@ fig['layout']['images'].update(source= encoded_image,
                   layer= "below")
 '''
 print layoutlist
+d = [0]*numplot
 print traces
+'''
+for k,v in traces.items():
+    d[int(k)]=v
+'''
+
 layout= go.Layout(layoutlist)
 fig=go.Figure(data=traces,layout=layout)
 py.plot(fig,filename = name )
+
+''''xaxis': {'anchor': 'y', 'domain': [0.0, 0.45]},
+               'xaxis2': {'anchor': 'y2', 'domain': [0.55, 1.0]},
+               'xaxis3': {'anchor': 'y3', 'domain': [0.0, 0.45]},
+               'xaxis4': {'anchor': 'y4', 'domain': [0.55, 1.0]},
+               'xaxis5': {'anchor': 'y5', 'domain': [0.0, 0.45]},
+               'xaxis6': {'anchor': 'y6', 'domain': [0.55, 1.0]},
+               'xaxis7': {'anchor': 'y7', 'domain': [0.0, 0.45]},
+               'xaxis8': {'anchor': 'y8', 'domain': [0.55, 1.0]},
+               'yaxis': {'anchor': 'x', 'domain': [0.84375, 1.0]},
+               'yaxis2': {'anchor': 'x2', 'domain': [0.84375, 1.0]},
+               'yaxis3': {'anchor': 'x3', 'domain': [0.5625, 0.71875]},
+               'yaxis4': {'anchor': 'x4', 'domain': [0.5625, 0.71875]},
+               'yaxis5': {'anchor': 'x5', 'domain': [0.28125, 0.4375]},
+               'yaxis6': {'anchor': 'x6', 'domain': [0.28125, 0.4375]},
+               'yaxis7': {'anchor': 'x7', 'domain': [0.0, 0.15625]},
+               'yaxis8': {'anchor': 'x8', 'domain': [0.0, 0.15625]}}'''
