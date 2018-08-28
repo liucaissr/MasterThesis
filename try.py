@@ -250,7 +250,7 @@ for fname,df in dfs.items():
         imagelist.append(img)
         posyend = 1 - np.maximum(0,round((layer_or-1)*(1.0-0.1*(figrows-1))/figrows+(layer_or-1)*0.1,2))
         posystart = 1-np.minimum(round(layer_or*(1.0-0.1*(figrows-1))/figrows+(layer_or-1)*0.1,2),1.0)
-        layoutlist[ayno] = dict(domain=[posystart, posyend], anchor=xid)
+        layoutlist[ayno] = dict(domain=[posystart, posyend], anchor=xid, scaleanchor = xid)
         layoutlist[axno] = dict(domain=[0, 0.45], anchor=yid)
         traces[int(no)-1] = trace
         #fig.append_trace(trace, layer_or, 1)
@@ -286,7 +286,7 @@ for fname,df in dfs.items():
         layoutlist[axno] = dict(domain=[0.55, 1],anchor = yid)
         posyend = 1-np.maximum(0, round((layer_op - 1) * (1.0 - 0.1 * (figrows - 1)) / figrows + (layer_op - 1) * 0.1,2))
         posystart = 1-np.minimum(round(layer_op * (1.0 - 0.1 * (figrows - 1)) / figrows + (layer_op - 1) * 0.1,2), 1.0)
-        layoutlist[ayno] = dict(domain=[posystart, posyend], anchor = xid)
+        layoutlist[ayno] = dict(domain=[posystart, posyend], anchor = xid, scaleanchor = xid)
         traces[int(no)-1] = trace
         #fig.append_trace(trace, layer_op, 2)
 layoutlist['images'] = imagelist
