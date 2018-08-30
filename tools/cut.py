@@ -220,7 +220,8 @@ def preconfig(paths):
 
 
 # process based on attributes
-def svgpreprocess(paths, attributes, offsetx, offsety):
+def svgpreprocess(paths, attributes):
+    offsetx, offsety = preconfig(paths)
     length = len(attributes)
     scale = [1] * length
     newPathList = []
@@ -246,7 +247,7 @@ def svgpreprocess(paths, attributes, offsetx, offsety):
             newline = MicroLine(start, end)
             newPath.append(newline)
         result.append(newPath)
-    return result
+    return result, offsetx, offsety
 
 def calculateFrame(paths, offsetx, offsety):
     frame = Path()
@@ -310,7 +311,7 @@ def pathpreprocess(rawpath, offsetx, offsety):
     filteredPoints = []
     path = []
 
-    #todo: twice offsetx,offsety(svgpreprocess)
+    #todo: twice offsetx,offsety(svgpreprocess) (bi xu de)
     for line in rawpath:
         start = Coordinate(round(line.start.real - offsetx, 3), round(line.start.imag - offsety, 3))
         end = Coordinate(round(line.end.real - offsetx, 3), round(line.end.imag - offsety, 3))

@@ -49,8 +49,7 @@ class cutPolygon:
 
                     # TODO: move preconfig into svgpreprocess
                     # todo: move create frame into svgpreprocess
-                    offsetx, offsety = preconfig(rawpaths)
-                    paths = svgpreprocess(rawpaths, attributes, offsetx, offsety)
+                    paths, offsetx, offsety = svgpreprocess(rawpaths, attributes)
                     offsetframe = calculateFrame(paths, offsetx, offsety)
 
                     #multiply perimeter
