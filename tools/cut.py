@@ -248,6 +248,59 @@ def svgpreprocess(paths, attributes, offsetx, offsety):
         result.append(newPath)
     return result
 
+def calculateFrame(paths, offsetx, offsety):
+    frame = Path()
+    fb = paths[0].bbox()
+    xmin = fb[0]
+    xmax = fb[1]
+    ymin = fb[2]
+    ymax = fb[3]
+    # create the frame of the layout
+    for path1 in paths:
+        b1 = path1.bbox()
+        if len(path1) != 4:
+            break
+        frame = path1
+        for path2 in paths:
+            if path1 != path2:
+                b2 = path2.bbox()
+                if b1[0] <= b2[0] <= b1[1] and b1[0] <= b2[1] <= b1[1] and b1[2] <= b2[2] <= b1[3] and \
+                        b1[2] <= b2[3] <= b1[3]:
+                    pass
+                else:
+                    frame = Path()
+                    break
+        if frame != Path():
+            break
+    if frame == Path():
+        for path in paths:
+            b = path.bbox()
+            if b[0] < xmin:
+                xmin = b[0]
+            if b[1] > xmax:
+                xmax = b[1]
+            if b[2] < ymin:
+                ymin = b[2]
+            if b[3] > ymax:
+                ymax = b[3]
+        offset = max(xmax - xmin, ymax - ymin) * 0.05
+        frame = Path(MicroLine(Coordinate(xmin - offset, ymin - offset),
+                               Coordinate(xmax + offset, ymin - offset)),
+                     MicroLine(Coordinate(xmax + offset, ymin - offset),
+                               Coordinate(xmax + offset, ymax + offset)),
+                     MicroLine(Coordinate(xmax + offset, ymax + offset),
+                               Coordinate(xmin - offset, ymax + offset)),
+                     MicroLine(Coordinate(xmin - offset, ymax + offset),
+                               Coordinate(xmin - offset, ymin - offset)))
+    if frame in paths:
+        paths.remove(frame)
+    offsetframe = Path()
+    for line in frame:
+        start = Coordinate(line.start.real - offsetx, line.start.imag - offsety)
+        end = Coordinate(line.end.real - offsetx, line.end.imag - offsety)
+        newline = MicroLine(start, end)
+        offsetframe.append(newline)
+    return offsetframe
 
 def pathpreprocess(rawpath, offsetx, offsety):
     hlines = []
@@ -257,6 +310,7 @@ def pathpreprocess(rawpath, offsetx, offsety):
     filteredPoints = []
     path = []
 
+    #todo: twice offsetx,offsety(svgpreprocess)
     for line in rawpath:
         start = Coordinate(round(line.start.real - offsetx, 3), round(line.start.imag - offsety, 3))
         end = Coordinate(round(line.end.real - offsetx, 3), round(line.end.imag - offsety, 3))
