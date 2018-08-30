@@ -154,3 +154,42 @@
 2018-08-30 18:45:48 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/171130-IDELayout-final
 2018-08-30 18:45:48 - INFO - svg file 171130-IDELayout-final.svg finished conversion.
 2018-08-30 18:45:48 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201808301843
+2018-08-30 18:59:11 - INFO - Begin the convertion
+2018-08-30 18:59:11 - INFO - svg file 171130-IDELayout-final.svg are copied to svg/171130-IDELayout-final/.
+2018-08-30 18:59:11 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-08-30 18:59:11 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-08-30 18:59:12 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-08-30 18:59:35 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished partition.
+2018-08-30 18:59:35 - INFO - merging threshold = 0.036, it False equals to small_factor
+2018-08-30 18:59:35 - INFO - absorption threshold = 0.2
+2018-08-30 18:59:35 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/171130-IDELayout-final
+2018-08-30 19:01:28 - INFO - svg file 171130-IDELayout-final.svg finished partition.
+2018-08-30 19:01:28 - INFO - merging threshold = 15.0, it False equals to small_factor
+2018-08-30 19:01:28 - INFO - absorption threshold = 0.2
+2018-08-30 19:01:28 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-08-30 19:01:28 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished conversion.
+2018-08-30 19:01:28 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/171130-IDELayout-final
+2018-08-30 19:01:29 - INFO - svg file 171130-IDELayout-final.svg finished conversion.
+2018-08-30 19:01:29 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201808301859
+2018-08-30 19:05:47 - INFO - Begin the convertion
+2018-08-30 19:05:47 - INFO - svg file 171130-IDELayout-final.svg are copied to svg/171130-IDELayout-final/.
+2018-08-30 19:05:47 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-08-30 19:05:47 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-08-30 19:05:47 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-08-30 19:06:07 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished partition.
+2018-08-30 19:06:07 - INFO - merging threshold = 0.036, it False equals to small_factor
+2018-08-30 19:06:07 - INFO - absorption threshold = 0.2
+2018-08-30 19:06:07 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/171130-IDELayout-final
+2018-08-30 19:07:49 - INFO - svg file 171130-IDELayout-final.svg finished partition.
+2018-08-30 19:07:49 - INFO - merging threshold = 15.0, it False equals to small_factor
+2018-08-30 19:07:49 - INFO - absorption threshold = 0.2
+2018-08-30 19:07:50 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-08-30 19:07:50 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished conversion.
+2018-08-30 19:07:50 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/171130-IDELayout-final
+2018-08-30 19:07:50 - INFO - svg file 171130-IDELayout-final.svg finished conversion.
+2018-08-30 19:07:50 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201808301905
+2018-08-30 19:08:38 - INFO - Begin the convertion
+2018-08-30 19:08:38 - INFO - svg file 171130-IDELayout-final.svg are copied to svg/171130-IDELayout-final/.
+2018-08-30 19:08:38 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-08-30 19:08:38 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-08-30 19:08:38 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
