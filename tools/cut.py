@@ -218,7 +218,6 @@ def preconfig(paths):
 
     return offsetx, offsety
 
-
 # process based on attributes
 def svgpreprocess(paths, attributes):
     offsetx, offsety = preconfig(paths)
@@ -388,7 +387,7 @@ def pathpreprocess(rawpath, offsetx, offsety):
 
     return sortedhlines, sortedvlines, filteredPath, filteredPointsObj
 
-
+# intersect point
 def line1_intersect_with_line2(line1, line2):
     x = None
     if line1 != line2:
@@ -521,50 +520,36 @@ def combineLinesWithPoints(allLines, cutPoints):
 
     return result
 
-
-def path1_is_contained_in_path2x(path1, path2):
-    assert path2.isclosed()  # This question isn't well-defined otherwise
-    # find a point that's definitely outside path2
-    xmin, xmax, ymin, ymax = path2.bbox()
+def point_is_contained_in_path(point, path):
+    xmin, xmax, ymin, ymax = path.bbox()
     B = (xmin + 1) + 1j * (ymax + 1)
-
-    A = (path1.start + path1.end) / 2  # pick an arbitrary point in path1
-    AB_line = Path(Line(A, B))
-    number_of_intersections = len(AB_line.intersect(path2))
-    if number_of_intersections % 2:  # if number of intersections is odd
+    AB_line = Path(Line(point, B))
+    number_of_intersections1 = len(AB_line.intersect(path))
+    if number_of_intersections1 % 2:
         return True
     else:
         return False
 
+def point_on_path(point, path):
+    for line in path:
+        if point_on_line(point, line):
+            return True
+    return False
 
-def path1_is_contained_in_path2(path1, path2):
-    assert path2.isclosed()  # This question isn't well-defined otherwise
+#todo: change name into line in path
+def line_is_contained_in_path(line, path):
+    assert path.isclosed()  # This question isn't well-defined otherwise
     # find a point that's definitely outside path2
     # assert path1 is line
-    for line in path2:
-        l, p = two_lines_intersection(path1, line)
-        if l is not None and l != path1:
-            return False
-        elif l is not None and l == path1:
-            return True
-        elif l is None and p is not None:
-            if p != path1.start and p != path1.end:
-                return False
+    #todo add logic for point on line to true
 
-    xmin, xmax, ymin, ymax = path2.bbox()
-    B = (xmin + 1) + 1j * (ymax + 1)
-    C = (xmax + 1) + 1j * (ymax + 1)
-    A = (path1.start + path1.end) / 2  # pick an arbitrary point in path1
-    AB_line = Path(Line(A, B))
-    AC_line = Path(Line(A, C))
-    number_of_intersections1 = len(AB_line.intersect(path2))
-    number_of_intersections2 = len(AC_line.intersect(path2))
-    if number_of_intersections1 % 2 and number_of_intersections2 % 2:  # if number of intersections is odd
+    if (point_is_contained_in_path(line.start, path) or point_on_path(line.start, path)) and (point_is_contained_in_path(line.end, path) or point_on_path(line.end, path)):
         return True
     else:
         return False
 
 
+# overlap of two parallel lines
 def line1_is_overlap_with_line2(line1, line2):
     b1 = line1.bbox()
     b2 = line2.bbox()
@@ -691,30 +676,12 @@ def two_lines_intersection(line1, line2):
         intersectp = line1.point(x[0][0])
     return intersection, intersectp
 
-# for silly intersect method
-# why wrong method is being called
-def two_paths_intersectionx(path1, path2):
-    intersect = []
-    for line1 in path1:
-        for line2 in path2:
-            line1 = MicroLine(Coordinate(line1.start), Coordinate(line1.end))
-            line2 = MicroLine(Coordinate(line2.start), Coordinate(line2.end))
-            if line1 == line2:
-                if line1 not in intersect:
-                    intersect.append(line1)
-            elif line1_is_overlap_with_line2(line1, line2):
-                line,p = two_lines_intersection(line1, line2)
-                if line is not None:
-                    newline = MicroLine(Coordinate(line.start), Coordinate(line.end))
-                    if newline not in intersect:
-                        intersect.append(newline)
-    return intersect, None
 
 # intersect = intersect lines on the paths
 # intersectpath = intersect path if exists
+
 def two_paths_intersection(path1, path2):
     intersect = []
-    intersectpath = Path()
     intersectpoints = []
     pathlines = []
     for line1 in path1:
@@ -737,12 +704,12 @@ def two_paths_intersection(path1, path2):
                         intersectpoints.append(interpoint)
 
     for line1 in path1:
-        if path1_is_contained_in_path2(line1, path2):
+        if line_is_contained_in_path(line1, path2):
             if line1 not in intersect:
                 pathlines.append(line1)
 
     for line2 in path2:
-        if path1_is_contained_in_path2(line2, path1):
+        if line_is_contained_in_path(line2, path1):
             if line2 not in intersect:
                 pathlines.append(line2)
 
@@ -777,7 +744,6 @@ def two_lines_distance(line1, line2):
     else:
         return NotImplemented
     return dis
-
 
 # intersectlines in lines for line
 def line_intersectlines(line, lines):
@@ -1082,6 +1048,7 @@ def unitdivision(frame):
     return unitrectedge
 
 def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
+    #todo move large_ratio and removecutlines out
     cutvpointobjs = []
     cuthlines = []
     allhlines = []
@@ -1109,7 +1076,7 @@ def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
             if len(intersectvlines) > leftvlineno >= 0:
                 start = Coordinate(intersectvlines[leftvlineno].start.real, end.imag)
                 leftcuthline = MicroLine(start, end)
-                if path1_is_contained_in_path2(leftcuthline, filteredPath):
+                if line_is_contained_in_path(leftcuthline, filteredPath):
                     # todo add to cutlines hou bu
                     cuthline = leftcuthline
         else:
@@ -1119,7 +1086,7 @@ def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
             if 0 < rightvlineno < len(intersectvlines):
                 end = Coordinate(intersectvlines[rightvlineno].start.real, start.imag)
                 rightcuthline = MicroLine(start, end)
-                if path1_is_contained_in_path2(rightcuthline, filteredPath):
+                if line_is_contained_in_path(rightcuthline, filteredPath):
                     # todo add to cutlines hou bu
                     cuthline = rightcuthline
 
@@ -1130,7 +1097,7 @@ def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
             if len(intersecthlines) > uphlineno >= 0:
                 start = Coordinate(end.real, intersecthlines[uphlineno].start.imag)
                 upcutvline = MicroLine(start, end)
-                if path1_is_contained_in_path2(upcutvline, filteredPath):
+                if line_is_contained_in_path(upcutvline, filteredPath):
                     # todo add to cutlines hou bu
                     cutvline = upcutvline
                     cutvpoint = PointNavigation(start, intersecthlines[uphlineno], None)
@@ -1141,7 +1108,7 @@ def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
             if 0 < downhlineno < len(intersecthlines):
                 end = Coordinate(start.real, intersecthlines[downhlineno].start.imag)
                 downcutvline = MicroLine(start, end)
-                if path1_is_contained_in_path2(downcutvline, filteredPath):
+                if line_is_contained_in_path(downcutvline, filteredPath):
                     # todo add to cutlines hou bu
                     cutvline = downcutvline
                     cutvpoint = PointNavigation(end, intersecthlines[downhlineno], None)
@@ -1163,7 +1130,6 @@ def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
             # todo change cuthlines, allhlines to cuthlines
             cuthlines.append(curcutline)
             allhlines.append(curcutline)
-
 
         if curcutline is not None:
             allcurcutlines.append(curcutline)
@@ -1211,9 +1177,11 @@ def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
         # todo delete obj
         curdistincthlines.append(line)
     # todo add cuthline to cur
+    '''
     for line in cutcutlines:
         if line in cuthlines:
             cuthlines.remove(line)
+    '''
     for line in replacehlines:
         curdistincthlines.append(line)
     # curdistincthlines: combinedhlines +  replacehlines
