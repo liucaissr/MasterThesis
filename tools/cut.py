@@ -542,12 +542,11 @@ def line_is_contained_in_path(line, path):
     # find a point that's definitely outside path2
     # assert path1 is line
     #todo add logic for point on line to true
-
-    if (point_is_contained_in_path(line.start, path) or point_on_path(line.start, path)) and (point_is_contained_in_path(line.end, path) or point_on_path(line.end, path)):
+    mid = Coordinate((line.start.real+line.end.real)/2.0,(line.start.imag+line.end.imag)/2.0)
+    if (point_is_contained_in_path(line.start, path) or point_on_path(line.start, path)) and (point_is_contained_in_path(line.end, path) or point_on_path(line.end, path)) and (point_is_contained_in_path(mid, path) or point_on_path(mid, path)):
         return True
     else:
         return False
-
 
 # overlap of two parallel lines
 def line1_is_overlap_with_line2(line1, line2):

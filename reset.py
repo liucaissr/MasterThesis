@@ -28,7 +28,7 @@ input = []
 #input.append('Layer1.pdf')
 #input.append('171130-MicroHeaterLayout-final.svg')
 #input.append('171130-IDELayout-final.svg')
-input.append('180523-IDE-pitch-70-merged.pdf')
+#input.append('180523-IDE-pitch-70-merged.pdf')
 
 
 

@@ -139,7 +139,6 @@ class cutPolygon:
                                                     update_conflict(cur_no_merge, path2, newPath)
                                                     update_conflict(cur_no_absorption, path1, newPath)
                                                     update_conflict(cur_no_absorption, path2, newPath)
-
                                                     break
                                             if flag == 1:
                                                 break

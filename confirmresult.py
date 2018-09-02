@@ -9,7 +9,7 @@ import os.path
 
 #todo change relative path
 
-cur = '/Users/my/Desktop/MT/code/MasterThesis/output/0705'
+cur = '/Users/my/Desktop/MT/code/MasterThesis/0712'
 
 IDE = cur+sep+'171130-IDELayout-final'
 Heater = cur+sep+'171130-MicroHeaterLayout-final'
