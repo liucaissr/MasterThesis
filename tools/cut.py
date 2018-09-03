@@ -887,6 +887,7 @@ def no_merge_conflict(path1, path2, factor, dis = None):
         return False,dis
 
 def no_absorption_conflict(path1, path2, factor):
+    # factor = 0.2
     assert path1.isclosed() and path2.isclosed(), '%s is not closed' % (path1 if path1.isclosed() is False else path2)
     x, p = two_paths_intersection(path1, path2)
     factor_sqrt = sqrt(factor)
