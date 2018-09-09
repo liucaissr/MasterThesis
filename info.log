@@ -351,3 +351,23 @@
 2018-09-03 00:22:54 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/171130-MicroHeaterLayout-final
 2018-09-03 00:22:54 - INFO - svg file 171130-MicroHeaterLayout-final.svg finished conversion.
 2018-09-03 00:22:54 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201809030022
+2018-09-03 22:00:41 - INFO - Begin the convertion
+2018-09-03 22:00:41 - INFO - svg file 171130-MicroHeaterLayout-final.svg are copied to svg/171130-MicroHeaterLayout-final/.
+2018-09-03 22:00:41 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/171130-MicroHeaterLayout-final
+2018-09-03 22:02:10 - INFO - svg file 171130-MicroHeaterLayout-final.svg finished partition.
+2018-09-03 22:02:10 - INFO - merging threshold = 80.0, it False equals to small_factor
+2018-09-03 22:02:10 - INFO - absorption threshold = 0.2
+2018-09-03 22:02:10 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/171130-MicroHeaterLayout-final
+2018-09-03 22:02:10 - INFO - svg file 171130-MicroHeaterLayout-final.svg finished conversion.
+2018-09-03 22:02:10 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201809032200
+2018-09-09 14:26:59 - INFO - Begin the convertion
+2018-09-09 14:26:59 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-09-09 14:27:00 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-09-09 14:27:01 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-09-09 14:27:18 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished partition.
+2018-09-09 14:27:18 - INFO - merging threshold = 0.036, it False equals to small_factor
+2018-09-09 14:27:18 - INFO - absorption threshold = 0.2
+2018-09-09 14:27:18 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/.DS_Store
+2018-09-09 14:27:18 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-09-09 14:27:18 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished conversion.
+2018-09-09 14:27:18 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201809091426

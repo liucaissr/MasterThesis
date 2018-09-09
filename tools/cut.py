@@ -219,6 +219,8 @@ def preconfig(paths):
     return offsetx, offsety
 
 # process based on attributes
+# todo: 0906 combine original contacted patterns
+# todo: how about closest pattern???-> combine needed should be merging conflict! -> combine needed are sharing same edge
 def svgpreprocess(paths, attributes):
     offsetx, offsety = preconfig(paths)
     length = len(attributes)
@@ -897,6 +899,7 @@ def no_absorption_conflict(path1, path2, factor):
         return False,interl
     # assert len(x) == 1
     #todo: 0823 add for new situation
+    #todo: 0903 add more robost check
     elif len(x) != 0 and p is None:
         length = float(x[0].length())
         interl = x[0]
@@ -1047,6 +1050,7 @@ def unitdivision(frame):
     unitrectedge = round(unitdim, n+2)
     return unitrectedge
 
+#todo: add more unit and percentage and test with 0720
 def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
     #todo move large_ratio and removecutlines out
     cutvpointobjs = []

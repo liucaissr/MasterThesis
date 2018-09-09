@@ -166,6 +166,7 @@ class cutPolygon:
                                         if len(inter) != 0:
                                             if inter[0] in path1:
                                                 dev = getDev(path2, inter[0])
+                                                #todo: largeratio -> global variable
                                                 newPath = changePath(path1, path1.index(inter[0]), dev, 0.2, large_ratio)
                                                 curdevPaths.remove(path1)
                                                 curdevPaths.append(newPath)
@@ -254,6 +255,7 @@ class cutPolygon:
                     for p in distincthpaths:
                         if no_mergex[p] == []:
                             del no_mergex[p]
+                    # todo:0903 is that possible more lpcon?
                     for i in range(0, length):
                         for j in range(i+1, length):
                             if distincthpaths[i] in no_absorption.keys():
