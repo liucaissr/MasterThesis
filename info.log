@@ -371,3 +371,47 @@
 2018-09-09 14:27:18 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
 2018-09-09 14:27:18 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished conversion.
 2018-09-09 14:27:18 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201809091426
+2018-09-26 19:22:59 - INFO - Begin the convertion
+2018-09-26 19:22:59 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-09-26 19:23:00 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-09-26 19:23:00 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-09-26 19:23:13 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished partition.
+2018-09-26 19:23:13 - INFO - merging threshold = 0.036, it False equals to small_factor
+2018-09-26 19:23:13 - INFO - absorption threshold = 0.2
+2018-09-26 19:23:14 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/.DS_Store
+2018-09-26 19:23:14 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-09-26 19:23:14 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished conversion.
+2018-09-26 19:23:14 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201809261922
+2018-09-26 19:38:13 - INFO - Begin the convertion
+2018-09-26 19:38:13 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-09-26 19:38:14 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-09-26 19:38:14 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-09-26 19:42:03 - INFO - Begin the convertion
+2018-09-26 19:42:03 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-09-26 19:42:03 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-09-26 19:42:03 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-09-26 19:42:06 - INFO - Begin the convertion
+2018-09-26 19:42:06 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-09-26 19:42:06 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-09-26 19:42:06 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-09-26 19:42:06 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/.DS_Store
+2018-09-26 19:42:06 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-09-26 19:42:06 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201809261942
+2018-09-26 19:42:18 - INFO - Begin the convertion
+2018-09-26 19:42:18 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-09-26 19:42:18 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-09-26 19:42:19 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-09-26 19:42:19 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/.DS_Store
+2018-09-26 19:42:19 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-09-26 19:42:19 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201809261942
+2018-09-26 19:42:29 - INFO - Begin the convertion
+2018-09-26 19:42:29 - INFO - pdf file 180523IDEPITCH70MERGED.pdf are copied to pdf/180523IDEPITCH70MERGED/.
+2018-09-26 19:42:29 - INFO - Converting each pdf page of /Users/my/Desktop/MT/code/MasterThesis/pdf/180523IDEPITCH70MERGED to svg
+2018-09-26 19:42:30 - INFO - Partitioning each svg page of /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-09-26 19:42:42 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished partition.
+2018-09-26 19:42:42 - INFO - merging threshold = 0.036, it False equals to small_factor
+2018-09-26 19:42:42 - INFO - absorption threshold = 0.2
+2018-09-26 19:42:42 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/.DS_Store
+2018-09-26 19:42:42 - INFO - Extracting objects from svg /Users/my/Desktop/MT/code/MasterThesis/svg/180523IDEPITCH70MERGED
+2018-09-26 19:42:42 - INFO - svg file 180523IDEPITCH70MERGED_01.svg finished conversion.
+2018-09-26 19:42:42 - INFO - Output is saved in folder /Users/my/Desktop/MT/code/MasterThesis/output/201809261942

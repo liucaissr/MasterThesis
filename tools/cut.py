@@ -1198,23 +1198,45 @@ def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
 #todo assert path close
 def subunit(path, unitrect, offsetframe):
     num_line = len(path)
-    unit_points = []
+    #unit_points = []
+    unit_points = {}
+    unitrect = float(unitrect)
     if num_line == 4:
         b = path.bbox()
-        x0 = int(ceil((b[0] - offsetframe.start.real)/unitrect + 0.5))
-        x1 = int(ceil((b[1] - offsetframe.start.real)/unitrect + 0.5))
-        y0 = int(ceil((b[2] - offsetframe.start.imag)/unitrect + 0.5))
-        y1 = int(ceil((b[3] - offsetframe.start.imag)/unitrect + 0.5))
+        x0 = int(floor((b[0] - offsetframe.start.real)/float(unitrect) + 1))
+        x1 = int(ceil((b[1] - offsetframe.start.real)/float(unitrect) + 1))
+        y0 = int(floor((b[2] - offsetframe.start.imag)/float(unitrect) + 1))
+        y1 = int(ceil((b[3] - offsetframe.start.imag)/float(unitrect) + 1))
         for x in range(x0,x1):
             for y in range(y0,y1):
+                l = 1.0
+                w = 1.0
+                if x==x0:
+                    l=x - (b[0] - offsetframe.start.real)/unitrect
+                elif x==(x1-1):
+                    l=(b[1] - offsetframe.start.real)/unitrect-(x-1)
+                if y==y0:
+                    w = y-(b[2] - offsetframe.start.imag)/unitrect
+                elif y==(y1-1):
+                    w = (b[3] - offsetframe.start.imag)/unitrect-(y-1)
+                if x0 == x1 - 1:
+                    l = (b[1]-b[0])/unitrect
+                if y0 == y1 - 1:
+                    w = (b[3]-b[2])/unitrect
+                per = round(l*w,6)
                 point = (x,y)
-                unit_points.append(point)
+                unit_points[point] = per
         return unit_points
     elif num_line > 4:
         rectpaths = rectangular_partition(path)[0]
         for p in rectpaths:
-            unit_points += subunit(p, unitrect, offsetframe)
-        unit_points = list(set(unit_points))
+            new_points= subunit(p, unitrect, offsetframe)
+            for k,v in new_points.items():
+                if k in unit_points.keys():
+                    unit_points[k]+=new_points[k]
+                else:
+                    unit_points[k]=v
+        #unit_points = list(set(unit_points))
         return unit_points
     else:
         NotImplemented
@@ -1234,7 +1256,7 @@ def outputfile(file, context):
         if len(v) != 0:
             l = len(v)
             file.write('o%s %d' % (index, l))
-            for li in v:
-                file.write(' (%d,%d)' % (li[0], li[1]))
+            for li,per in v.items():
+                file.write(' (%d,%d, %f)' % (li[0], li[1], per))
             file.write('\n')
     file.write('FIN\n')
