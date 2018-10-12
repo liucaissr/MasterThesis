@@ -47,7 +47,6 @@ class cutPolygon:
                     conflictfile = open(resultpath + confile, 'w')
                     rawpaths, attributes = svg2paths(svgpath + svg)
 
-                    # todo: move create frame into svgpreprocess
                     offsetx, offsety = preconfig(rawpaths)
                     paths, offsetframe= svgpreprocess(rawpaths, attributes, offsetx, offsety)
 
