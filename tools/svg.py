@@ -42,14 +42,13 @@ class cutPolygon:
             for svg in svgs:
                 if '.svg' in svg:
                     objfile = svg
-                    confile = 'conflict.txt'
+
                     thefile = resultpath + objfile
-                    conflictfile = open(resultpath + confile, 'w')
+
                     rawpaths, attributes = svg2paths(svgpath + svg)
 
                     offsetx, offsety = preconfig(rawpaths)
                     paths, offsetframe= svgpreprocess(rawpaths, attributes, offsetx, offsety)
-
 
                     #multiply perimeter
                     large_factor = 0.02
@@ -71,6 +70,7 @@ class cutPolygon:
                         merging_threshold = no_merge_factor
                     else:
                         merging_threshold = small_ratio
+
                     distincthpaths = []
                     no_merge = {}
                     no_absorption = {}
@@ -285,42 +285,9 @@ class cutPolygon:
                     logger.info('merging threshold = %s, it %s equals to small_factor' % (merging_threshold, tf))
                     logger.info('absorption threshold = %s' % (no_absorption_factor))
 
-                    conflictfile.write('no merge conflict:\n')
-                    for k, v in no_mergex.items():
-                        index = distincthpaths.index(k)
-                        if len(v) != 0:
-                            l = len(v)
-                            conflictfile.write('o%s %d' % (index, l))
-                            for li in v:
-                                indexl = distincthpaths.index(li)
-                                conflictfile.write(' o%s' % (indexl))
-                            conflictfile.write('\n')
-                    conflictfile.write('FIN\n')
-                    conflictfile.write('\nno absorption conflict:\n')
-                    for k, v in no_absorption.items():
-                        index = distincthpaths.index(k)
-                        if len(v) != 0:
-                            stri = []
-                            for l in v:
-                                if abs(k.area()) < abs(l.area()):
-                                    indexl = distincthpaths.index(l)
-                                    if indexl not in stri:
-                                        stri.append('o' + str(indexl))
-                        if len(stri) != 0:
-                            l = len(stri)
-                            conflictfile.write('o%s %d' % (index, l))
-                            for s in stri:
-                                conflictfile.write(' %s' % (s))
-                            conflictfile.write('\n')
-                    conflictfile.write('FIN\n\n')
-                    conflictfile.write('distance:\n')
-                    for k,v in distance.items():
-                        index = distincthpaths.index(k)
-                        if len(v) != 0:
-                            for o,d in v.items():
-                                indexl = distincthpaths.index(o)
-                                conflictfile.write('o%s o%s %f\n' % (index, indexl, d))
-                    conflictfile.write('FIN\n')
-                    conflictfile.close()
+                    conflicts = [no_mergex, no_absorption, distance]
+                    output_conflict(resultpath, 'conflict.txt', conflicts, distincthpaths)
+
+
 
 
