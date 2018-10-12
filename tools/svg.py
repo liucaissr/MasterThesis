@@ -279,14 +279,14 @@ class cutPolygon:
 
                     output_unit(resultpath, 'unit.txt', subunits, unitrect, offsetframe)
 
+                    conflicts = [no_mergex, no_absorption, distance]
+                    output_conflict(resultpath, 'conflict.txt', conflicts, distincthpaths)
+
                     tf = merging_threshold == small_factor
                     logger = logging.getLogger('__main__')
                     logger.info('svg file %s finished partition.' % (svg))
                     logger.info('merging threshold = %s, it %s equals to small_factor' % (merging_threshold, tf))
                     logger.info('absorption threshold = %s' % (no_absorption_factor))
-
-                    conflicts = [no_mergex, no_absorption, distance]
-                    output_conflict(resultpath, 'conflict.txt', conflicts, distincthpaths)
 
 
 
