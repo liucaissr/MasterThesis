@@ -1,5 +1,5 @@
 # !/usr/bin/python
-from os import getcwd, listdir, sep, remove, error, path
+from os import getcwd, listdir, sep
 import os.path
 from tools.directories import Build
 from tools.pdf import Explode, ConvertToSVG
@@ -129,4 +129,4 @@ logger.info('Output is saved in folder %s' % (resultdir))
 
 #todo add a database to save the result
 # todo change no absorption conflict add longer
-# todo output format adaptive
+# todo output format adaptive(csv/txt)

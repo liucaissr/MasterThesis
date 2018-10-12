@@ -221,8 +221,8 @@ def preconfig(paths):
 # process based on attributes
 # todo: 0906 combine original contacted patterns
 # todo: how about closest pattern???-> combine needed should be merging conflict! -> combine needed are sharing same edge
-def svgpreprocess(paths, attributes):
-    offsetx, offsety = preconfig(paths)
+def svgpreprocess(paths, attributes, offsetx, offsety):
+    #offsetx, offsety = preconfig(paths)
     length = len(attributes)
     scale = [1] * length
     newPathList = []
@@ -248,7 +248,8 @@ def svgpreprocess(paths, attributes):
             newline = MicroLine(start, end)
             newPath.append(newline)
         result.append(newPath)
-    return result, offsetx, offsety
+    offsetframe = calculateFrame(result, offsetx, offsety)
+    return result, offsetframe
 
 def calculateFrame(paths, offsetx, offsety):
     frame = Path()

@@ -34,7 +34,7 @@ class ExtractObj:
                 logger.info('svg file %s finished conversion.' % (svg))
 
 class cutPolygon:
-    def cutSVG(self, svgdir, resultdir, no_merge_factor, no_absorption_factor, test_ratio = 1.0):
+    def cutSVG(self, svgdir, resultdir, no_merge_factor, no_absorption_factor):
         svgpath = svgdir + sep
         resultpath = resultdir + sep
         svgs = listdir(svgpath)
@@ -47,14 +47,14 @@ class cutPolygon:
                     conflictfile = open(resultpath + confile, 'w')
                     rawpaths, attributes = svg2paths(svgpath + svg)
 
-                    # TODO: move preconfig into svgpreprocess
                     # todo: move create frame into svgpreprocess
-                    paths, offsetx, offsety = svgpreprocess(rawpaths, attributes)
-                    offsetframe = calculateFrame(paths, offsetx, offsety)
+                    offsetx, offsety = preconfig(rawpaths)
+                    paths, offsetframe= svgpreprocess(rawpaths, attributes, offsetx, offsety)
+
 
                     #multiply perimeter
                     large_factor = 0.02
-                    small_factor = 0.005 * float(test_ratio) # default = 1
+                    small_factor = 0.005
 
                     # determine the small and large dimension of the design
                     # offsetframe: chip frame
@@ -62,7 +62,6 @@ class cutPolygon:
                     dimension = offsetframe[0].length() * offsetframe[1].length()
                     halfgirth = abs(offsetframe[0].length() + offsetframe[1].length())
 
-                    # todo: multiple of area but not one edge?
                     large_ratio = large_factor * halfgirth
                     small_ratio = small_factor * halfgirth
 

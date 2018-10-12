@@ -1,4 +1,5 @@
-#to confirm the resultpath
+# to confirm the result conflict relationship
+
 from os import system, listdir, sep
 from svgpathtools import svg2paths, wsvg
 from tools.cut import *
@@ -39,12 +40,12 @@ distance_test = {}
 
 for file in inputs:
     realdir = cur+sep+file+sep
-    testdir = resultpath+sep+file
+    testdir = resultpath+sep+file+sep
     conflict_real = realdir+'conflict.txt'
-    test = testdir +sep + 'conflict.txt'
+    test = testdir + 'conflict.txt'
     for ff in listdir(testdir):
         if '.svg' in ff:
-            rawpaths, attributes = svg2paths(testdir + sep +ff)
+            rawpaths, attributes = svg2paths(testdir  +ff)
             n = len(rawpaths) - 1
             break
     curcur = 'nomerge'
