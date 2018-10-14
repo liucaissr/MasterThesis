@@ -32,7 +32,7 @@ class LineNavigation(object):
                 else:
                     return 0
 # something like key define exist
-class PointNavigation(object):
+class Vertex(object):
     def __init__(self, point, hline, vline):
         self.point = point
         self.hline = hline
@@ -221,8 +221,7 @@ def preconfig(paths):
 # process based on attributes
 # todo: 0906 combine original contacted patterns
 # todo: how about closest pattern???-> combine needed should be merging conflict! -> combine needed are sharing same edge
-def svgpreprocess(paths, attributes, offsetx, offsety):
-    #offsetx, offsety = preconfig(paths)
+def design_preprocess(paths, attributes, offsetx, offsety):
     length = len(attributes)
     scale = [1] * length
     newPathList = []
@@ -305,15 +304,15 @@ def calculateFrame(paths, offsetx, offsety):
         offsetframe.append(newline)
     return offsetframe
 
-def pathpreprocess(rawpath, offsetx, offsety):
+def pattern_preprocess(rawpath, offsetx, offsety):
     hlines = []
     vlines = []
     filteredPath = Path()
-    filteredPointsObj = []
-    filteredPoints = []
+    filteredVertexObj = []
+    filteredVertex = []
     path = []
 
-    #todo: twice offsetx,offsety(svgpreprocess) (bi xu de)
+    #todo: twice offsetx,offsety(design_preprocess) (bi xu de)
     for line in rawpath:
         start = Coordinate(round(line.start.real - offsetx, 3), round(line.start.imag - offsety, 3))
         end = Coordinate(round(line.end.real - offsetx, 3), round(line.end.imag - offsety, 3))
@@ -359,36 +358,36 @@ def pathpreprocess(rawpath, offsetx, offsety):
             filteredPath.append(line)
 
     for line in filteredHlines:
-        if line.start not in filteredPoints:
-            filteredPoints.append(line.start)
-            startPoint = PointNavigation(line.start, None, None)
-            filteredPointsObj.append(startPoint)
-        if line.end not in filteredPoints:
-            filteredPoints.append(line.end)
-            endPoint = PointNavigation(line.end, None, None)
-            filteredPointsObj.append(endPoint)
-        for pointobj in filteredPointsObj:
+        if line.start not in filteredVertex:
+            filteredVertex.append(line.start)
+            startPoint = Vertex(line.start, None, None)
+            filteredVertexObj.append(startPoint)
+        if line.end not in filteredVertex:
+            filteredVertex.append(line.end)
+            endPoint = Vertex(line.end, None, None)
+            filteredVertexObj.append(endPoint)
+        for pointobj in filteredVertexObj:
             if pointobj.point == line.start:
                 pointobj.hline = line
             if pointobj.point == line.end:
                 pointobj.hline = line
 
     for line in filteredVlines:
-        if line.start not in filteredPoints:
-            filteredPoints.append(line.start)
-            startPoint = PointNavigation(line.start, None, None)
-            filteredPointsObj.append(startPoint)
-        if line.end not in filteredPoints:
-            filteredPoints.append(line.end)
-            endPoint = PointNavigation(line.end, None, None)
-            filteredPointsObj.append(endPoint)
-        for pointobj in filteredPointsObj:
+        if line.start not in filteredVertex:
+            filteredVertex.append(line.start)
+            startPoint = Vertex(line.start, None, None)
+            filteredVertexObj.append(startPoint)
+        if line.end not in filteredVertex:
+            filteredVertex.append(line.end)
+            endPoint = Vertex(line.end, None, None)
+            filteredVertexObj.append(endPoint)
+        for pointobj in filteredVertexObj:
             if pointobj.point == line.start:
                 pointobj.vline = line
             if pointobj.point == line.end:
                 pointobj.vline = line
 
-    return sortedhlines, sortedvlines, filteredPath, filteredPointsObj
+    return sortedhlines, sortedvlines, filteredPath, filteredVertexObj
 
 # intersect point
 def line1_intersect_with_line2(line1, line2):
@@ -1060,11 +1059,11 @@ def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
     allcurcutlines = []
     curdistincthlines = []
     removecutline = []
-    sortedhlines, sortedvlines, filteredPath, filteredPoints = pathpreprocess(path, offsetx, offsety)
+    sortedhlines, sortedvlines, filteredPath, filteredVertex = pattern_preprocess(path, offsetx, offsety)
     # todo pick one shorter line
     # todo if vline
     # todo if hline
-    for pointobj in filteredPoints:
+    for pointobj in filteredVertex:
         # todo point to two cutlines
         cuthline = None
         cutvline = None
@@ -1105,7 +1104,7 @@ def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
                 if line_is_contained_in_path(upcutvline, filteredPath):
                     # todo add to cutlines hou bu
                     cutvline = upcutvline
-                    cutvpoint = PointNavigation(start, intersecthlines[uphlineno], None)
+                    cutvpoint = Vertex(start, intersecthlines[uphlineno], None)
         else:
             # todo down extend
             start = pointobj.point
@@ -1116,7 +1115,7 @@ def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
                 if line_is_contained_in_path(downcutvline, filteredPath):
                     # todo add to cutlines hou bu
                     cutvline = downcutvline
-                    cutvpoint = PointNavigation(end, intersecthlines[downhlineno], None)
+                    cutvpoint = Vertex(end, intersecthlines[downhlineno], None)
 
         # todo compare two line:
         cutvlinelength = 0
@@ -1157,7 +1156,7 @@ def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
                         hcline = allcurcutlines[j]
                         vcline = allcurcutlines[i]
                     intersectp = Coordinate(vcline.start.real, hcline.start.imag)
-                    newvpoint = PointNavigation(intersectp, None, None)
+                    newvpoint = Vertex(intersectp, None, None)
                     cutvpointobjs.append(newvpoint)
                     cutlinevpointobjs.append(newvpoint)
                     for replacehline in [allcurcutlines[i], allcurcutlines[j]]:

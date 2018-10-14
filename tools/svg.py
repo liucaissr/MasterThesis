@@ -48,7 +48,7 @@ class cutPolygon:
                     rawpaths, attributes = svg2paths(svgpath + svg)
 
                     offsetx, offsety = preconfig(rawpaths)
-                    paths, offsetframe= svgpreprocess(rawpaths, attributes, offsetx, offsety)
+                    paths, offsetframe= design_preprocess(rawpaths, attributes, offsetx, offsety)
 
                     #multiply perimeter
                     large_factor = 0.02
@@ -56,10 +56,7 @@ class cutPolygon:
 
                     # determine the small and large dimension of the design
                     # offsetframe: chip frame
-                    # dimension: chip area
-                    dimension = offsetframe[0].length() * offsetframe[1].length()
                     halfgirth = abs(offsetframe[0].length() + offsetframe[1].length())
-
                     large_ratio = large_factor * halfgirth
                     small_ratio = small_factor * halfgirth
 
@@ -106,12 +103,13 @@ class cutPolygon:
                                     if conflict:
                                         keepcutlines.append(line)
                                         cur_no_absorption[path1].append(path2)
-                        #todo + - list
+
                         for cutl in allcurcutlines:
                             if cutl not in keepcutlines:
                                 if cutl not in removecutline:
                                     removecutline.append(cutl)
-                        # merge objects
+
+                        # object combination
                         flag = 1
                         while (flag == 1):
                             curMicdistinctpaths = curcombinedPaths
@@ -142,7 +140,9 @@ class cutPolygon:
                                                 break
                                 if flag == 1:
                                     break
-                        # intersect not mean no nomerge thus removed some lines
+
+                        # intersect not mean no nomerge thus removed some lines -> hao xiang hen dui
+                        # -> if combined, means both paths doesnt have conflict with each other? Yes
                         temp_no_merge = cur_no_merge
                         for con in temp_no_merge.items():
                             for i in con[1]:
