@@ -141,7 +141,7 @@ class cutPolygon:
                                 if flag == 1:
                                     break
 
-                        # intersect not mean no nomerge thus removed some lines -> hao xiang hen dui
+                        # intersect not mean no nomerge thus removed some lines -> hao xiang hen dui -> testcases1014
                         # -> if combined, means both paths doesnt have conflict with each other? Yes
                         temp_no_merge = cur_no_merge
                         for con in temp_no_merge.items():
