@@ -110,7 +110,8 @@ for file in inputs:
                     distance_test[str[0]][str[1]] = str[2]
 
     record.write('%s\n'% file)
-    tf =  no_merge_real == no_merge_test and no_absorb_real == no_absorb_test and distance_real == distance_test
+    tf =  no_merge_real == no_merge_test and no_absorb_real == no_absorb_test\
+    #and distance_real == distance_test
     record.write('%s\n'% tf)
     print file
     print tf
@@ -119,8 +120,15 @@ for file in inputs:
     distance = [distance_real, distance_test]
     d = [no_merge, no_absorb, distance]
     # i[0] = real / i[1] = test
+    record.write('1: merge, 2: LP, 3: distance')
     for i in d:
         num_er = 0
+        #record.write('%d\n' % d.index(i))
+        if i[0]==i[1]:
+            continue
+        else:
+            record.write('%d false\n' % (d.index(i)))
+
         for k1 in i[1].keys():
             for k2 in i[0].keys():
                 if k1 == k2:
@@ -141,5 +149,3 @@ for file in inputs:
         if error != 0:
             record.write('%s error = %s\n' % (d.index(i), error))
 
-
-#todo: layer 1 2 3 false???
