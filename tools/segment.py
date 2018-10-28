@@ -280,10 +280,51 @@ class Pattern(Path):
 
         return sortedhlines, sortedvlines, filteredPath, filteredVertexObj
 
-#class Design(object):
-
-
-
+    # todo assert path close
+    def subunit(self, unitrect, offsetframe):
+        num_line = len(self)
+        # unit_points = []
+        unit_points = {}
+        unitrect = float(unitrect)
+        if num_line == 4:
+            b = self.bbox()
+            x0 = int(floor((b[0] - offsetframe.start.real) / float(unitrect) + 1))
+            x1 = int(ceil((b[1] - offsetframe.start.real) / float(unitrect) + 1))
+            y0 = int(floor((b[2] - offsetframe.start.imag) / float(unitrect) + 1))
+            y1 = int(ceil((b[3] - offsetframe.start.imag) / float(unitrect) + 1))
+            for x in range(x0, x1):
+                for y in range(y0, y1):
+                    l = 1.0
+                    w = 1.0
+                    if x == x0:
+                        l = x - (b[0] - offsetframe.start.real) / unitrect
+                    elif x == (x1 - 1):
+                        l = (b[1] - offsetframe.start.real) / unitrect - (x - 1)
+                    if y == y0:
+                        w = y - (b[2] - offsetframe.start.imag) / unitrect
+                    elif y == (y1 - 1):
+                        w = (b[3] - offsetframe.start.imag) / unitrect - (y - 1)
+                    if x0 == x1 - 1:
+                        l = (b[1] - b[0]) / unitrect
+                    if y0 == y1 - 1:
+                        w = (b[3] - b[2]) / unitrect
+                    per = round(l * w, 6)
+                    point = (x, y)
+                    unit_points[point] = per
+            return unit_points
+        elif num_line > 4:
+            rectpaths = rectangular_partition(self)[0]
+            for p in rectpaths:
+                new_points = p.subunit(unitrect, offsetframe)
+                for k, v in new_points.items():
+                    if k in unit_points.keys():
+                        unit_points[k] += new_points[k]
+                    else:
+                        unit_points[k] = v
+            # unit_points = list(set(unit_points))
+            return unit_points
+        else:
+            NotImplemented
 
 def preconfig(paths):
     offsetx = paths[0][0].start.real
@@ -337,10 +378,10 @@ def design_preprocess(paths, attributes, offsetx, offsety):
             newline = MicroLine(start, end)
             newPath.append(newline)
         result.append(newPath)
-    offsetframe = calculateFrame(result, offsetx, offsety)
+    offsetframe = calculateFrame(result)
     return result, offsetframe
 
-def calculateFrame(paths, offsetx, offsety):
+def calculateFrame(paths):
     frame = Pattern()
     fb = paths[0].bbox()
     xmin = fb[0]
@@ -833,7 +874,6 @@ def unitdivision(frame):
     unitrectedge = round(unitdim, n+2)
     return unitrectedge
 
-#todo: add more unit and percentage and test with 0720
 def rectangular_partition(path):
     #todo move large_ratio and removecutlines out
     cutvpointobjs = []
@@ -973,53 +1013,6 @@ def rectangular_partition(path):
     # cuthlines: all cuthlines - cutcutlines
     curdistinctpaths = createrect(curdistincthlines)
     return curdistinctpaths, allcurcutlines
-
-#todo move to path properties
-#todo assert path close
-def subunit(path, unitrect, offsetframe):
-    num_line = len(path)
-    #unit_points = []
-    unit_points = {}
-    unitrect = float(unitrect)
-    if num_line == 4:
-        b = path.bbox()
-        x0 = int(floor((b[0] - offsetframe.start.real)/float(unitrect) + 1))
-        x1 = int(ceil((b[1] - offsetframe.start.real)/float(unitrect) + 1))
-        y0 = int(floor((b[2] - offsetframe.start.imag)/float(unitrect) + 1))
-        y1 = int(ceil((b[3] - offsetframe.start.imag)/float(unitrect) + 1))
-        for x in range(x0,x1):
-            for y in range(y0,y1):
-                l = 1.0
-                w = 1.0
-                if x==x0:
-                    l=x - (b[0] - offsetframe.start.real)/unitrect
-                elif x==(x1-1):
-                    l=(b[1] - offsetframe.start.real)/unitrect-(x-1)
-                if y==y0:
-                    w = y-(b[2] - offsetframe.start.imag)/unitrect
-                elif y==(y1-1):
-                    w = (b[3] - offsetframe.start.imag)/unitrect-(y-1)
-                if x0 == x1 - 1:
-                    l = (b[1]-b[0])/unitrect
-                if y0 == y1 - 1:
-                    w = (b[3]-b[2])/unitrect
-                per = round(l*w,6)
-                point = (x,y)
-                unit_points[point] = per
-        return unit_points
-    elif num_line > 4:
-        rectpaths = rectangular_partition(path)[0]
-        for p in rectpaths:
-            new_points= subunit(p, unitrect, offsetframe)
-            for k,v in new_points.items():
-                if k in unit_points.keys():
-                    unit_points[k]+=new_points[k]
-                else:
-                    unit_points[k]=v
-        #unit_points = list(set(unit_points))
-        return unit_points
-    else:
-        NotImplemented
 
 # todo changed hlineobj into hline
 def point_on_line(point, line):

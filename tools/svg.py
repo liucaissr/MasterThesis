@@ -5,11 +5,8 @@ from tools.conflict import *
 from tools.combine import combinePaths
 from tools.shift import getDev, shiftPattern
 from tools.save import output_conflict,output_unit
-from bisect import *
-from operator import attrgetter
 import logging
-import math
-import numpy as np
+
 
 class ExtractObj:
 #todo change format
@@ -281,7 +278,7 @@ class cutPolygon:
                     subunits = {}
                     for i in range(0, length):
                         subunits[i+1] = []
-                        subunits[i+1] = subunit(distincthpaths[i], unitrect, offsetframe)
+                        subunits[i+1] = distincthpaths[i].subunit(unitrect, offsetframe)
 
                     distincthpaths.insert(0, offsetframe)
                     wsvg(distincthpaths, filename=thefile, openinbrowser=False)
