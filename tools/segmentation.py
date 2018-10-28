@@ -8,7 +8,6 @@ import numpy as np
 from tools.mt import *
 from tools.geometry import *
 
-
 class LineNavigation(object):
     def __init__(self, position, start, end, line):
         self.position = position
@@ -393,6 +392,8 @@ def calculateFrame(paths, offsetx, offsety):
     # todo: no offset, minues zai shuo
 
     return frame
+
+
 
 
 # intersect = intersect lines on the paths
@@ -918,3 +919,43 @@ def rectangular_partition(path, large_ratio=0):
     # cuthlines: all cuthlines - cutcutlines
     curdistinctpaths = createrect(curdistincthlines)
     return curdistinctpaths, allcurcutlines
+
+def createrect(curdistincthlines):
+    curdistinctpaths = []
+    curdistincthlines = sorted(curdistincthlines)
+    length = len(curdistincthlines)
+    used = length * [0]
+    curdistincthlinesy = map(attrgetter('start.imag'), curdistincthlines)
+    for i in range(0, length):
+        # todo add intersect
+        if used[i] == 0:
+            intersectlines = []
+            intersectlines_ind = []
+            for k in range(i + 1, length):
+                if curdistincthlines[k].start.real == curdistincthlines[i].start.real and curdistincthlines[
+                    i].end.real == curdistincthlines[k].end.real:
+                    intersectlines.append(curdistincthlines[k])
+                    intersectlines_ind.append(k)
+            intersectlinesy = map(attrgetter('start.imag'), intersectlines)
+            nextstart = bisect(intersectlinesy, curdistincthlinesy[i])
+            lens = len(intersectlines)
+            if nextstart >= lens:
+                continue
+            nextend = bisect(intersectlinesy, intersectlinesy[nextstart])
+            if nextend > lens:
+                continue
+            for j in range(nextstart, nextend):
+                if used[intersectlines_ind[j]] == 0 and used[i] == 0:
+                    if curdistincthlines[i].start.real == intersectlines[j].start.real and \
+                            curdistincthlines[
+                                i].end.real == \
+                            intersectlines[j].end.real:
+                        UperLine = curdistincthlines[i]
+                        Lowerline = intersectlines[j]
+                        newPath = Pattern(UperLine, MicroLine(UperLine.end, Lowerline.end),
+                                       MicroLine(Lowerline.end, Lowerline.start),
+                                       MicroLine(Lowerline.start, UperLine.start))
+                        used[intersectlines_ind[j]] = 1
+                        used[i] = 1
+                        curdistinctpaths.append(newPath)
+    return curdistinctpaths

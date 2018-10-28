@@ -1,6 +1,6 @@
 from os import system, listdir, sep
 from svgpathtools import svg2paths, wsvg
-from tools.cut import *
+from tools.segmentation import *
 from bisect import *
 from operator import attrgetter
 import logging
@@ -71,13 +71,18 @@ class cutPolygon:
                     distincthpaths = []
                     no_merge = {}
                     no_absorption = {}
+
                     # todo: collect h lines
                     for path in paths:
                         #wsvg(curdistinctpaths, filename='testoutput.svg', openinbrowser=True)
                         # curdistinctpaths: redraw of the design before conflict detection and deviation!h.
                         # create rect with last hline, in order to redraw the pic
-                        curdistinctpaths, allcurcutlines, removecutline = rectangular_partition(path,
-                                                                                                large_ratio)
+                        curdistinctpaths, allcurcutlines = rectangular_partition(path)
+                        removecutlines = []
+                        for curcutline in allcurcutlines:
+                            if large_ratio != 0:
+                                if curcutline.length() >= large_ratio:
+                                    removecutlines.append(curcutline)
                         curcombinedPaths = []
                         curMicdistinctpaths = []
                         # todo: conflict detection
@@ -105,8 +110,8 @@ class cutPolygon:
 
                         for cutl in allcurcutlines:
                             if cutl not in keepcutlines:
-                                if cutl not in removecutline:
-                                    removecutline.append(cutl)
+                                if cutl not in removecutlines:
+                                    removecutlines.append(cutl)
 
                         # object combination
                         flag = 1
@@ -120,7 +125,7 @@ class cutPolygon:
                                             continue
                                         inter,p = two_paths_intersection(path1, path2)
                                         if len(inter) != 0:
-                                            for cut in removecutline:
+                                            for cut in removecutlines:
                                                 cutMline = MicroLine(Coordinate(cut.start), Coordinate(cut.end))
                                                 interl, p = two_lines_intersection(cutMline, inter[0])
                                                 if interl is not None:
@@ -192,8 +197,9 @@ class cutPolygon:
                             if con[1] != []:
                                 no_absorption[con[0]] = con[1]
                         # todo conflict2 connected conflict: compare area(ratio of cut areas)
-                        # todo conflict1 near cannot be combined (refresh removecutline)
+                        # todo conflict1 near cannot be combined (refresh removecutlines)
                         # todo at the end detect no_merge_conflict again
+
                     distance = {}
                     min_distance = 0
                     if len(distincthpaths) >= 2:
