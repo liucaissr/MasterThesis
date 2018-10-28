@@ -1,7 +1,7 @@
 #to confirm the resultpath
 from os import system, listdir, sep
 from svgpathtools import svg2paths, wsvg
-from tools.cut import *
+from tools.segment import *
 from bisect import *
 from operator import attrgetter
 from os import getcwd, listdir, sep, remove, error, path

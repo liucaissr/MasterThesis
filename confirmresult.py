@@ -2,7 +2,7 @@
 
 from os import system, listdir, sep
 from svgpathtools import svg2paths, wsvg
-from tools.cut import *
+from tools.segment import *
 from bisect import *
 from operator import attrgetter
 from os import getcwd, listdir, sep, remove, error, path
@@ -140,8 +140,6 @@ for file in inputs:
         error = float(num_er) / n
         if error != 0:
             record.write('%s error = %s\n' % (d.index(i), error))
-
-
 
 
 #todo: layer 1 2 3 false???

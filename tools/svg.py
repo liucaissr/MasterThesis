@@ -1,6 +1,10 @@
 from os import system, listdir, sep
 from svgpathtools import svg2paths, wsvg
-from tools.segmentation import *
+from tools.segment import *
+from tools.conflict import *
+from tools.combine import combinePaths
+from tools.shift import getDev, shiftPattern
+from tools.save import output_conflict,output_unit
 from bisect import *
 from operator import attrgetter
 import logging
@@ -169,7 +173,7 @@ class cutPolygon:
                                             if inter[0] in path1:
                                                 dev = getDev(path2, inter[0])
                                                 #todo: largeratio -> global variable
-                                                newPath = changePath(path1, path1.index(inter[0]), dev, 0.2, large_ratio)
+                                                newPath = shiftPattern(path1, path1.index(inter[0]), dev, 0.2, large_ratio)
                                                 curdevPaths.remove(path1)
                                                 curdevPaths.append(newPath)
                                                 # start path1, cur_no_merge, newPath
@@ -178,7 +182,7 @@ class cutPolygon:
                                                 flag = 1
                                             if inter[0] in path2:
                                                 dev = getDev(path1, inter[0])
-                                                newPath = changePath(path2, path2.index(inter[0]), dev, 0.2, large_ratio)
+                                                newPath = shiftPattern(path2, path2.index(inter[0]), dev, 0.2, large_ratio)
                                                 curdevPaths.remove(path2)
                                                 curdevPaths.append(newPath)
                                                 update_conflict(cur_no_merge, path2, newPath)

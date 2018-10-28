@@ -12,7 +12,7 @@ import logging
 import setuplog
 
 # arg1 = files folder
-# arg2 = no_merge_threshold
+# arg2 = no_merge_threshpoint_on_pathold
 
 no_merge_factor = 0
 no_absorption_factor = 0.2
@@ -130,3 +130,5 @@ logger.info('Output is saved in folder %s' % (resultdir))
 #todo add a database to save the result
 # todo change no absorption conflict add longer
 # todo output format adaptive(csv/txt)
+
+#todo add script for testing

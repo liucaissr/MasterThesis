@@ -1,5 +1,5 @@
 import unittest
-from tools.cut import *
+from tools.segment import *
 from math import *
 from os import getcwd, listdir, sep, remove, error, path
 
