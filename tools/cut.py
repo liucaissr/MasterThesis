@@ -300,7 +300,7 @@ def calculateFrame(paths, offsetx, offsety):
 
     return frame
 
-def pattern_preprocess(rawpath, offsetx, offsety):
+def pattern_preprocess(rawpath):
     hlines = []
     vlines = []
     filteredPath = Path()
@@ -1047,7 +1047,7 @@ def unitdivision(frame):
     return unitrectedge
 
 #todo: add more unit and percentage and test with 0720
-def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
+def rectangular_partition(path, large_ratio = 0):
     #todo move large_ratio and removecutlines out
     cutvpointobjs = []
     cuthlines = []
@@ -1055,7 +1055,7 @@ def rectangular_partition(path, offsetx = 0, offsety = 0, large_ratio = 0):
     allcurcutlines = []
     curdistincthlines = []
     removecutline = []
-    sortedhlines, sortedvlines, filteredPath, filteredVertex = pattern_preprocess(path, offsetx, offsety)
+    sortedhlines, sortedvlines, filteredPath, filteredVertex = pattern_preprocess(path)
     # todo pick one shorter line
     # todo if vline
     # todo if hline

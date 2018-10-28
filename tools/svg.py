@@ -76,7 +76,7 @@ class cutPolygon:
                         #wsvg(curdistinctpaths, filename='testoutput.svg', openinbrowser=True)
                         # curdistinctpaths: redraw of the design before conflict detection and deviation!h.
                         # create rect with last hline, in order to redraw the pic
-                        curdistinctpaths, allcurcutlines, removecutline = rectangular_partition(path, offsetx, offsety,
+                        curdistinctpaths, allcurcutlines, removecutline = rectangular_partition(path,
                                                                                                 large_ratio)
                         curcombinedPaths = []
                         curMicdistinctpaths = []
@@ -89,7 +89,6 @@ class cutPolygon:
                             cur_no_merge[path1] = []
                             for path2 in curMicdistinctpaths:
                                 if path1 != path2:
-                                    #conflict, dis = no_merge_conflict(path1, path2, small_ratio)
                                     conflict, dis = no_merge_conflict(path1, path2, merging_threshold)
                                     if conflict:
                                         cur_no_merge[path1].append(path2)
