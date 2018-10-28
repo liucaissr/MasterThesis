@@ -11,7 +11,7 @@ def no_merge_conflict(path1, path2, factor, dis = None):
     else:
         return False,dis
 
-def no_absorption_conflict(path1, path2, factor):
+def lp_conflict(path1, path2, factor):
     # factor = 0.2
     assert path1.isclosed() and path2.isclosed(), '%s is not closed' % (path1 if path1.isclosed() is False else path2)
     x, p = two_paths_intersection(path1, path2)
@@ -21,8 +21,6 @@ def no_absorption_conflict(path1, path2, factor):
     if len(x) == 0 and p is None:
         return False,interl
     # assert len(x) == 1
-    #todo: 0823 add for new situation
-    #todo: 0903 add more robost check
     elif len(x) != 0 and p is None:
         length = float(x[0].length())
         interl = x[0]
@@ -113,7 +111,6 @@ def update_conflict(conflict, oldPath, newPath):
     if oldPath in conflict.keys():
         for conflictpath in conflict[oldPath]:
             if conflictpath not in conflict[newPath]:
-                # todo any unique list
                 conflict[newPath].append(conflictpath)
         del conflict[oldPath]
     for k, v in conflict.items():

@@ -3,7 +3,7 @@ from os import getcwd, listdir, sep
 import os.path
 from tools.directories import Build
 from tools.pdf import Explode, ConvertToSVG
-from tools.svg import ExtractObj, cutPolygon
+from tools.design import ExtractObj, cutPolygon
 import time
 import sys
 from shutil import *
@@ -15,11 +15,12 @@ import setuplog
 # arg2 = no_merge_threshpoint_on_pathold
 
 no_merge_factor = 0
-no_absorption_factor = 0.2
+lp_factor = 0.2
 
 setuplog.setup_logging()
 logger = logging.getLogger(__name__)
 
+# argv[2] = merging_factor
 for i in range(0,len(sys.argv)):
     if i == 1:
         filesfolder = sys.argv[i]
@@ -79,15 +80,14 @@ for filenamedir in listdir(tmpdir):
 now.cutFiles(tmpdir, pdfdir, svgdir)
 
 # Performs the separate pages process.
-action = Explode()
+action = Explode()#todo: change inkscape path firstly
 for currentdir in listdir(pdfdir):
-    # todo: ".pdf" in currentdir
     curpath = pdfdir + sep + currentdir
     if os.path.isdir(curpath):
         action.explodePages(pdfdir + sep + currentdir)
 
 # Convert each pdf page to svg file
-action = ConvertToSVG()
+action = ConvertToSVG()#todo: change inkscape path firstly
 pdfdir = currentpath + sep + pdfdir
 svgdir = currentpath + sep + svgdir
 for currentdir in listdir(pdfdir):
@@ -96,17 +96,15 @@ for currentdir in listdir(pdfdir):
         logger.info('Converting each pdf page of %s to svg' % (pdfdir + sep + currentdir))
         action.converPdfToSvg(pdfdir + sep + currentdir, svgdir + sep + currentdir)
 
-# todo: cut polygon
 # Convert each pdf page to svg file
 action = cutPolygon()
 resultdir = currentpath + sep + resultdir
 
 for currentdir in listdir(svgdir):
-    #todo: change to general
     curpath = svgdir + sep + currentdir
     if os.path.isdir(curpath):
         logger.info('Partitioning each svg page of %s' % (svgdir + sep + currentdir))
-        action.cutSVG(svgdir + sep + currentdir, resultdir + sep + currentdir, no_merge_factor, no_absorption_factor)
+        action.cutSVG(svgdir + sep + currentdir, resultdir + sep + currentdir, no_merge_factor, lp_factor)
 
 # Extract objects from svg
 action = ExtractObj()
@@ -118,11 +116,3 @@ for currentdir in listdir(resultdir):
 
 logger.info('Output is saved in folder %s' % (resultdir))
 
-
-# todo log.debug (try cast) or assert
-# todo multithreading
-# todo analysis the threshold
-# todo dic with unique key
-# todo add a database to save the result
-# todo change no absorption conflict add longer
-# todo output format adaptive(csv/txt)

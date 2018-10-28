@@ -8,9 +8,7 @@ from operator import attrgetter
 from os import getcwd, listdir, sep, remove, error, path
 import os.path
 
-#todo change relative path
-
-cur = '/Users/my/Desktop/MT/code/MasterThesis/0712'
+cur = '/Users/my/Desktop/MT/code/MasterThesis/expectedOutput'
 
 IDE = cur+sep+'171130-IDELayout-final'
 Heater = cur+sep+'171130-MicroHeaterLayout-final'

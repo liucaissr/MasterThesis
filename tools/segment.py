@@ -203,7 +203,6 @@ class Pattern(Path):
         filteredVertex = []
         path = []
 
-        # todo: twice offsetx,offsety(design_preprocess) (bi xu de)
         for line in self:
             start = Coordinate(round(line.start.real, 3), round(line.start.imag, 3))
             end = Coordinate(round(line.end.real, 3), round(line.end.imag, 3))
@@ -243,7 +242,6 @@ class Pattern(Path):
                                      Coordinate(hline.point(max(intersectpoints))))
                 filteredHlines.append(newhline)
 
-        # todo filteredPath not closed
         for line in path:
             if line.start != line.end:
                 filteredPath.append(line)
@@ -280,7 +278,6 @@ class Pattern(Path):
 
         return sortedhlines, sortedvlines, filteredPath, filteredVertexObj
 
-    # todo assert path close
     def subunit(self, unitrect, offsetframe):
         assert self.isclosed()  # This question isn't well-defined otherwise
         num_line = len(self)
@@ -352,7 +349,6 @@ def preconfig(paths):
 
 # process based on attributes
 # todo: 0906 combine original contacted patterns
-# todo: how about closest pattern???-> combine needed should be merging conflict! -> combine needed are sharing same edge
 def design_preprocess(paths, attributes, offsetx, offsety):
     length = len(attributes)
     scale = [1] * length
@@ -428,12 +424,11 @@ def calculateFrame(paths):
                                Coordinate(xmin - offset, ymin - offset)))
     if frame in paths:
         paths.remove(frame)
-    # todo: no offset, minues zai shuo
 
     return frame
 
+#combine parallel lines
 def combineLines(microlines):
-    # todo: assert parallel lines
     result = []
     lines = []
     length = len(microlines)
@@ -458,7 +453,6 @@ def combineLines(microlines):
             else:
                 break
         if sortedlines[i].end != end:
-            # todo: bu neng tiao bu
             k = j
             if j == length - 1:
                 k = length
@@ -478,13 +472,11 @@ def combineLines(microlines):
         result.append(newLine)
     return result
 
-# todo test this method
 def combineLinesWithPoints(allLines, cutPoints):
     result = []
     sortedhlines = sorted(allLines)
     sortedPoints = sorted(cutPoints)
     processedLine = []
-    # todo one line is missing
     remainLines = sortedhlines
     processedLineQueue = []
     for pointobj in sortedPoints:
@@ -522,9 +514,6 @@ def combineLinesWithPoints(allLines, cutPoints):
     for line in processedLine:
         if line not in result:
             result.append(line)
-
-    # todo collect curProcessedLine
-
     return result
 
 def point_is_contained_in_path(point, path):
@@ -537,12 +526,10 @@ def point_is_contained_in_path(point, path):
     else:
         return False
 
-#todo: change name into line in path
-def line_is_contained_in_path(line, path):
+def line_in_path(line, path):
     assert path.isclosed()  # This question isn't well-defined otherwise
     # find a point that's definitely outside path2
     # assert path1 is line
-    #todo add logic for point on line to true
     mid = Coordinate((line.start.real+line.end.real)/2.0,(line.start.imag+line.end.imag)/2.0)
     if (point_is_contained_in_path(line.start, path) or point_on_path(line.start, path)) and (point_is_contained_in_path(line.end, path) or point_on_path(line.end, path)) and (point_is_contained_in_path(mid, path) or point_on_path(mid, path)):
         return True
@@ -694,12 +681,12 @@ def two_paths_intersection(path1, path2):
                         intersectpoints.append(interpoint)
 
     for line1 in path1:
-        if line_is_contained_in_path(line1, path2):
+        if line_in_path(line1, path2):
             if line1 not in intersect:
                 pathlines.append(line1)
 
     for line2 in path2:
-        if line_is_contained_in_path(line2, path1):
+        if line_in_path(line2, path1):
             if line2 not in intersect:
                 pathlines.append(line2)
 
@@ -831,7 +818,6 @@ def createrect(curdistincthlines):
     used = length * [0]
     curdistincthlinesy = map(attrgetter('start.imag'), curdistincthlines)
     for i in range(0, length):
-        # todo add intersect
         if used[i] == 0:
             intersectlines = []
             intersectlines_ind = []
@@ -865,7 +851,6 @@ def createrect(curdistincthlines):
     return curdistinctpaths
 
 def unitdivision(frame):
-    unitrectedge = 1
     # calculate area of unit
     # unitdim: approximate unit edge size
     # unitrectedge: unit edge size
@@ -876,7 +861,6 @@ def unitdivision(frame):
     return unitrectedge
 
 def rectangular_partition(path):
-    #todo move large_ratio and removecutlines out
     cutvpointobjs = []
     cuthlines = []
     allhlines = []
@@ -884,11 +868,7 @@ def rectangular_partition(path):
     curdistincthlines = []
     removecutline = []
     sortedhlines, sortedvlines, filteredPath, filteredVertex = path.preprocess()
-    # todo pick one shorter line
-    # todo if vline
-    # todo if hline
     for pointobj in filteredVertex:
-        # todo point to two cutlines
         cuthline = None
         cutvline = None
         intersecthlines = [x for x in sortedhlines if
@@ -898,50 +878,48 @@ def rectangular_partition(path):
         intersecthlinesy = map(attrgetter('start.imag'), intersecthlines)
         intersectvlinesx = map(attrgetter('start.real'), intersectvlines)
         if pointobj.point == pointobj.hline.start:
-            # todo left extend
             end = pointobj.point
             leftvlineno = bisect_left(intersectvlinesx, end.real) - 1
             if len(intersectvlines) > leftvlineno >= 0:
                 start = Coordinate(intersectvlines[leftvlineno].start.real, end.imag)
                 leftcuthline = MicroLine(start, end)
-                if line_is_contained_in_path(leftcuthline, filteredPath):
-                    # todo add to cutlines hou bu
+                if line_in_path(leftcuthline, filteredPath):
                     cuthline = leftcuthline
         else:
-            # todo right extend
+
             start = pointobj.point
             rightvlineno = bisect_right(intersectvlinesx, start.real)
             if 0 < rightvlineno < len(intersectvlines):
                 end = Coordinate(intersectvlines[rightvlineno].start.real, start.imag)
                 rightcuthline = MicroLine(start, end)
-                if line_is_contained_in_path(rightcuthline, filteredPath):
-                    # todo add to cutlines hou bu
+                if line_in_path(rightcuthline, filteredPath):
+
                     cuthline = rightcuthline
 
         if pointobj.point == pointobj.vline.start:
-            # todo up extend
+
             end = pointobj.point
             uphlineno = bisect_left(intersecthlinesy, end.imag) - 1
             if len(intersecthlines) > uphlineno >= 0:
                 start = Coordinate(end.real, intersecthlines[uphlineno].start.imag)
                 upcutvline = MicroLine(start, end)
-                if line_is_contained_in_path(upcutvline, filteredPath):
-                    # todo add to cutlines hou bu
+                if line_in_path(upcutvline, filteredPath):
+
                     cutvline = upcutvline
                     cutvpoint = Vertex(start, intersecthlines[uphlineno], None)
         else:
-            # todo down extend
+
             start = pointobj.point
             downhlineno = bisect_right(intersecthlinesy, start.imag)
             if 0 < downhlineno < len(intersecthlines):
                 end = Coordinate(start.real, intersecthlines[downhlineno].start.imag)
                 downcutvline = MicroLine(start, end)
-                if line_is_contained_in_path(downcutvline, filteredPath):
-                    # todo add to cutlines hou bu
+                if line_in_path(downcutvline, filteredPath):
+
                     cutvline = downcutvline
                     cutvpoint = Vertex(end, intersecthlines[downhlineno], None)
 
-        # todo compare two line:
+
         cutvlinelength = 0
         cuthlinelength = 0
         curcutline = None
@@ -952,10 +930,8 @@ def rectangular_partition(path):
         if cutvlinelength != 0 and (cuthlinelength > cutvlinelength or cuthlinelength == 0):
             curcutline = cutvline
             cutvpointobjs.append(cutvpoint)
-            # todo add above hline
         elif cuthlinelength != 0 and (cutvlinelength >= cuthlinelength or cutvlinelength == 0):
             curcutline = cuthline
-            # todo change cuthlines, allhlines to cuthlines
             cuthlines.append(curcutline)
             allhlines.append(curcutline)
 
@@ -995,19 +971,13 @@ def rectangular_partition(path):
     if len(cutlinevpointobjs):
         replacehlines = combineLinesWithPoints(allhlines, cutlinevpointobjs)
     # replacehlines: combined h cutlines
-    # todo remove after testing
     for line in sortedhlines:
         allhlines.append(line)
     combinedhlines = combineLinesWithPoints(allhlines, cutvpointobjs)
     for line in combinedhlines:
-        # todo delete obj
+
         curdistincthlines.append(line)
-    # todo add cuthline to cur
-    '''
-    for line in cutcutlines:
-        if line in cuthlines:
-            cuthlines.remove(line)
-    '''
+
     for line in replacehlines:
         curdistincthlines.append(line)
     # curdistincthlines: combinedhlines +  replacehlines
@@ -1015,7 +985,7 @@ def rectangular_partition(path):
     curdistinctpaths = createrect(curdistincthlines)
     return curdistinctpaths, allcurcutlines
 
-# todo changed hlineobj into hline
+
 def point_on_line(point, line):
     l0 = line.order()
     if l0.start.imag == point.imag:

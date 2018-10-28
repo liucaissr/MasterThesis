@@ -9,7 +9,6 @@ import logging
 
 
 class ExtractObj:
-#todo change format
     def extractObjects(self, resultdir):
         resultpath = resultdir + sep
         svgs = listdir(resultpath)
@@ -35,7 +34,7 @@ class ExtractObj:
                 logger.info('svg file %s finished conversion.' % (svg))
 
 class cutPolygon:
-    def cutSVG(self, svgdir, resultdir, no_merge_factor, no_absorption_factor):
+    def cutSVG(self, svgdir, resultdir, no_merge_factor, lp_factor):
         svgpath = svgdir + sep
         resultpath = resultdir + sep
         svgs = listdir(svgpath)
@@ -61,7 +60,6 @@ class cutPolygon:
                     large_ratio = large_factor * halfgirth
                     small_ratio = small_factor * halfgirth
 
-                    # todo: add coordinate
                     # unitrect: edge of unit rect
                     unitrect = unitdivision(offsetframe)
                     if no_merge_factor != 0:
@@ -73,7 +71,6 @@ class cutPolygon:
                     no_merge = {}
                     no_absorption = {}
 
-                    # todo: collect h lines
                     for path in paths:
                         #wsvg(curdistinctpaths, filename='testoutput.svg', openinbrowser=True)
                         # curdistinctpaths: redraw of the design before conflict detection and deviation!h.
@@ -86,7 +83,7 @@ class cutPolygon:
                                     removecutlines.append(curcutline)
                         curcombinedPaths = []
                         curMicdistinctpaths = []
-                        # todo: conflict detection
+
                         for path in curdistinctpaths:
                             curcombinedPaths.append(path)
                             curMicdistinctpaths.append(path)
@@ -104,7 +101,7 @@ class cutPolygon:
                             cur_no_absorption[path1] = []
                             for path2 in curMicdistinctpaths:
                                 if path1 != path2:
-                                    conflict, line = no_absorption_conflict(path1, path2, no_absorption_factor)
+                                    conflict, line = lp_conflict(path1, path2, lp_factor)
                                     if conflict:
                                         keepcutlines.append(line)
                                         cur_no_absorption[path1].append(path2)
@@ -169,7 +166,6 @@ class cutPolygon:
                                         if len(inter) != 0:
                                             if inter[0] in path1:
                                                 dev = getDev(path2, inter[0])
-                                                #todo: largeratio -> global variable
                                                 newPath = shiftPattern(path1, path1.index(inter[0]), dev, 0.2, large_ratio)
                                                 curdevPaths.remove(path1)
                                                 curdevPaths.append(newPath)
@@ -197,9 +193,6 @@ class cutPolygon:
                         for con in cur_no_absorption.items():
                             if con[1] != []:
                                 no_absorption[con[0]] = con[1]
-                        # todo conflict2 connected conflict: compare area(ratio of cut areas)
-                        # todo conflict1 near cannot be combined (refresh removecutlines)
-                        # todo at the end detect no_merge_conflict again
 
                     distance = {}
                     min_distance = 0
@@ -230,7 +223,6 @@ class cutPolygon:
                         if v == {}:
                             del distance[k]
                     min_distance = max(0, min_distance)
-                    # todo change the logic
                     if min_distance != 0:
                         min_distance = min(min_distance, small_ratio)
                         merging_threshold = min_distance * 3
@@ -259,13 +251,12 @@ class cutPolygon:
                     for p in distincthpaths:
                         if no_mergex[p] == []:
                             del no_mergex[p]
-                    # todo:0903 is that possible more lpcon?
                     for i in range(0, length):
                         for j in range(i+1, length):
                             if distincthpaths[i] in no_absorption.keys():
                                 if distincthpaths[j] in no_absorption[distincthpaths[i]]:
                                     break
-                            conflict, line = no_absorption_conflict(distincthpaths[i], distincthpaths[j], no_absorption_factor)
+                            conflict, line = lp_conflict(distincthpaths[i], distincthpaths[j], lp_factor)
                             if conflict:
                                 if distincthpaths[i] not in no_absorption.keys():
                                     no_absorption[distincthpaths[i]] = []
@@ -292,7 +283,7 @@ class cutPolygon:
                     logger = logging.getLogger('__main__')
                     logger.info('svg file %s finished partition.' % (svg))
                     logger.info('merging threshold = %s, it %s equals to small_factor' % (merging_threshold, tf))
-                    logger.info('absorption threshold = %s' % (no_absorption_factor))
+                    logger.info('absorption threshold = %s' % (lp_factor))
 
 
 

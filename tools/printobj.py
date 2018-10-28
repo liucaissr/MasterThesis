@@ -2,10 +2,7 @@ from os import system, listdir, sep
 from svgpathtools import svg2paths, wsvg
 
 class PrintObj:
-    #def divideObjects(self, svgdir):
-
     def orderObjects(self, svgdir, printdir):
-        #todo: assert all path should be rectangle
         svgpath = svgdir + sep
         printdir = printdir + sep
         svgs = listdir(svgpath)
