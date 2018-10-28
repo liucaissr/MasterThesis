@@ -296,13 +296,9 @@ def calculateFrame(paths, offsetx, offsety):
                                Coordinate(xmin - offset, ymin - offset)))
     if frame in paths:
         paths.remove(frame)
-    offsetframe = Path()
-    for line in frame:
-        start = Coordinate(line.start.real - offsetx, line.start.imag - offsety)
-        end = Coordinate(line.end.real - offsetx, line.end.imag - offsety)
-        newline = MicroLine(start, end)
-        offsetframe.append(newline)
-    return offsetframe
+    # todo: no offset, minues zai shuo
+
+    return frame
 
 def pattern_preprocess(rawpath, offsetx, offsety):
     hlines = []
@@ -314,8 +310,8 @@ def pattern_preprocess(rawpath, offsetx, offsety):
 
     #todo: twice offsetx,offsety(design_preprocess) (bi xu de)
     for line in rawpath:
-        start = Coordinate(round(line.start.real - offsetx, 3), round(line.start.imag - offsety, 3))
-        end = Coordinate(round(line.end.real - offsetx, 3), round(line.end.imag - offsety, 3))
+        start = Coordinate(round(line.start.real, 3), round(line.start.imag, 3))
+        end = Coordinate(round(line.end.real, 3), round(line.end.imag, 3))
         newline = MicroLine(start, end)
         path.append(newline)
 
