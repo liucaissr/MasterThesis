@@ -119,16 +119,10 @@ for currentdir in listdir(resultdir):
 logger.info('Output is saved in folder %s' % (resultdir))
 
 
-#todo log.debug (try cast) or assert
-#todo multithreading
-#todo muldularity
-#todo analysis the threshold
-#todo dic with unique key
-
-#todo .DS_Store wtf???
-
-#todo add a database to save the result
+# todo log.debug (try cast) or assert
+# todo multithreading
+# todo analysis the threshold
+# todo dic with unique key
+# todo add a database to save the result
 # todo change no absorption conflict add longer
 # todo output format adaptive(csv/txt)
-
-#todo add script for testing

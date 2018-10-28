@@ -282,6 +282,7 @@ class Pattern(Path):
 
     # todo assert path close
     def subunit(self, unitrect, offsetframe):
+        assert self.isclosed()  # This question isn't well-defined otherwise
         num_line = len(self)
         # unit_points = []
         unit_points = {}
