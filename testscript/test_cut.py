@@ -6,24 +6,24 @@ from os import getcwd, listdir, sep, remove, error, path
 
 class Test_cut(unittest.TestCase):
     def setUp(self):
-        self.frame = Path(MicroLine(Coordinate(0, 0), Coordinate(20000, 0)),
+        self.frame = Pattern(MicroLine(Coordinate(0, 0), Coordinate(20000, 0)),
                        MicroLine(Coordinate(20000, 0), Coordinate(20000, 20000)),
                        MicroLine(Coordinate(20000, 20000), Coordinate(0, 20000)),
                        MicroLine(Coordinate(0, 20000), Coordinate(0, 0)))
         
-        self.p1 = Path(MicroLine(Coordinate(0, 0), Coordinate(10000, 0)),
+        self.p1 = Pattern(MicroLine(Coordinate(0, 0), Coordinate(10000, 0)),
           MicroLine(Coordinate(10000, 0), Coordinate(10000, 10000)),
           MicroLine(Coordinate(10000, 10000), Coordinate(0, 10000)),
           MicroLine(Coordinate(0, 10000), Coordinate(0, 0)))
         self.p1ps = [(1,1),(1,2),(2,1),(2,2)]
 
-        self.p11 = Path(MicroLine(Coordinate(1900, 1900), Coordinate(5900, 1900)),
+        self.p11 = Pattern(MicroLine(Coordinate(1900, 1900), Coordinate(5900, 1900)),
                        MicroLine(Coordinate(5900, 1900), Coordinate(5900, 5900)),
                        MicroLine(Coordinate(5900, 5900), Coordinate(1900, 5900)),
                        MicroLine(Coordinate(1900, 5900), Coordinate(1900, 1900)))
         self.p11ps = [(1,1),(1,2),(2,1),(2,2)]
 
-        self.p2 = Path(MicroLine(Coordinate(0, 0), Coordinate(10000, 0)),
+        self.p2 = Pattern(MicroLine(Coordinate(0, 0), Coordinate(10000, 0)),
                        MicroLine(Coordinate(10000, 0), Coordinate(10000, 15000)),
                        MicroLine(Coordinate(10000, 15000), Coordinate(5000, 15000)),
                        MicroLine(Coordinate(5000, 15000), Coordinate(5000, 10000)),
@@ -31,7 +31,7 @@ class Test_cut(unittest.TestCase):
                        MicroLine(Coordinate(0, 10000), Coordinate(0, 0)))
         self.p2ps = [(1, 1), (1, 2), (2, 1), (2, 2), (2, 3)]
 
-        self.p3 = Path(MicroLine(Coordinate(0, 0), Coordinate(11000, 0)),
+        self.p3 = Pattern(MicroLine(Coordinate(0, 0), Coordinate(11000, 0)),
                        MicroLine(Coordinate(11000, 0), Coordinate(11000, 14900)),
                        MicroLine(Coordinate(11000, 14900), Coordinate(4900, 14900)),
                        MicroLine(Coordinate(4900, 14900), Coordinate(4900, 11000)),
@@ -39,7 +39,7 @@ class Test_cut(unittest.TestCase):
                        MicroLine(Coordinate(0, 11000), Coordinate(0, 0)))
         self.p3ps = {(1, 1):1.0, (1, 2):1.0, (3, 1):0.2, (2, 1):1.0, (2, 2):1.0, (3, 2):0.2, (1, 3):0.2156, (2, 3):0.98, (3, 3):0.196}
 
-        self.p4 = Path(MicroLine(Coordinate(0, 0), Coordinate(1, 0)),
+        self.p4 = Pattern(MicroLine(Coordinate(0, 0), Coordinate(1, 0)),
                        MicroLine(Coordinate(1, 0), Coordinate(1, 1)),
                        MicroLine(Coordinate(1, 1), Coordinate(0, 1)),
                        MicroLine(Coordinate(0, 1), Coordinate(0, 0)))
@@ -57,12 +57,12 @@ class Test_cut(unittest.TestCase):
         self.l43 = MicroLine(Coordinate(0.5, 0), Coordinate(0.5, 1))
         self.l44 = MicroLine(Coordinate(0.5, 0), Coordinate(1.5, 0))
 
-        self.p5 = Path(MicroLine(Coordinate(2, 2), Coordinate(3, 2)),
+        self.p5 = Pattern(MicroLine(Coordinate(2, 2), Coordinate(3, 2)),
                        MicroLine(Coordinate(3, 2), Coordinate(3, 3)),
                        MicroLine(Coordinate(3, 3), Coordinate(2, 3)),
                        MicroLine(Coordinate(2, 3), Coordinate(2, 2)))
 
-        self.p6 = Path(MicroLine(Coordinate(2, 0), Coordinate(3, 0)),
+        self.p6 = Pattern(MicroLine(Coordinate(2, 0), Coordinate(3, 0)),
                        MicroLine(Coordinate(3, 0), Coordinate(3, 3)),
                        MicroLine(Coordinate(3, 3), Coordinate(2, 3)),
                        MicroLine(Coordinate(2, 3), Coordinate(2, 0)))
@@ -75,7 +75,7 @@ class Test_cut(unittest.TestCase):
     def test_subunit(self):
         #self.assertEqual(set(subunit(self.p1, 5000, self.frame)), set(self.p1ps))
         #self.assertEqual(set(subunit(self.p2, 5000, self.frame)), set(self.p2ps))
-        self.assertEqual(subunit(self.p3, 5000, self.frame), self.p3ps)
+        self.assertEqual(self.p3.subunit( 5000, self.frame), self.p3ps)
         #self.assertEqual(set(subunit(self.p11, 5000, self.frame)), set(self.p11ps))
     '''
     def test_two_paths_distance(self):
@@ -84,14 +84,14 @@ class Test_cut(unittest.TestCase):
 
 
     def test_path1_is_contained_in_path2(self):
-        self.assertEqual(line_is_contained_in_path(self.l4, self.p4), True)
-        self.assertEqual(line_is_contained_in_path(self.l40, self.p4), True)
-        self.assertEqual(line_is_contained_in_path(self.l400, self.p4), True)
-        self.assertEqual(line_is_contained_in_path(self.l401, self.p4), True)
-        self.assertEqual(line_is_contained_in_path(self.l402, self.p4), False)
-        self.assertEqual(line_is_contained_in_path(self.l403, self.p4), False)
-        self.assertEqual(line_is_contained_in_path(self.l404, self.p4), True)
-        self.assertEqual(line_is_contained_in_path(self.l405, self.p4), False)
+        self.assertEqual(line_is_contained_in_Pattern(self.l4, self.p4), True)
+        self.assertEqual(line_is_contained_in_Pattern(self.l40, self.p4), True)
+        self.assertEqual(line_is_contained_in_Pattern(self.l400, self.p4), True)
+        self.assertEqual(line_is_contained_in_Pattern(self.l401, self.p4), True)
+        self.assertEqual(line_is_contained_in_Pattern(self.l402, self.p4), False)
+        self.assertEqual(line_is_contained_in_Pattern(self.l403, self.p4), False)
+        self.assertEqual(line_is_contained_in_Pattern(self.l404, self.p4), True)
+        self.assertEqual(line_is_contained_in_Pattern(self.l405, self.p4), False)
 
     def test_line1_is_overlap_with_line2(self):
         l7 = MicroLine(Coordinate(0, 0), Coordinate(1, 0))

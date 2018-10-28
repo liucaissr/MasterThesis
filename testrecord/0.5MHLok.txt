@@ -1,6 +1,0 @@
-171130-MicroHeaterLayout-final
-True
-
-25.8341325
-
-77.5023975

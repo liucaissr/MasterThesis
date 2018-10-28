@@ -117,7 +117,7 @@ for file in inputs:
     no_absorb = [no_absorb_real, no_absorb_test]
     distance = [distance_real, distance_test]
     d = [no_merge, no_absorb, distance]
-    # i[0] = real / i[1] = test
+    # i[0] = real / i[1] = testscript
     record.write('1: merge, 2: LP, 3: distance')
     for i in d:
         num_er = 0

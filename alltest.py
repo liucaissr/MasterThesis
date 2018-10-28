@@ -1,4 +1,4 @@
-# script to test all test cases
+# script to testscript all testscript cases
 import os
 
 # Layer1,2,3 not working because of overlap between patterns.
