@@ -11,8 +11,13 @@ import shutil
 import logging
 import setuplog
 
-# arg1 = files folder
-# arg2 = no_merge_threshpoint_on_pathold
+"""
+usage: python main.py arg1 [arg2]
+
+arg1 = files folder
+*arg2 = no_merge_threshpoint_on_pathold
+
+"""
 
 no_merge_factor = 0
 lp_factor = 0.2
