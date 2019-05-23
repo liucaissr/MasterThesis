@@ -196,6 +196,10 @@ class MicroLine(Line):
 # rectlinear pattern
 class Pattern(Path):
     def preprocess(self):
+        """
+
+        :return: filteredPaths - filter path with same start and end points
+        """
         hlines = []
         vlines = []
         filteredPath = Pattern()
@@ -748,8 +752,15 @@ def two_paths_distancex(path1, path2):
     points1.append(path1.start)
     points2.append(path2.start)
     inter = path1.intersect(path2)
+
+    # change distance function 0522 start
+    """
+    intersectL, intersectP = two_paths_intersection(path1, path2)
+    if intersectP !=
+    """
     if len(inter) != 0:
         return dis
+
     for l1 in path1:
         points1.append(l1.end)
         l = l1.order()
@@ -861,6 +872,10 @@ def unitdivision(frame):
     return unitrectedge
 
 def rectangular_partition(path):
+    """
+    :param path: one original pattern
+    :return: curdistinctpaths, allcurcutlines
+    """
     cutvpointobjs = []
     cuthlines = []
     allhlines = []

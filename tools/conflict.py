@@ -3,13 +3,26 @@ import re
 from svgpathtools import *
 from tools.segment import *
 
-def no_merge_conflict(path1, path2, factor, dis = None):
+def no_merge_conflict(path1, path2, factor, dis = None, in_pattern = 0):
+    """
+    for in-pattern conflict -  t > threshold > 0
+    for between-pattern conflict - t > threshold
+    :param path1:
+    :param path2:
+    :param factor:
+    :param dis:
+    :return:
+
+    """
     if dis is None:
         dis = two_paths_distance(path1, path2)
-    if 0 < dis < factor:
-        return True,dis
+    if in_pattern == 1:
+        if 0 < dis < factor:
+            return True, dis
     else:
-        return False,dis
+        if dis < factor:
+            return True, dis
+    return False,dis
 
 def lp_conflict(path1, path2, factor):
     # factor = 0.2

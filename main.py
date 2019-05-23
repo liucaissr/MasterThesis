@@ -35,10 +35,10 @@ svgdir = 'svg'
 resultdir = 'output'+ sep +time.strftime("%Y%m%d%H%M")
 loglog = 'execution.log'
 
-dirs = [pdfdir, svgdir]
+dirs = [pdfdir, svgdir, tmpdir, resultdir]
 
-dirs.append(tmpdir)
-dirs.append(resultdir)
+#dirs.append()
+#dirs.append(resultdir)
 # Creates a directory structure.
 now = Build()
 for newdir in dirs:
@@ -59,7 +59,6 @@ for f in listdir(inputpath):
 
 
 logger.info('Begin the convertion')
-
 
 
 # Normalize pdf names, cut and paste pdf in respective dir.

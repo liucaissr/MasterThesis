@@ -1,26 +1,26 @@
-# to confirm the result conflict relationship
-
-from os import system, listdir, sep
-from svgpathtools import svg2paths, wsvg
 from tools.segment import *
-from bisect import *
-from operator import attrgetter
-from os import getcwd, listdir, sep, remove, error, path
-import os.path
+from os import getcwd, listdir, sep, mkdir
+from tools.directories import Build
 
-cur = '/Users/my/Desktop/MT/code/MasterThesis/expectedOutput'
+"""
+This script is to test the result
+1 - run main.py according to the usage
+2 - put expected output in to one folder
+3 - set the following variable expectedOutput -  the expected output folder (by default = "/expectedOutput")
+"""
 
-IDE = cur+sep+'171130-IDELayout-final'
-Heater = cur+sep+'171130-MicroHeaterLayout-final'
-L1 = cur+sep+'LAYER1'
-L2 = cur+sep+'LAYER2'
-L3 = cur+sep+'LAYER3'
-tempdir = cur + sep + 'tmp'
+expectedOutput = "/expectedOutput"
 
-curproject = getcwd()
-outputpath = '/Users/my/Desktop/MT/code/MasterThesis/output/'
+dirpath = getcwd()
+cur = dirpath + expectedOutput
+
+testDir = "/testrecord/"
+now = Build()
+now.createDirIfNotExist(testDir, dirpath)
+
+testpath = dirpath + testDir
+outputpath = dirpath + '/output/'
 resultpath = outputpath + max(listdir(outputpath))
-testpath = '/Users/my/Desktop/MT/code/MasterThesis/testrecord/'
 testfile = testpath + max(listdir(outputpath)) + '.txt'
 record = open(testfile, 'w')
 
@@ -107,7 +107,7 @@ for file in inputs:
                         distance_test[str[0]] = {}
                     distance_test[str[0]][str[1]] = str[2]
 
-    record.write('%s\n'% file)
+    record.write('\n%s\n'% file)
     tf =  no_merge_real == no_merge_test and no_absorb_real == no_absorb_test\
     #and distance_real == distance_test
     record.write('%s\n'% tf)
@@ -118,14 +118,15 @@ for file in inputs:
     distance = [distance_real, distance_test]
     d = [no_merge, no_absorb, distance]
     # i[0] = real / i[1] = testscript
-    record.write('1: merge, 2: LP, 3: distance')
+    #record.write('1: merge, 2: LP, 3: distance\n')
+    typedict = {1:"merge conflict", 2:"LP conflict", 3:"distance conflict"}
     for i in d:
         num_er = 0
         #record.write('%d\n' % d.index(i))
         if i[0]==i[1]:
             continue
         else:
-            record.write('%d false\n' % (d.index(i)))
+            record.write('%s: false\n' % (typedict[d.index(i) + 1]))
 
         for k1 in i[1].keys():
             for k2 in i[0].keys():
@@ -145,5 +146,5 @@ for file in inputs:
                         record.write('\n')
         error = float(num_er) / n
         if error != 0:
-            record.write('%s error = %s\n' % (d.index(i), error))
+            record.write('%s error = %s\n\n' % (typedict[d.index(i) + 1], error))
 

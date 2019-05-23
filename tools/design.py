@@ -67,12 +67,14 @@ class cutPolygon:
                     else:
                         merging_threshold = small_ratio
 
-                    distincthpaths = []
+                    distinctpathsDict = {}
+                    path_no = 0
+                    distinctPaths = []
                     no_merge = {}
                     no_absorption = {}
 
                     for path in paths:
-                        #wsvg(curdistinctpaths, filename='testoutput.svg', openinbrowser=True)
+                        # wsvg(curdistinctpaths, filename='testoutput.svg', openinbrowser=True)
                         # curdistinctpaths: redraw of the design before conflict detection and deviation!h.
                         # create rect with last hline, in order to redraw the pic
                         curdistinctpaths, allcurcutlines = rectangular_partition(path)
@@ -92,7 +94,7 @@ class cutPolygon:
                             cur_no_merge[path1] = []
                             for path2 in curMicdistinctpaths:
                                 if path1 != path2:
-                                    conflict, dis = no_merge_conflict(path1, path2, merging_threshold)
+                                    conflict, dis = no_merge_conflict(path1, path2, merging_threshold, in_pattern = 1)
                                     if conflict:
                                         cur_no_merge[path1].append(path2)
                         cur_no_absorption = {}
@@ -185,8 +187,10 @@ class cutPolygon:
                                                 break
                                 if flag == 1:
                                     break
+
                         for path in curdevPaths:
-                            distincthpaths.append(path)
+                            distinctPaths.append(path)
+                            distinctpathsDict[path] = path_no
                         for con in cur_no_merge.items():
                             if con[1] != []:
                                 no_merge[con[0]] = con[1]
@@ -194,31 +198,34 @@ class cutPolygon:
                             if con[1] != []:
                                 no_absorption[con[0]] = con[1]
 
+                        path_no += 1
+
                     distance = {}
                     min_distance = 0
-                    if len(distincthpaths) >= 2:
-                        min_distance = two_paths_distance(distincthpaths[0], distincthpaths[1])
-                    length = len(distincthpaths)
-                    for p in distincthpaths:
+                    #distinctPaths = distinctpathsDict.keys()
+                    if len(distinctPaths) >= 2:
+                        min_distance = two_paths_distance(distinctPaths[0], distinctPaths[1])
+                    length = len(distinctPaths)
+                    for p in distinctPaths:
                         distance[p] = {}
                     for i in range(0,length):
                         for j in range(i+1,length):
-                            dis = two_paths_distance(distincthpaths[i], distincthpaths[j])
+                            dis = two_paths_distance(distinctPaths[i], distinctPaths[j])
                             if dis > 0 and (dis < min_distance or min_distance <= 0):
                                 min_distance = dis
                             if dis != 0:
-                                s1 = abs(distincthpaths[i].area())
-                                s2 = abs(distincthpaths[j].area())
+                                s1 = abs(distinctPaths[i].area())
+                                s2 = abs(distinctPaths[j].area())
                                 if s1 <= s2:
                                     try:
-                                        distance[distincthpaths[i]][distincthpaths[j]] = dis
+                                        distance[distinctPaths[i]][distinctPaths[j]] = dis
                                     except KeyError:
                                         print 'key error'
-                                        print len(distincthpaths)
+                                        print len(distinctPaths)
                                         print j
                                         print i
                                 else:
-                                    distance[distincthpaths[j]][distincthpaths[i]] = dis
+                                    distance[distinctPaths[j]][distinctPaths[i]] = dis
                     for k,v in distance.items():
                         if v == {}:
                             del distance[k]
@@ -231,53 +238,66 @@ class cutPolygon:
                     if no_merge_factor != 0:
                         merging_threshold = no_merge_factor
                     no_mergex = {}
-                    for p in distincthpaths:
+                    for p in distinctPaths:
                         no_mergex[p] = []
                     for i in range(0,length):
                         for j in range(i+1, length):
                             dis = 0
                             conflict = None
-                            if distincthpaths[i] in distance.keys():
-                                if distincthpaths[j] in distance[distincthpaths[i]].keys():
-                                    dis = distance[distincthpaths[i]][distincthpaths[j]]
-                            if distincthpaths[j] in distance.keys():
-                                if distincthpaths[i] in distance[distincthpaths[j]].keys():
-                                    dis = distance[distincthpaths[j]][distincthpaths[i]]
-                            if dis != 0:
-                                conflict, disss = no_merge_conflict(distincthpaths[i], distincthpaths[j], merging_threshold, dis)
+                            if distinctPaths[i] in distance.keys():
+                                if distinctPaths[j] in distance[distinctPaths[i]].keys():
+                                    dis = distance[distinctPaths[i]][distinctPaths[j]]
+                            if distinctPaths[j] in distance.keys():
+                                if distinctPaths[i] in distance[distinctPaths[j]].keys():
+                                    dis = distance[distinctPaths[j]][distinctPaths[i]]
+                            if distinctpathsDict[distinctPaths[i]] != distinctpathsDict[distinctPaths[j]]:
+                                conflict, disss = no_merge_conflict(distinctPaths[i], distinctPaths[j], merging_threshold, dis, in_pattern = 0)
+                            else:
+                                conflict, disss = no_merge_conflict(distinctPaths[i], distinctPaths[j], merging_threshold, dis, in_pattern = 1)
                             if conflict:
-                                no_mergex[distincthpaths[i]].append(distincthpaths[j])
-                                no_mergex[distincthpaths[j]].append(distincthpaths[i])
-                    for p in distincthpaths:
+                                no_mergex[distinctPaths[i]].append(distinctPaths[j])
+                                no_mergex[distinctPaths[j]].append(distinctPaths[i])
+                    for p in distinctPaths:
                         if no_mergex[p] == []:
                             del no_mergex[p]
+
+                    #no_merge_all = no_mergex + no_merge same key combine
+                    """
+                    for con in no_mergex:
+                        if con[0] in no_merge.keys():
+                            for p in con[1]:
+                                no_merge[con[0]].append(p)
+                        else:
+                            no_merge[con[0]] = con[1]
+                    """
                     for i in range(0, length):
                         for j in range(i+1, length):
-                            if distincthpaths[i] in no_absorption.keys():
-                                if distincthpaths[j] in no_absorption[distincthpaths[i]]:
+                            if distinctPaths[i] in no_absorption.keys():
+                                if distinctPaths[j] in no_absorption[distinctPaths[i]]:
                                     break
-                            conflict, line = lp_conflict(distincthpaths[i], distincthpaths[j], lp_factor)
+                            conflict, line = lp_conflict(distinctPaths[i], distinctPaths[j], lp_factor)
                             if conflict:
-                                if distincthpaths[i] not in no_absorption.keys():
-                                    no_absorption[distincthpaths[i]] = []
-                                if distincthpaths[j] not in no_absorption[distincthpaths[i]]:
-                                    no_absorption[distincthpaths[i]].append(distincthpaths[j])
-                                if distincthpaths[j] not in no_absorption.keys():
-                                    no_absorption[distincthpaths[j]] = []
-                                if distincthpaths[i] not in no_absorption[distincthpaths[j]]:
-                                    no_absorption[distincthpaths[j]].append(distincthpaths[i])
+                                if distinctPaths[i] not in no_absorption.keys():
+                                    no_absorption[distinctPaths[i]] = []
+                                if distinctPaths[j] not in no_absorption[distinctPaths[i]]:
+                                    no_absorption[distinctPaths[i]].append(distinctPaths[j])
+                                if distinctPaths[j] not in no_absorption.keys():
+                                    no_absorption[distinctPaths[j]] = []
+                                if distinctPaths[i] not in no_absorption[distinctPaths[j]]:
+                                    no_absorption[distinctPaths[j]].append(distinctPaths[i])
                     subunits = {}
                     for i in range(0, length):
                         subunits[i+1] = []
-                        subunits[i+1] = distincthpaths[i].subunit(unitrect, offsetframe)
+                        subunits[i+1] = distinctPaths[i].subunit(unitrect, offsetframe)
 
-                    distincthpaths.insert(0, offsetframe)
-                    wsvg(distincthpaths, filename=thefile, openinbrowser=False)
+                    distinctPaths.insert(0, offsetframe)
+                    wsvg(distinctPaths, filename=thefile, openinbrowser=False)
 
                     output_unit(resultpath, 'unit.txt', subunits, unitrect, offsetframe)
 
+                    # hao duo wen ti
                     conflicts = [no_mergex, no_absorption, distance]
-                    output_conflict(resultpath, 'conflict.txt', conflicts, distincthpaths)
+                    output_conflict(resultpath, 'conflict.txt', conflicts, distinctPaths)
 
                     tf = merging_threshold == small_factor
                     logger = logging.getLogger('__main__')
