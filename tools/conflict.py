@@ -24,7 +24,7 @@ def no_merge_conflict(path1, path2, factor, dis = None, in_pattern = 0):
             return True, dis
     return False,dis
 
-def lp_conflict(path1, path2, factor):
+def lp_conflict(path1, path2, factor, in_pattern = 0):
     # factor = 0.2
     assert path1.isclosed() and path2.isclosed(), '%s is not closed' % (path1 if path1.isclosed() is False else path2)
     x, p = two_paths_intersection(path1, path2)
@@ -39,18 +39,22 @@ def lp_conflict(path1, path2, factor):
         interl = x[0]
         area = 0
         wholelength = 0
+        area1 = float(abs(path2.area()))
+        area2 = float(abs(path1.area()))
         if x[0] in path1:
             for line in path2:
                 l, p = two_lines_intersection(x[0], line)
                 if l is not None:
                     wholelength = float(line.length())
-            area = float(abs(path2.area()))
+            area = area1
         elif x[0] in path2:
             for line in path1:
                 l, p = two_lines_intersection(x[0], line)
                 if l is not None:
                     wholelength = float(line.length())
-            area = float(abs(path1.area()))
+            area = area2
+
+        #max_area = max(area1, area2)
         ratio = 1
         lengthratio = 1
         if area != 0:
@@ -109,10 +113,10 @@ def lp_conflict(path1, path2, factor):
             const12_1 = ratio1 < factor and lengthratio1 < factor_sqrt
             const12_2 = ratio2 < factor and lengthratio2 < factor_sqrt
             #turn off const3
-            #const3_1 = lengthratio2 > selflengthfactor
-            const3_1 = True
-            #const3_2 = lengthratio1 > selflengthfactor
-            const3_2 = True
+            const3_1 = lengthratio2 > selflengthfactor
+            #const3_1 = True
+            const3_2 = lengthratio1 > selflengthfactor
+            #const3_2 = True
             #if ((ratio1 < factor and lengthratio1 < factor_sqrt) and lengthratio2 > selflengthfactor) or ((ratio2 < factor and lengthratio2 < factor_sqrt) and lengthratio1 > selflengthfactor):
             if (const12_1 and const3_1) or (const12_2 and const3_2):
                 return True, None
